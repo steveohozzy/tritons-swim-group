@@ -5,7 +5,7 @@ import { navigation } from "@/lib/demo-content";
 export function SiteHeader() {
   return <header className="site-header"><div className="header-inner">
     <Link href="/" className="brand" aria-label="Tritons Swim Group home">
-      <span className="brand-mark"><Waves size={25} strokeWidth={2.4} /></span>
+      <span className="brand-mark"><img src="/tritons-logo.jpg" alt="Tritons" /></span>
       <span className="brand-copy"><strong>TRITONS</strong><small>SWIM GROUP</small></span>
     </Link>
     <nav className="desktop-nav" aria-label="Main navigation">
