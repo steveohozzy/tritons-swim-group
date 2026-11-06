@@ -1,120 +1,39 @@
 import Link from "next/link";
-import { ArrowUpRight, ChevronDown, MapPin, Waves } from "lucide-react";
+import { ArrowUpRight, MapPin } from "lucide-react";
 import { getStory, getStories } from "@/lib/storyblok";
 
 const fallbackEvents = [
-  { id: "club-championships", name: "Tritons Club Championships", date: "2026-07-18", time: "09:00", location: "Aquatic Centre, Main Pool", category: "Race day", description: "A full day of fast swimming, big cheers and even bigger team spirit." },
-  { id: "open-water-social", name: "Open Water Social", date: "2026-08-02", time: "08:30", location: "Merewether Beach", category: "Community", description: "Easy miles, ocean air and coffee with the Tritons crew." },
-  { id: "learn-to-swim", name: "Learn to Swim Open Day", date: "2026-08-23", time: "10:00", location: "Tritons Pool", category: "Try it out", description: "Meet the coaches and discover a swim session that works for you." },
+ { id:"club-championships",name:"Tritons Club Championships",date:"2026-07-18",time:"09:00",location:"Aquatic Centre, Main Pool",category:"Race day",description:"A full day of fast swimming, big cheers and even bigger team spirit." },
+ { id:"open-water-social",name:"Open Water Social",date:"2026-08-02",time:"08:30",location:"Merewether Beach",category:"Community",description:"Easy miles, ocean air and coffee with the Tritons crew." },
+ { id:"learn-to-swim",name:"Learn to Swim Open Day",date:"2026-08-23",time:"10:00",location:"Tritons Pool",category:"Try it out",description:"Meet the coaches and discover a swim session that works for you." },
 ];
-
 const fallbackGallery = [
-  { id: "water", filename: "https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=1200&q=85", alt: "Swimmer moving through blue water" },
-  { id: "team", filename: "https://images.unsplash.com/photo-1600965962361-9035dbfd1c50?auto=format&fit=crop&w=1200&q=85", alt: "Swim team at the pool" },
-  { id: "open-water", filename: "https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&w=1200&q=85", alt: "Open water swimmer" },
-  { id: "diving", filename: "https://images.unsplash.com/photo-1560089000-7433a4ebbd64?auto=format&fit=crop&w=1200&q=85", alt: "Swimmer diving into water" },
+ {id:"water",filename:"https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=1200&q=85",alt:"Swimmer moving through blue water"},
+ {id:"team",filename:"https://images.unsplash.com/photo-1600965962361-9035dbfd1c50?auto=format&fit=crop&w=1200&q=85",alt:"Swim team at the pool"},
+ {id:"open-water",filename:"https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&w=1200&q=85",alt:"Open water swimmer"},
+ {id:"diving",filename:"https://images.unsplash.com/photo-1560089000-7433a4ebbd64?auto=format&fit=crop&w=1200&q=85",alt:"Swimmer diving into water"},
 ];
+function formatDate(date?:string){if(!date)return{day:"—",month:"TBA"};const d=new Date(`${date}T12:00:00`);return{day:d.toLocaleDateString("en-GB",{day:"2-digit"}),month:d.toLocaleDateString("en-GB",{month:"short"}).toUpperCase()};}
 
-function formatDate(date?: string) {
-  if (!date) return { day: "—", month: "TBA" };
-  const parsed = new Date(`${date}T12:00:00`);
-  return {
-    day: parsed.toLocaleDateString("en-GB", { day: "2-digit" }),
-    month: parsed.toLocaleDateString("en-GB", { month: "short" }).toUpperCase(),
-  };
-}
-
-export default async function HomePage() {
-  const [story, eventStories, galleryStories] = await Promise.all([
-    getStory("home"),
-    getStories("event"),
-    getStories("galleryAlbum"),
-  ]);
-  const content = story?.content || {};
-  const events = eventStories.length
-    ? eventStories.map((event: any) => ({
-        id: event.uuid || event.id,
-        name: event.content?.title || event.name,
-        date: event.content?.startDate,
-        time: event.content?.time,
-        location: event.content?.location,
-        category: event.content?.category,
-        description: event.content?.description,
-        registrationUrl: event.content?.registrationUrl,
-      })).filter((event: any) => event.name)
-    : fallbackEvents;
-  const storyImages = galleryStories.flatMap((album: any) => {
-    const images = album.content?.images || album.content?.galleryImages || [];
-    return images.map((image: any, index: number) => ({
-      id: image.id || `${album.uuid || album.id}-${index}`,
-      filename: image.filename || image.image?.filename,
-      alt: image.alt || image.image?.alt || album.content?.title || "Tritons Swim Group gallery",
-    })).filter((image: any) => image.filename);
-  });
-  const gallery = storyImages.length ? storyImages : fallbackGallery;
-  const heroImage = content.heroImage?.filename || gallery[0]?.filename;
-
-  return <div className="home-page" id="top">
-    <section className="home-hero">
-      <div className="home-hero-glow home-hero-glow-one" />
-      <div className="home-hero-glow home-hero-glow-two" />
-      <div className="home-hero-inner wrap">
-        <div className="home-hero-copy">
-          <span className="home-eyebrow"><i />{content.heroEyebrow || "EST. FOR THE WATER"}</span>
-          <h1>{content.heroTitle || <>Swim <em>together.</em><br />Go further.</>}</h1>
-          <p>{content.heroIntro || "Tritons is a swim group for every body, every pace and every kind of water. Show up curious. Leave stronger."}</p>
-          <div className="home-hero-actions">
-            <Link href="/about" className="home-button home-button-light">Meet the group <ArrowUpRight size={17} /></Link>
-            <Link href="/events" className="home-button home-button-outline">See upcoming events</Link>
-          </div>
-        </div>
-        <div className="home-hero-photo">
-          {heroImage && <img src={heroImage} alt={content.heroImage?.alt || "Tritons swimmers in the water"} />}
-          <div className="home-photo-shade" />
-          <div className="home-photo-caption"><span>Strong strokes.<br />Good people.</span><b>TRITONS / 01</b></div>
-        </div>
-      </div>
-      <div className="home-hero-bottom wrap"><span>SWIM · LEARN · GROW</span><span>YOUR NEXT CHAPTER STARTS HERE ↓</span></div>
-    </section>
-
-    <section id="about" className="home-about wrap">
-      <div className="home-about-heading"><span className="home-eyebrow-light">WHY TRITONS</span><h2>Find your<br /><em>water people.</em></h2></div>
-      <div className="home-values">
-        <article><span>01</span><h3>Move well</h3><p>Technique, fitness and confidence — whatever your current level.</p></article>
-        <article><span>02</span><h3>Show up</h3><p>Regular sessions and social swims make consistency feel easy.</p></article>
-        <article><span>03</span><h3>Have fun</h3><p>From first laps to race days, there is always someone cheering.</p></article>
-      </div>
-    </section>
-
-    <section id="events" className="home-events">
-      <div className="wrap">
-        <div className="home-section-intro"><div><span className="home-eyebrow-light">ON THE CALENDAR</span><h2>Make a splash.</h2></div><p>Club events, special sessions and community moments. Keep an eye on what's coming up.</p></div>
-        <div className="home-event-list">
-          {events.slice(0, 4).map((event: any) => {
-            const date = formatDate(event.date);
-            return <article className="home-event-row" key={event.id}>
-              <div className="home-event-date"><strong>{date.day}</strong><span>{date.month}</span></div>
-              <div className="home-event-info"><span>{event.category || "TRITONS EVENT"}</span><h3>{event.name}</h3><p>{event.description}</p><small><MapPin size={14} />{event.location || "Location to be announced"}{event.time ? ` · ${event.time}` : ""}</small></div>
-              <Link href={event.registrationUrl || "/events"} aria-label={`Learn more about ${event.name}`} className="home-event-link"><ArrowUpRight size={20} /></Link>
-            </article>;
-          })}
-        </div>
-        <div className="home-events-more"><Link href="/events">Explore all events <ArrowUpRight size={16} /></Link></div>
-      </div>
-    </section>
-
-    <section id="gallery" className="home-gallery wrap">
-      <div className="home-section-intro"><div><span className="home-eyebrow-light">THE GOOD STUFF</span><h2>Life at Tritons.</h2></div><Link href="/gallery" className="home-gallery-link">Explore the gallery <ArrowUpRight size={16} /></Link></div>
-      <div className="home-gallery-grid">
-        {gallery.slice(0, 4).map((image: any, index: number) => <Link href="/gallery" key={image.id} className={`home-gallery-image home-gallery-image-${index + 1}`}><img src={image.filename} alt={image.alt || "Tritons Swim Group"} /></Link>)}
-      </div>
-    </section>
-
-    <section id="contact" className="home-contact">
-      <div className="wrap home-contact-inner">
-        <div><span className="home-eyebrow">READY WHEN YOU ARE</span><h2>Come find<br />your lane.</h2></div>
-        <div><p>Follow along, ask a question or come to the next event. We'd love to see you in the water.</p><Link href="/contact" className="home-button home-button-lavender">Get in touch <ArrowUpRight size={17} /></Link></div>
-      </div>
-    </section>
-  </div>;
+export default async function HomePage(){
+ const [story,eventStories,galleryStories]=await Promise.all([getStory("home"),getStories("event"),getStories("galleryAlbum")]);
+ const content=story?.content||{};
+ const events=eventStories.length?eventStories.map((e:any)=>({id:e.uuid||e.id,name:e.content?.title||e.name,date:e.content?.startDate,time:e.content?.time,location:e.content?.location,category:e.content?.category,description:e.content?.description,registrationUrl:e.content?.registrationUrl})).filter((e:any)=>e.name):fallbackEvents;
+ const storyImages=galleryStories.flatMap((a:any)=>{const images=a.content?.images||a.content?.galleryImages||[];return images.map((im:any,i:number)=>({id:im.id||`${a.uuid||a.id}-${i}`,filename:im.filename||im.image?.filename,alt:im.alt||im.image?.alt||a.content?.title||"Tritons Swim Group gallery"})).filter((im:any)=>im.filename);});
+ const gallery=storyImages.length?storyImages:fallbackGallery;
+ const heroImage=content.heroImage?.filename||gallery[0]?.filename;
+ return <div id="top">
+  <section className="relative overflow-hidden bg-[#251047] text-white">
+   <div className="pointer-events-none absolute -right-32 -top-40 h-[34rem] w-[34rem] rounded-full bg-violet-600/30 blur-3xl"/>
+   <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-16 pt-16 md:grid-cols-[.9fr_1.1fr] md:py-24 lg:px-8">
+    <div className="relative z-10"><span className="inline-flex items-center gap-2 text-xs font-extrabold tracking-[.22em] text-violet-200"><i className="h-2 w-2 rounded-full bg-violet-300"/>{content.heroEyebrow||"EST. FOR THE WATER"}</span><h1 className="mt-6 font-display text-5xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl">{content.heroTitle||<>Swim <em className="text-violet-300">together.</em><br/>Go further.</>}</h1><p className="mt-6 max-w-lg text-lg leading-8 text-white/70">{content.heroIntro||"Tritons is a swim group for every body, every pace and every kind of water. Show up curious. Leave stronger."}</p><div className="mt-8 flex flex-wrap gap-3"><Link href="/about" className="inline-flex items-center gap-2 rounded-full bg-violet-300 px-6 py-3.5 text-sm font-bold text-[#251047] hover:bg-white">Meet the group <ArrowUpRight size={17}/></Link><Link href="/events" className="rounded-full border border-white/30 px-6 py-3.5 text-sm font-bold hover:bg-white/10">See upcoming events</Link></div></div>
+    <div className="relative min-h-[360px] overflow-hidden rounded-[2rem] bg-violet-900 shadow-2xl sm:min-h-[500px]">{heroImage&&<img className="absolute inset-0 h-full w-full object-cover" src={heroImage} alt={content.heroImage?.alt||"Tritons swimmers in the water"}/>}<div className="absolute inset-0 bg-gradient-to-t from-[#1d1035]/80 via-transparent to-transparent"/><div className="absolute bottom-7 left-7 right-7 flex items-end justify-between"><span className="font-display text-2xl font-extrabold">Strong strokes.<br/>Good people.</span><b className="text-[10px] tracking-[.2em] text-white/70">TRITONS / 01</b></div></div>
+   </div>
+   <div className="mx-auto flex max-w-7xl justify-between px-5 pb-6 text-[10px] font-bold tracking-[.2em] text-violet-200/70 lg:px-8"><span>SWIM · LEARN · GROW</span><span>YOUR NEXT CHAPTER STARTS HERE ↓</span></div>
+  </section>
+  <section id="about" className="mx-auto grid max-w-7xl gap-12 px-5 py-20 md:grid-cols-[.8fr_1.2fr] md:py-28 lg:px-8"><div><span className="text-xs font-extrabold tracking-[.2em] text-violet-700">WHY TRITONS</span><h2 className="mt-4 font-display text-4xl font-extrabold leading-tight text-[#251047] sm:text-5xl">Find your<br/><em className="text-violet-700">water people.</em></h2></div><div className="grid gap-8 sm:grid-cols-3">{[["01","Move well","Technique, fitness and confidence — whatever your current level."],["02","Show up","Regular sessions and social swims make consistency feel easy."],["03","Have fun","From first laps to race days, there is always someone cheering."]].map(([n,t,d])=><article className="border-t-2 border-violet-200 pt-5" key={n}><span className="text-xs font-bold text-violet-600">{n}</span><h3 className="mt-4 font-display text-xl font-extrabold text-[#251047]">{t}</h3><p className="mt-3 text-sm leading-7 text-[#777487]">{d}</p></article>)}</div></section>
+  <section id="events" className="bg-[#f0ebff] py-20 md:py-24"><div className="mx-auto max-w-7xl px-5 lg:px-8"><div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><span className="text-xs font-extrabold tracking-[.2em] text-violet-800">ON THE CALENDAR</span><h2 className="mt-3 font-display text-4xl font-extrabold text-[#251047] sm:text-5xl">Make a splash.</h2></div><p className="max-w-md leading-7 text-[#777487]">Club events, special sessions and community moments. Keep an eye on what's coming up.</p></div><div className="divide-y divide-violet-200 border-y border-violet-200">{events.slice(0,4).map((event:any)=>{const date=formatDate(event.date);return <article className="grid gap-5 py-7 sm:grid-cols-[5rem_1fr_auto] sm:items-center" key={event.id}><div className="flex items-center gap-2 sm:block"><strong className="font-display text-4xl font-extrabold text-[#7135a8]">{date.day}</strong><span className="text-xs font-bold tracking-widest text-violet-800 sm:mt-1 sm:block">{date.month}</span></div><div><span className="text-[10px] font-extrabold uppercase tracking-[.18em] text-violet-700">{event.category||"TRITONS EVENT"}</span><h3 className="mt-1 font-display text-xl font-extrabold text-[#251047]">{event.name}</h3>{event.description&&<p className="mt-1 text-sm text-[#777487]">{event.description}</p>}<small className="mt-3 flex items-center gap-1.5 text-xs text-[#777487]"><MapPin size={13}/>{event.location||"Location to be announced"}{event.time?` · ${event.time}`:""}</small></div><Link href={event.registrationUrl||"/events"} aria-label={`Learn more about ${event.name}`} className="flex h-11 w-11 items-center justify-center rounded-full border border-violet-300 text-violet-800 hover:bg-violet-700 hover:text-white"><ArrowUpRight size={20}/></Link></article>;})}</div><div className="mt-8 text-right"><Link className="inline-flex items-center gap-2 text-sm font-bold text-violet-800" href="/events">Explore all events <ArrowUpRight size={16}/></Link></div></div></section>
+  <section id="gallery" className="mx-auto max-w-7xl px-5 py-20 md:py-24 lg:px-8"><div className="mb-10 flex flex-wrap items-end justify-between gap-4"><div><span className="text-xs font-extrabold tracking-[.2em] text-violet-700">THE GOOD STUFF</span><h2 className="mt-3 font-display text-4xl font-extrabold text-[#251047] sm:text-5xl">Life at Tritons.</h2></div><Link href="/gallery" className="inline-flex items-center gap-2 text-sm font-bold text-violet-800">Explore the gallery <ArrowUpRight size={16}/></Link></div><div className="grid auto-rows-[180px] grid-cols-2 gap-3 sm:auto-rows-[240px] sm:gap-5 md:grid-cols-4">{gallery.slice(0,4).map((image:any,index:number)=><Link href="/gallery" key={image.id} className={`group relative overflow-hidden rounded-2xl bg-violet-100 ${index===0?"md:col-span-2 md:row-span-2":""} `}><img className="h-full w-full object-cover transition duration-500 group-hover:scale-105" src={image.filename} alt={image.alt||"Tritons Swim Group"}/></Link>)}</div></section>
+  <section className="bg-[#251047] py-16 text-white md:py-24"><div className="mx-auto grid max-w-7xl gap-8 px-5 md:grid-cols-2 md:items-end lg:px-8"><div><span className="text-xs font-extrabold tracking-[.2em] text-violet-200">READY WHEN YOU ARE</span><h2 className="mt-4 font-display text-5xl font-extrabold leading-tight sm:text-6xl">Come find<br/>your lane.</h2></div><div><p className="max-w-md text-lg leading-8 text-white/70">Follow along, ask a question or come to the next event. We'd love to see you in the water.</p><Link href="/contact" className="mt-7 inline-flex items-center gap-2 rounded-full bg-violet-300 px-6 py-3.5 text-sm font-bold text-[#251047] hover:bg-white">Get in touch <ArrowUpRight size={17}/></Link></div></div></section>
+ </div>;
 }
