@@ -1,3 +1,3 @@
 export function SectionHeading({ eyebrow, title, description, light = false }: { eyebrow: string; title: string; description?: string; light?: boolean }) {
-  return <div className={`section-heading${light ? " section-heading-light" : ""}`}><span className="eyebrow">{eyebrow}</span><h2>{title}</h2>{description && <p>{description}</p>}</div>;
+  return <div className={`max-w-2xl ${light ? "text-white" : "text-[#242238]"}`}><span className={`text-xs font-extrabold uppercase tracking-[.2em] ${light ? "text-violet-200" : "text-violet-700"}`}>{eyebrow}</span><h2 className="mt-3 font-display text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">{title}</h2>{description && <p className={`mt-4 text-base leading-7 ${light ? "text-white/70" : "text-[#777487]"}`}>{description}</p>}</div>;
 }
