@@ -4,47 +4,26 @@ import { useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, CalendarDays } from "lucide-react";
 
 type CalendarEvent = { name: string; date: string; category?: string; description?: string };
-
 const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const dateKey = (year: number, month: number, day: number) => `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 
 export function EventCalendar({ events }: { events: CalendarEvent[] }) {
-  const [visibleMonth, setVisibleMonth] = useState(() => {
-    const now = new Date();
-    return new Date(now.getFullYear(), now.getMonth(), 1);
-  });
-  const year = visibleMonth.getFullYear();
-  const month = visibleMonth.getMonth();
+  const [visibleMonth, setVisibleMonth] = useState(() => { const now = new Date(); return new Date(now.getFullYear(), now.getMonth(), 1); });
+  const year = visibleMonth.getFullYear(), month = visibleMonth.getMonth();
   const firstDay = (new Date(year, month, 1).getDay() + 6) % 7;
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const cells = useMemo(() => {
-    const total = Math.ceil((firstDay + daysInMonth) / 7) * 7;
-    return Array.from({ length: total }, (_, index) => {
-      const day = index - firstDay + 1;
-      return day > 0 && day <= daysInMonth ? day : null;
-    });
-  }, [firstDay, daysInMonth]);
-  const eventsByDate = useMemo(() => {
-    return events.reduce<Record<string, CalendarEvent[]>>((acc, event) => {
-      if (event.date) (acc[event.date.slice(0, 10)] ||= []).push(event);
-      return acc;
-    }, {});
-  }, [events]);
+  const cells = useMemo(() => { const total = Math.ceil((firstDay + daysInMonth) / 7) * 7; return Array.from({ length: total }, (_, i) => { const day = i - firstDay + 1; return day > 0 && day <= daysInMonth ? day : null; }); }, [firstDay, daysInMonth]);
+  const eventsByDate = useMemo(() => events.reduce<Record<string, CalendarEvent[]>>((acc, event) => { if (event.date) (acc[event.date.slice(0, 10)] ||= []).push(event); return acc; }, {}), [events]);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const selectedEvents = selectedDate ? eventsByDate[selectedDate] || [] : [];
   const monthLabel = visibleMonth.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
 
-  return <div className="calendar-layout">
-    <section className="calendar-panel" aria-label="Events calendar">
-      <div className="calendar-toolbar"><div><span className="eyebrow">TRITONS DIARY</span><h3>{monthLabel}</h3></div><div className="calendar-controls"><button aria-label="Previous month" onClick={() => { setVisibleMonth(new Date(year, month - 1, 1)); setSelectedDate(null); }}><ChevronLeft size={18}/></button><button aria-label="Next month" onClick={() => { setVisibleMonth(new Date(year, month + 1, 1)); setSelectedDate(null); }}><ChevronRight size={18}/></button></div></div>
-      <div className="calendar-grid">{weekdays.map((day) => <div className="calendar-weekday" key={day}>{day}</div>)}{cells.map((day, index) => {
-        const key = day ? dateKey(year, month, day) : "";
-        const hasEvent = Boolean(eventsByDate[key]?.length);
-        const isToday = day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear();
-        return <button key={index} disabled={!day} className={`calendar-day${hasEvent ? " has-event" : ""}${selectedDate === key ? " selected" : ""}${isToday ? " today" : ""}`} onClick={() => setSelectedDate(key)}><span>{day || ""}</span>{hasEvent && <i/>}</button>;
-      })}</div>
-      <div className="calendar-legend"><span><i/> Club event or session</span><span>Choose a date to see details</span></div>
+  return <div className="mt-12 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+    <section className="rounded-[2rem] border border-violet-100 bg-white p-5 shadow-soft sm:p-8" aria-label="Events calendar">
+      <div className="mb-7 flex items-center justify-between"><div><span className="text-xs font-extrabold tracking-[.2em] text-violet-700">TRITONS DIARY</span><h3 className="mt-1 font-display text-2xl font-extrabold text-[#251047]">{monthLabel}</h3></div><div className="flex gap-2"><button className="flex h-10 w-10 items-center justify-center rounded-full border border-violet-100 hover:bg-violet-50" aria-label="Previous month" onClick={() => { setVisibleMonth(new Date(year, month - 1, 1)); setSelectedDate(null); }}><ChevronLeft size={18}/></button><button className="flex h-10 w-10 items-center justify-center rounded-full border border-violet-100 hover:bg-violet-50" aria-label="Next month" onClick={() => { setVisibleMonth(new Date(year, month + 1, 1)); setSelectedDate(null); }}><ChevronRight size={18}/></button></div></div>
+      <div className="grid grid-cols-7 gap-1">{weekdays.map(day => <div className="pb-3 text-center text-xs font-bold text-[#777487]" key={day}>{day}</div>)}{cells.map((day, index) => { const key = day ? dateKey(year, month, day) : ""; const hasEvent = Boolean(eventsByDate[key]?.length); const today = day === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear(); return <button key={index} disabled={!day} onClick={() => setSelectedDate(key)} className={`relative flex aspect-square flex-col items-center justify-center rounded-xl text-sm font-semibold transition disabled:cursor-default ${selectedDate === key ? "bg-[#7135a8] text-white" : today ? "bg-violet-100 text-[#4b216f]" : "text-[#242238] hover:bg-violet-50"}`}><span>{day || ""}</span>{hasEvent && <i className={`mt-1 h-1.5 w-1.5 rounded-full ${selectedDate === key ? "bg-white" : "bg-violet-600"}`}/>}</button>; })}</div>
+      <div className="mt-6 flex flex-wrap justify-between gap-2 border-t border-violet-100 pt-4 text-xs text-[#777487]"><span className="flex items-center gap-2"><i className="h-2 w-2 rounded-full bg-violet-600"/> Club event or session</span><span>Choose a date to see details</span></div>
     </section>
-    <aside className="calendar-agenda"><span className="eyebrow"><CalendarDays size={14}/> SELECTED DATE</span>{selectedDate ? <><h3>{new Date(selectedDate + "T12:00:00").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })}</h3>{selectedEvents.length ? selectedEvents.map((event, index) => <article className="agenda-event" key={index}><span>{event.category || "TRITONS EVENT"}</span><strong>{event.name}</strong><p>{event.description}</p></article>) : <p className="agenda-empty">Nothing listed for this date. Try another day.</p>}</> : <><h3>What's coming up?</h3><p className="agenda-empty">Select a highlighted date in the calendar to see event details.</p>{events.filter((event) => event.date >= dateKey(year, month, 1)).slice(0, 3).map((event, index) => <article className="agenda-event" key={index}><span>{event.date ? new Date(event.date + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" }) : "DATE TBC"}</span><strong>{event.name}</strong><p>{event.description}</p></article>)}</>}</aside>
+    <aside className="rounded-[2rem] bg-[#f0ebff] p-6 sm:p-8"><span className="flex items-center gap-2 text-xs font-extrabold tracking-[.15em] text-violet-800"><CalendarDays size={14}/> SELECTED DATE</span>{selectedDate ? <><h3 className="mb-5 mt-3 font-display text-2xl font-extrabold text-[#251047]">{new Date(selectedDate + "T12:00:00").toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })}</h3>{selectedEvents.length ? selectedEvents.map((event, i) => <article className="mb-4 border-t border-violet-200 pt-4" key={i}><span className="text-xs font-bold uppercase tracking-wider text-violet-700">{event.category || "TRITONS EVENT"}</span><strong className="mt-1 block text-lg text-[#251047]">{event.name}</strong><p className="mt-2 text-sm leading-6 text-[#777487]">{event.description}</p></article>) : <p className="text-sm leading-6 text-[#777487]">Nothing listed for this date. Try another day.</p>}</> : <><h3 className="mb-3 mt-3 font-display text-2xl font-extrabold text-[#251047]">What's coming up?</h3><p className="mb-5 text-sm leading-6 text-[#777487]">Select a highlighted date in the calendar to see event details.</p>{events.filter(event => event.date >= dateKey(year, month, 1)).slice(0, 3).map((event, i) => <article className="mb-4 border-t border-violet-200 pt-4" key={i}><span className="text-xs font-bold uppercase text-violet-700">{event.date ? new Date(event.date + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" }) : "DATE TBC"}</span><strong className="mt-1 block text-[#251047]">{event.name}</strong><p className="mt-1 text-sm text-[#777487]">{event.description}</p></article>)}</>}</aside>
   </div>;
 }
