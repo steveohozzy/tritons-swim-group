@@ -1,24 +1,120 @@
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Waves, ShieldCheck, Heart, Trophy } from "lucide-react";
-import { SectionHeading } from "@/components/section-heading";
-import { getStory } from "@/lib/storyblok";
+import { ArrowUpRight, ChevronDown, MapPin, Waves } from "lucide-react";
+import { getStory, getStories } from "@/lib/storyblok";
+
+const fallbackEvents = [
+  { id: "club-championships", name: "Tritons Club Championships", date: "2026-07-18", time: "09:00", location: "Aquatic Centre, Main Pool", category: "Race day", description: "A full day of fast swimming, big cheers and even bigger team spirit." },
+  { id: "open-water-social", name: "Open Water Social", date: "2026-08-02", time: "08:30", location: "Merewether Beach", category: "Community", description: "Easy miles, ocean air and coffee with the Tritons crew." },
+  { id: "learn-to-swim", name: "Learn to Swim Open Day", date: "2026-08-23", time: "10:00", location: "Tritons Pool", category: "Try it out", description: "Meet the coaches and discover a swim session that works for you." },
+];
+
+const fallbackGallery = [
+  { id: "water", filename: "https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=1200&q=85", alt: "Swimmer moving through blue water" },
+  { id: "team", filename: "https://images.unsplash.com/photo-1600965962361-9035dbfd1c50?auto=format&fit=crop&w=1200&q=85", alt: "Swim team at the pool" },
+  { id: "open-water", filename: "https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&w=1200&q=85", alt: "Open water swimmer" },
+  { id: "diving", filename: "https://images.unsplash.com/photo-1560089000-7433a4ebbd64?auto=format&fit=crop&w=1200&q=85", alt: "Swimmer diving into water" },
+];
+
+function formatDate(date?: string) {
+  if (!date) return { day: "—", month: "TBA" };
+  const parsed = new Date(`${date}T12:00:00`);
+  return {
+    day: parsed.toLocaleDateString("en-GB", { day: "2-digit" }),
+    month: parsed.toLocaleDateString("en-GB", { month: "short" }).toUpperCase(),
+  };
+}
 
 export default async function HomePage() {
-  const story = await getStory("home");
-  const content = story?.content;
-  return <div>
-    <section className="hero-home"><div className="hero-glow hero-glow-one"/><div className="hero-glow hero-glow-two"/><div className="hero-content wrap">
-      <div className="hero-copy"><span className="eyebrow eyebrow-light"><span className="eyebrow-dot"/> CONFIDENCE STARTS HERE</span><h1>{content?.heroTitle || <>Find your flow.<br/><em>Find your confidence.</em></>}</h1><p>{content?.heroIntro || "From first splashes to stronger strokes, make every moment in the water count with Tritons Swim Group."}</p><div className="hero-actions"><Link className="button button-white" href="/lessons">Explore swimming lessons <ArrowUpRight size={17}/></Link><Link className="text-link text-link-light" href="/timetable">View the timetable <ArrowRight size={16}/></Link></div><div className="hero-proof"><div className="proof-icon"><Waves size={19}/></div><span>Every swimmer has a next step.<br/><strong>Let's find yours.</strong></span></div></div>
-      <div className="hero-art" aria-label="Decorative swimming pool illustration"><div className="hero-orbit orbit-one"/><div className="hero-orbit orbit-two"/><div className="hero-water"><div className="water-line line-one"/><div className="water-line line-two"/><div className="water-line line-three"/><div className="water-ripple"/></div><div className="hero-bubble bubble-one"/><div className="hero-bubble bubble-two"/><div className="hero-bubble bubble-three"/><div className="hero-stamp"><Waves size={34}/><span>MAKE<br/>WAVES</span></div><div className="hero-art-caption">A stronger swimmer.<br/>A brighter smile.</div></div>
-    </div><div className="hero-bottom wrap"><span>SWIM • LEARN • GROW</span><span>YOUR TRITONS JOURNEY STARTS HERE ↓</span></div></section>
-    <section className="intro-section wrap"><div className="intro-mark"><Waves size={30}/></div><div className="intro-copy"><span className="eyebrow">WELCOME TO TRITONS</span><h2>A love of swimming.<br/><span>A lifetime of confidence.</span></h2></div><p>Learning to swim is about so much more than lengths. It's confidence, independence and discovering what you're capable of. We're here for every little breakthrough and every big splash.</p></section>
-    <section className="pathways-section"><div className="wrap"><SectionHeading eyebrow="FIND YOUR NEXT STEP" title="Every swimmer starts somewhere." description="Whether it's the very first splash or refining a favourite stroke, there's a place to begin."/><div className="pathway-grid">
-      <Link href="/lessons" className="pathway-card pathway-lilac"><span className="pathway-number">01 / START</span><div className="pathway-icon"><Waves size={29}/></div><h3>First splashes</h3><p>Build water confidence and get comfortable in the pool.</p><span className="card-arrow"><ArrowUpRight/></span></Link>
-      <Link href="/lessons" className="pathway-card pathway-purple"><span className="pathway-number">02 / LEARN</span><div className="pathway-icon"><Heart size={29}/></div><h3>Growing skills</h3><p>Develop technique, practise new skills and find your rhythm.</p><span className="card-arrow"><ArrowUpRight/></span></Link>
-      <Link href="/lessons" className="pathway-card pathway-navy"><span className="pathway-number">03 / THRIVE</span><div className="pathway-icon"><Trophy size={29}/></div><h3>Stronger strokes</h3><p>Keep progressing, build stamina and celebrate every milestone.</p><span className="card-arrow"><ArrowUpRight/></span></Link>
-    </div></div></section>
-    <section className="feature-section wrap"><div className="feature-visual"><div className="feature-circle"><div className="feature-watermark"><Waves size={130}/></div><div className="feature-note"><ShieldCheck size={22}/><span>Confidence<br/>in every stroke</span></div><span className="feature-big-type">SWIM<br/>HAPPY.</span></div></div><div className="feature-copy"><span className="eyebrow">MORE THAN A LESSON</span><h2>Little victories<br/>make <em>big waves.</em></h2><p>That first confident kick. The first length without stopping. The smile after mastering something new. We believe those moments deserve to be celebrated.</p><ul className="check-list"><li><span>✓</span> Encouraging, supportive learning</li><li><span>✓</span> Progress at your own pace</li><li><span>✓</span> Skills that last a lifetime</li></ul><Link className="text-link" href="/about">Get to know Tritons <ArrowRight size={16}/></Link></div></section>
-    <section className="schedule-preview"><div className="wrap schedule-inner"><div><span className="eyebrow eyebrow-light">MAKE TIME FOR A SWIM</span><h2>Your next session<br/><em>is waiting.</em></h2><p>Take a look at the weekly timetable and find a session that fits.</p><Link className="button button-white" href="/timetable">Explore the timetable <ArrowUpRight size={17}/></Link></div><div className="schedule-card"><div className="schedule-card-head"><span>WEEKLY SESSIONS</span><span className="live-dot"/> <small>DEMO PREVIEW</small></div>{[["MON","16:00","Water confidence"],["TUE","17:00","Stroke development"],["THU","17:00","Adult beginners"],["SAT","09:00","Learn to swim"]].map((s)=><div className="schedule-row" key={s[0]}><strong>{s[0]}</strong><span>{s[1]}</span><span>{s[2]}</span><ArrowRight size={15}/></div>)}<Link href="/timetable" className="schedule-all">See all sessions <ArrowUpRight size={15}/></Link></div></div></section>
-    <section className="final-cta wrap"><div className="cta-decoration"><Waves size={76}/></div><span className="eyebrow">TAKE THE FIRST STEP</span><h2>Ready to make<br/><em>a splash?</em></h2><p>Every great swimming journey starts with a hello. We'd love to help you find the right session.</p><Link className="button" href="/join-us">Join the Tritons community <ArrowUpRight size={17}/></Link></section>
+  const [story, eventStories, galleryStories] = await Promise.all([
+    getStory("home"),
+    getStories("event"),
+    getStories("galleryAlbum"),
+  ]);
+  const content = story?.content || {};
+  const events = eventStories.length
+    ? eventStories.map((event: any) => ({
+        id: event.uuid || event.id,
+        name: event.content?.title || event.name,
+        date: event.content?.startDate,
+        time: event.content?.time,
+        location: event.content?.location,
+        category: event.content?.category,
+        description: event.content?.description,
+        registrationUrl: event.content?.registrationUrl,
+      })).filter((event: any) => event.name)
+    : fallbackEvents;
+  const storyImages = galleryStories.flatMap((album: any) => {
+    const images = album.content?.images || album.content?.galleryImages || [];
+    return images.map((image: any, index: number) => ({
+      id: image.id || `${album.uuid || album.id}-${index}`,
+      filename: image.filename || image.image?.filename,
+      alt: image.alt || image.image?.alt || album.content?.title || "Tritons Swim Group gallery",
+    })).filter((image: any) => image.filename);
+  });
+  const gallery = storyImages.length ? storyImages : fallbackGallery;
+  const heroImage = content.heroImage?.filename || gallery[0]?.filename;
+
+  return <div className="home-page" id="top">
+    <section className="home-hero">
+      <div className="home-hero-glow home-hero-glow-one" />
+      <div className="home-hero-glow home-hero-glow-two" />
+      <div className="home-hero-inner wrap">
+        <div className="home-hero-copy">
+          <span className="home-eyebrow"><i />{content.heroEyebrow || "EST. FOR THE WATER"}</span>
+          <h1>{content.heroTitle || <>Swim <em>together.</em><br />Go further.</>}</h1>
+          <p>{content.heroIntro || "Tritons is a swim group for every body, every pace and every kind of water. Show up curious. Leave stronger."}</p>
+          <div className="home-hero-actions">
+            <Link href="/about" className="home-button home-button-light">Meet the group <ArrowUpRight size={17} /></Link>
+            <Link href="/events" className="home-button home-button-outline">See upcoming events</Link>
+          </div>
+        </div>
+        <div className="home-hero-photo">
+          {heroImage && <img src={heroImage} alt={content.heroImage?.alt || "Tritons swimmers in the water"} />}
+          <div className="home-photo-shade" />
+          <div className="home-photo-caption"><span>Strong strokes.<br />Good people.</span><b>TRITONS / 01</b></div>
+        </div>
+      </div>
+      <div className="home-hero-bottom wrap"><span>SWIM · LEARN · GROW</span><span>YOUR NEXT CHAPTER STARTS HERE ↓</span></div>
+    </section>
+
+    <section id="about" className="home-about wrap">
+      <div className="home-about-heading"><span className="home-eyebrow-light">WHY TRITONS</span><h2>Find your<br /><em>water people.</em></h2></div>
+      <div className="home-values">
+        <article><span>01</span><h3>Move well</h3><p>Technique, fitness and confidence — whatever your current level.</p></article>
+        <article><span>02</span><h3>Show up</h3><p>Regular sessions and social swims make consistency feel easy.</p></article>
+        <article><span>03</span><h3>Have fun</h3><p>From first laps to race days, there is always someone cheering.</p></article>
+      </div>
+    </section>
+
+    <section id="events" className="home-events">
+      <div className="wrap">
+        <div className="home-section-intro"><div><span className="home-eyebrow-light">ON THE CALENDAR</span><h2>Make a splash.</h2></div><p>Club events, special sessions and community moments. Keep an eye on what's coming up.</p></div>
+        <div className="home-event-list">
+          {events.slice(0, 4).map((event: any) => {
+            const date = formatDate(event.date);
+            return <article className="home-event-row" key={event.id}>
+              <div className="home-event-date"><strong>{date.day}</strong><span>{date.month}</span></div>
+              <div className="home-event-info"><span>{event.category || "TRITONS EVENT"}</span><h3>{event.name}</h3><p>{event.description}</p><small><MapPin size={14} />{event.location || "Location to be announced"}{event.time ? ` · ${event.time}` : ""}</small></div>
+              <Link href={event.registrationUrl || "/events"} aria-label={`Learn more about ${event.name}`} className="home-event-link"><ArrowUpRight size={20} /></Link>
+            </article>;
+          })}
+        </div>
+        <div className="home-events-more"><Link href="/events">Explore all events <ArrowUpRight size={16} /></Link></div>
+      </div>
+    </section>
+
+    <section id="gallery" className="home-gallery wrap">
+      <div className="home-section-intro"><div><span className="home-eyebrow-light">THE GOOD STUFF</span><h2>Life at Tritons.</h2></div><Link href="/gallery" className="home-gallery-link">Explore the gallery <ArrowUpRight size={16} /></Link></div>
+      <div className="home-gallery-grid">
+        {gallery.slice(0, 4).map((image: any, index: number) => <Link href="/gallery" key={image.id} className={`home-gallery-image home-gallery-image-${index + 1}`}><img src={image.filename} alt={image.alt || "Tritons Swim Group"} /></Link>)}
+      </div>
+    </section>
+
+    <section id="contact" className="home-contact">
+      <div className="wrap home-contact-inner">
+        <div><span className="home-eyebrow">READY WHEN YOU ARE</span><h2>Come find<br />your lane.</h2></div>
+        <div><p>Follow along, ask a question or come to the next event. We'd love to see you in the water.</p><Link href="/contact" className="home-button home-button-lavender">Get in touch <ArrowUpRight size={17} /></Link></div>
+      </div>
+    </section>
   </div>;
 }
