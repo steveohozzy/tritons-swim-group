@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Waves, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { navigation } from "@/lib/demo-content";
 
 export function SiteHeader() {
@@ -7,7 +7,7 @@ export function SiteHeader() {
     <header className="relative z-50 border-b border-white/10 bg-[#251047] text-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4 lg:px-8">
         <Link href="/" className="flex shrink-0 items-center gap-3" aria-label="Tritons Swim Group home">
-          <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-violet-500 text-white"><Waves size={24} /></span>
+          <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-violet-500 ring-2 ring-white/20"><img src="/tritons-logo.jpg" alt="Tritons Swim Group logo" className="h-full w-full rounded-full object-cover object-center" /></span>
           <span className="flex flex-col leading-none"><strong className="font-display text-lg font-extrabold tracking-[.12em]">TRITONS</strong><small className="mt-1 text-[9px] font-bold tracking-[.28em] text-violet-200">SWIM GROUP</small></span>
         </Link>
         <nav className="hidden items-center gap-7 text-sm font-semibold text-white/80 lg:flex" aria-label="Main navigation">
