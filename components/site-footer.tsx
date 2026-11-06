@@ -2,10 +2,18 @@ import Link from "next/link";
 import { Waves, Instagram, Facebook, ArrowUpRight } from "lucide-react";
 
 export function SiteFooter() {
-  return <footer className="site-footer"><div className="footer-main">
-    <div className="footer-brand"><Link href="/" className="brand brand-light"><span className="brand-mark"><Waves size={25}/></span><span className="brand-copy"><strong>TRITONS</strong><small>SWIM GROUP</small></span></Link><p>Building confidence, skills and happy memories in the water.</p></div>
-    <div><h3>Explore</h3><Link href="/about">About Tritons</Link><Link href="/lessons">Swimming lessons</Link><Link href="/timetable">Timetable</Link><Link href="/events">Events</Link></div>
-    <div><h3>Helpful links</h3><Link href="/gallery">Gallery</Link><Link href="/parent-information">Parent information</Link><Link href="/join-us">Join the group</Link><Link href="/contact">Contact</Link></div>
-    <div><h3>Get in touch</h3><p>Questions about lessons or availability? We'd love to help.</p><Link className="footer-link" href="/contact">Contact Tritons <ArrowUpRight size={15}/></Link><div className="social-links"><a href="https://www.facebook.com/p/Tritons-Swim-Group-100082610693364/" aria-label="Facebook"><Facebook size={18}/></a><a href="#" aria-label="Instagram"><Instagram size={18}/></a></div></div>
-  </div><div className="footer-bottom"><span>© {new Date().getFullYear()} Tritons Swim Group</span><span>Made for making waves.</span></div></footer>;
+  return (
+    <footer className="bg-[#1d1035] text-white">
+      <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
+        <div>
+          <Link href="/" className="inline-flex items-center gap-3"><span className="flex h-11 w-11 items-center justify-center rounded-full bg-violet-500"><Waves size={24}/></span><span className="flex flex-col leading-none"><strong className="font-display text-lg font-extrabold tracking-[.12em]">TRITONS</strong><small className="mt-1 text-[9px] font-bold tracking-[.28em] text-violet-200">SWIM GROUP</small></span></Link>
+          <p className="mt-5 max-w-xs text-sm leading-7 text-white/60">Building confidence, skills and happy memories in the water.</p>
+        </div>
+        <div className="flex flex-col gap-3 text-sm text-white/65"><h3 className="mb-2 font-bold text-white">Explore</h3><Link href="/about">About Tritons</Link><Link href="/lessons">Swimming lessons</Link><Link href="/timetable">Timetable</Link><Link href="/events">Events</Link></div>
+        <div className="flex flex-col gap-3 text-sm text-white/65"><h3 className="mb-2 font-bold text-white">Helpful links</h3><Link href="/gallery">Gallery</Link><Link href="/parent-information">Parent information</Link><Link href="/join-us">Join the group</Link><Link href="/contact">Contact</Link></div>
+        <div><h3 className="mb-4 font-bold">Get in touch</h3><p className="text-sm leading-7 text-white/60">Questions about lessons or availability? We'd love to help.</p><Link className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-violet-200" href="/contact">Contact Tritons <ArrowUpRight size={15}/></Link><div className="mt-5 flex gap-3"><a className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20" href="https://www.facebook.com/p/Tritons-Swim-Group-100082610693364/" aria-label="Facebook"><Facebook size={18}/></a><a className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 hover:bg-white/20" href="#" aria-label="Instagram"><Instagram size={18}/></a></div></div>
+      </div>
+      <div className="mx-auto flex max-w-7xl flex-col justify-between gap-2 border-t border-white/10 px-5 py-6 text-xs text-white/45 sm:flex-row lg:px-8"><span>© {new Date().getFullYear()} Tritons Swim Group</span><span>Made for making waves.</span></div>
+    </footer>
+  );
 }
