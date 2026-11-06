@@ -1,13 +1,20 @@
-import { apiPlugin, getStoryblokApi, ISbStoriesParams, StoryblokStory } from "@storyblok/react";
+import { apiPlugin, getStoryblokApi, ISbStoriesParams, storyblokInit } from "@storyblok/react";
 
 const token = process.env.STORYBLOK_PREVIEW_TOKEN || process.env.STORYBLOK_TOKEN;
 const region = process.env.STORYBLOK_REGION || "eu";
 
 export const storyblokEnabled = Boolean(token);
 
+if (token) {
+  storyblokInit({
+    accessToken: token,
+    use: [apiPlugin],
+    apiOptions: { region },
+  });
+}
+
 export function initStoryblok() {
-  if (!token) return null;
-  return getStoryblokApi();
+  return token ? getStoryblokApi() : null;
 }
 
 export async function getStory(slug: string) {
@@ -44,5 +51,3 @@ export async function getStories(contentType: string, params: Record<string, unk
     return [];
   }
 }
-
-export { StoryblokStory };
