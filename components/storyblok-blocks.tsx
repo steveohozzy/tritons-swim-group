@@ -1,3 +1,4 @@
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { storyblokLink } from "@/lib/storyblok";
@@ -7,7 +8,7 @@ function RichText({document}:{document:any}) {
  if(typeof document==="string")return <p className="whitespace-pre-line text-base leading-8 text-[#777487]">{document}</p>;
  const render=(node:any,key:string):any=>{
   if(node==null)return null;if(typeof node==="string")return node;
-  if(Array.isArray(node))return node.map((child,index)=><span key={index}>{render(child,`${key}-${index}`)}</span>);
+  if(Array.isArray(node))return node.map((child,index)=><React.Fragment key={index}>{render(child,`${key}-${index}`)}</React.Fragment>);
   const children=node.content?render(node.content,key):null;
   if(node.type==="paragraph")return <p key={key} className="mb-5 leading-8 text-[#777487]">{children}</p>;
   if(node.type==="heading"){const level=node.attrs?.level||2;const className="mb-4 mt-8 font-display text-2xl font-extrabold text-[#251047]";if(level===1)return <h1 key={key} className={className}>{children}</h1>;if(level===3)return <h3 key={key} className={className}>{children}</h3>;if(level===4)return <h4 key={key} className={className}>{children}</h4>;return <h2 key={key} className={className}>{children}</h2>;}
