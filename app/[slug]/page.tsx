@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 export default async function ContentPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  if (!known.includes(slug)) notFound();
+  if (!known.includes(slug) && !(await getStory(slug))) notFound();
 
   const fallback = pageContent[slug];
   const story = await getStory(slug);
