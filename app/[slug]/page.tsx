@@ -1,38 +1,53 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowUpRight,Clock3,MapPin } from "lucide-react";
-import { pageContent,demoSessions,demoEvents } from "@/lib/demo-content";
-import { getStory,getStories,storyblokLink } from "@/lib/storyblok";
+import { pageContent } from "@/lib/demo-content";
+import { getStory } from "@/lib/storyblok";
 import { StoryblokBlocks } from "@/components/storyblok-blocks";
-import { SectionHeading } from "@/components/section-heading";
-import { EventCalendar } from "@/components/event-calendar";
-import { GalleryGrid } from "@/components/gallery-grid";
-import { NewsCard } from "@/components/news-card";
 
-const known=Object.keys(pageContent);
-export async function generateStaticParams(){return known.map(slug=>({slug}));}
-export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{const {slug}=await params;const story=await getStory(slug);return{title:story?.content?.title||pageContent[slug]?.title||slug.replaceAll("-"," ")};}
-function albumPhotos(albums:any[]){return albums.flatMap(album=>{const c=album.content||{},photos=Array.isArray(c.photos)?c.photos:[];const all=[...(c.coverImage?.filename?[c.coverImage]:[]),...photos];return all.map((photo:any,index:number)=>({id:`${album.uuid||album.id}-${photo.id||index}`,src:photo.filename||photo.image?.filename,alt:photo.alt||photo.image?.alt||c.title||"Tritons Swim Group",album:c.title||album.name})).filter((photo:any)=>photo.src);});}
-export default async function ContentPage({params}:{params:Promise<{slug:string}>}) {
- const {slug}=await params;if(!known.includes(slug))notFound();
- const fallback=pageContent[slug],story=await getStory(slug),content=story?.content||{};
- const [sessions,events,lessons,albums,articles]=await Promise.all([getStories("timetableSession"),getStories("event"),getStories("lessonType",{sort_by:"content.displayOrder:asc"}),getStories("galleryAlbum",{sort_by:"content.date:desc"}),getStories("newsArticle",{sort_by:"content.publishedDate:desc"})]);
- const title=content.title||fallback.title,intro=content.intro||fallback.intro,blocks=content.body||content.blocks||[];
- const lessonCards=lessons.length?lessons.map((item:any)=>({slug:item.slug,title:item.content?.title||item.name,summary:item.content?.summary||"",image:item.content?.image?.filename})): [{slug:"water-confidence",title:"Water confidence",summary:"For swimmers taking their first steps and getting comfortable in the water."},{slug:"learn-to-swim",title:"Learn to swim",summary:"Build the foundations and develop essential swimming skills."},{slug:"stroke-development",title:"Stroke development",summary:"Improve technique, coordination and confidence across the strokes."},{slug:"adult-swimming",title:"Adult swimming",summary:"A supportive place for adults to build confidence or improve technique."}];
- const gallery=albumPhotos(albums);
- const eventItems=events.length?events.map((e:any)=>({name:e.content?.title||e.name,date:e.content?.startDate,category:e.content?.category,description:e.content?.description,location:e.content?.location,startTime:e.content?.startTime,endTime:e.content?.endTime,bookingUrl:e.content?.bookingUrl?.url||e.content?.bookingUrl?.cached_url})).filter((e:any)=>e.name):demoEvents;
- return <div className="min-h-[50vh]">
-  <section className="relative overflow-hidden bg-[#251047] text-white"><div className="absolute -right-24 -top-36 h-96 w-96 rounded-full bg-violet-600/30 blur-3xl"/><div className="relative mx-auto max-w-7xl px-5 py-16 md:py-24 lg:px-8"><div className="mb-10 flex gap-3 text-xs font-semibold capitalize text-white/55"><Link href="/">Home</Link><span>/</span><span>{slug.replaceAll("-"," ")}</span></div><span className="text-xs font-extrabold uppercase tracking-[.2em] text-violet-200">{content.eyebrow||fallback.eyebrow}</span><h1 className="mt-4 max-w-4xl font-display text-4xl font-extrabold leading-tight sm:text-6xl">{title}</h1><p className="mt-5 max-w-2xl text-lg leading-8 text-white/70">{intro}</p></div></section>
-  {Array.isArray(blocks)&&blocks.length>0&&<div>{blocks.map((block:any)=><StoryblokBlocks key={block._uid} blok={block}/>)}</div>}
-  {slug==="timetable"&&<section className="mx-auto max-w-7xl px-5 py-16 lg:px-8"><SectionHeading eyebrow="WEEKLY TIMETABLE" title="Find your session." description="Session details, availability and term dates are maintained by the Tritons team."/><div className="mt-10 divide-y divide-violet-100 overflow-hidden rounded-2xl border border-violet-100">{(sessions.filter((s:any)=>s.content?.active!==false).length?sessions.filter((s:any)=>s.content?.active!==false).map((s:any)=>({day:s.content.day,time:`${s.content.startTime||""} – ${s.content.endTime||""}`,name:s.content.sessionName,level:s.content.level,age:s.content.ageGroup,place:s.content.location,instructor:s.content.instructor})):demoSessions).map((s:any,i:number)=><div className="grid gap-2 bg-white p-5 sm:grid-cols-[1fr_1.2fr_1.5fr_1fr_1fr] sm:items-center" key={i}><strong className="text-[#251047]">{s.day}</strong><span className="flex items-center gap-2 text-sm text-violet-800"><Clock3 size={15}/>{s.time}</span><div><strong className="text-sm text-[#242238]">{s.name}</strong>{s.instructor&&<p className="text-xs text-[#777487]">{s.instructor}</p>}</div><span className="text-sm text-[#777487]">{s.level} · {s.age}</span><span className="flex items-center gap-1 text-sm text-[#777487]"><MapPin size={14}/>{s.place}</span></div>)}</div><p className="mt-4 text-xs text-[#777487]">Please confirm session times and availability with Tritons before attending.</p></section>}
-  {slug==="events"&&<section className="mx-auto max-w-7xl px-5 py-16 lg:px-8"><SectionHeading eyebrow="SAVE THE DATE" title="Coming up at Tritons." description="Browse the calendar and select a highlighted date to see what's happening."/><EventCalendar events={eventItems}/></section>}
-  {slug==="lessons"&&<section className="mx-auto max-w-7xl px-5 py-16 lg:px-8"><SectionHeading eyebrow="FIND YOUR NEXT STEP" title="Explore our lessons." description="Every swimmer starts somewhere. Choose a lesson to find out more about what it covers and the skills it can help develop."/><div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{lessonCards.map((lesson:any)=><article className="group flex flex-col overflow-hidden rounded-3xl border border-violet-100 bg-white shadow-sm transition hover:-translate-y-1 hover:border-violet-300 hover:shadow-lg" key={lesson.slug}>{lesson.image&&<img src={lesson.image} alt="" className="h-40 w-full object-cover"/>}<div className="flex flex-1 flex-col p-7"><span className="text-3xl text-violet-600">〰</span><h3 className="mt-5 font-display text-xl font-extrabold text-[#251047]">{lesson.title}</h3><p className="mt-3 flex-1 text-sm leading-7 text-[#777487]">{lesson.summary}</p><Link className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-violet-800" href={`/lessons/${lesson.slug}`}>Explore this lesson <ArrowUpRight size={15} className="transition group-hover:translate-x-1"/></Link></div></article>)}</div></section>}
-  {slug==="gallery"&&<section className="mx-auto max-w-7xl px-5 py-16 lg:px-8"><SectionHeading eyebrow="MOMENTS THAT MATTER" title="A little look at life in the pool." description="Explore photos from lessons, events and life around the club."/>{gallery.length?<div className="mt-10"><GalleryGrid photos={gallery}/></div>:<p className="mt-10 rounded-3xl bg-violet-50 p-10 text-center text-[#777487]">Gallery photos will appear here once albums and images have been added in Storyblok.</p>}</section>}
-  {slug==="news"&&<section className="mx-auto max-w-7xl px-5 py-16 lg:px-8"><SectionHeading eyebrow="STORIES & UPDATES" title="The latest from Tritons." description="Club announcements, term updates and stories from our swimming community."/>{articles.length?<div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{articles.map((article:any)=><NewsCard key={article.uuid||article.id} article={article}/>)}</div>:<p className="mt-10 rounded-3xl bg-violet-50 p-10 text-center text-[#777487]">News articles will appear here once you publish them in Storyblok.</p>}</section>}
-  {slug==="join-us"&&<section className="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-2 lg:px-8"><SectionHeading eyebrow="LET'S GET STARTED" title="Tell us about your swimmer." description="Use the contact details provided by the group to ask about availability and the best session. A live enquiry form can be connected once the club's preferred inbox is confirmed."/><div className="rounded-3xl bg-[#f0ebff] p-8"><h3 className="font-display text-2xl font-extrabold text-[#251047]">Start a conversation</h3><p className="mt-3 leading-7 text-[#777487]">Let us know the swimmer's age, experience and what you'd like help with.</p><Link className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#7135a8] px-6 py-3 font-bold text-white" href="/contact">Make an enquiry <ArrowUpRight size={17}/></Link></div></section>}
-  {slug==="contact"&&<section className="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:grid-cols-2 lg:px-8"><div className="rounded-3xl bg-[#251047] p-8 text-white sm:p-12"><span className="text-xs font-bold tracking-[.2em] text-violet-200">GET IN TOUCH</span><h2 className="mt-4 font-display text-4xl font-extrabold">Let's talk swimming.</h2><p className="mt-5 leading-8 text-white/70">For lesson enquiries, availability and general questions, contact Tritons through the club's social page or the contact details below.</p><a className="mt-7 inline-flex items-center gap-2 rounded-full bg-violet-300 px-6 py-3 font-bold text-[#251047]" href={storyblokLink((await getStory("site-settings"))?.content?.facebookUrl,"https://www.facebook.com/p/Tritons-Swim-Group-100082610693364/")} target="_blank" rel="noreferrer">Message Tritons <ArrowUpRight size={17}/></a></div><div className="self-center p-6"><span className="text-xs font-bold tracking-[.2em] text-violet-700">GOOD TO KNOW</span><h3 className="mt-4 font-display text-3xl font-extrabold text-[#251047]">Not sure where to start?</h3><p className="mt-4 leading-8 text-[#777487]">Tell us the swimmer's age, previous experience and what they'd like to achieve. That helps the team point you towards a suitable session.</p><Link href="/lessons" className="mt-5 inline-flex items-center gap-2 font-bold text-violet-800">Explore lessons <ArrowUpRight size={16}/></Link></div></section>}
-  {slug==="about"&&<section className="mx-auto grid max-w-7xl gap-8 px-5 py-20 md:grid-cols-2 lg:px-8"><h2 className="font-display text-4xl font-extrabold leading-tight text-[#251047]">Encouragement first.<br/>Progress always.</h2><p className="leading-8 text-[#777487]">Swimming is a skill for life. A positive, patient environment helps swimmers feel safe to try, practise and discover what they can do. Add the club's own story, team biographies and qualifications in Storyblok before launch.</p></section>}
-  {slug==="parent-information"&&<section className="mx-auto grid max-w-7xl gap-5 px-5 py-16 sm:grid-cols-2 lg:px-8">{[["What should swimmers bring?","Bring swimwear, a towel and any equipment the team has asked for. Confirm specific requirements with your instructor."],["How do I choose the right lesson?","Share the swimmer's age, confidence and previous experience with Tritons and the team can help identify a suitable group."],["When do lessons run?","Check the timetable and contact the group to confirm current term dates, availability and any changes."],["What if we need to miss a lesson?","Ask the group about its absence and make-up lesson arrangements."]].map(([q,a])=><article className="rounded-2xl border border-violet-100 p-7" key={q}><h3 className="font-display text-xl font-extrabold text-[#251047]">{q}</h3><p className="mt-3 leading-7 text-[#777487]">{a}</p></article>)}</section>}
- </div>;
+const known = Object.keys(pageContent);
+export async function generateStaticParams() {
+  return known.map((slug) => ({ slug }));
+}
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const story = await getStory(slug);
+  return { title: story?.content?.title || pageContent[slug]?.title || slug.replaceAll("-", " ") };
+}
+export default async function ContentPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  if (!known.includes(slug)) notFound();
+
+  const fallback = pageContent[slug];
+  const story = await getStory(slug);
+  const content = story?.content || {};
+  const blocks = Array.isArray(content.body) ? content.body : Array.isArray(content.blocks) ? content.blocks : [];
+  const hasHeroBlock = blocks.some((block: any) => block.component === "heroBanner");
+  const title = content.title || fallback.title;
+  const eyebrow = content.eyebrow || fallback.eyebrow;
+  const intro = content.intro || fallback.intro;
+
+  return (
+    <div className="min-h-[50vh]">
+      {!hasHeroBlock && (
+        <section className="relative overflow-hidden bg-[#251047] text-white">
+          <div className="absolute -right-24 -top-36 h-96 w-96 rounded-full bg-violet-600/30 blur-3xl" />
+          <div className="relative mx-auto max-w-7xl px-5 py-16 md:py-24 lg:px-8">
+            <div className="mb-10 flex gap-3 text-xs font-semibold capitalize text-white/55">
+              <Link href="/">Home</Link><span>/</span><span>{slug.replaceAll("-", " ")}</span>
+            </div>
+            {eyebrow && <span className="text-xs font-extrabold uppercase tracking-[.2em] text-violet-200">{eyebrow}</span>}
+            {title && <h1 className="mt-4 max-w-4xl font-display text-4xl font-extrabold leading-tight sm:text-6xl">{title}</h1>}
+            {intro && <p className="mt-5 max-w-2xl text-lg leading-8 text-white/70">{intro}</p>}
+          </div>
+        </section>
+      )}
+      {blocks.map((block: any) => <StoryblokBlocks key={block._uid} blok={block} />)}
+      {blocks.length === 0 && (
+        <div className="mx-auto max-w-7xl px-5 py-16 text-center text-[#777487] lg:px-8">
+          Add content sections to this page in Storyblok.
+        </div>
+      )}
+    </div>
+  );
 }
