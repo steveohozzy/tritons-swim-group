@@ -36,7 +36,7 @@ async function getLesson(slug:string) {
     };
   }
   const fallback=fallbackLessons.find(item=>item.slug===slug);
-  return fallback?{...fallback,focusHeading:"What we work on",focusTitle:"Skills grow one step at a time.",focusIntro:"Lessons are about building confidence as well as developing swimming skills.",suitableHeading:"Who it's for",suitableTitle:"Is this the right lesson?",nextStepsHeading:"What comes next",enquiryButtonText:"Ask us about this lesson",image:undefined,imageAlt:"",enquiryLink:"/contact"}:null;
+  return fallback?{...fallback,ageRange:"",abilityLevel:"",focusHeading:"What we work on",focusTitle:"Skills grow one step at a time.",focusIntro:"Lessons are about building confidence as well as developing swimming skills.",suitableHeading:"Who it's for",suitableTitle:"Is this the right lesson?",nextStepsHeading:"What comes next",enquiryButtonText:"Ask us about this lesson",image:undefined,imageAlt:"",enquiryLink:"/contact"}:null;
 }
 export async function generateMetadata({params}:{params:Promise<{lesson:string}>}):Promise<Metadata>{
   const {lesson}=await params;const item=await getLesson(lesson);
