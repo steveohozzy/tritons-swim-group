@@ -18,6 +18,8 @@ async function getLesson(slug:string) {
       title:c.title||story.name,
       eyebrow:c.eyebrow||"Find your level",
       intro:c.summary||"",
+      ageRange:c.ageRange||"",
+      abilityLevel:c.abilityLevel||"",
       focus:typeof c.focus==="string"?c.focus.split("\n").map((item:string)=>item.trim()).filter(Boolean):Array.isArray(c.focus)?c.focus:[],
       focusHeading:c.focusHeading||"What we work on",
       focusTitle:c.focusTitle||"Skills grow one step at a time.",
@@ -50,6 +52,7 @@ export default async function LessonDetailPage({params}:{params:Promise<{lesson:
         {lesson.eyebrow&&<span className="text-xs font-extrabold uppercase tracking-[.2em] text-violet-200">{lesson.eyebrow}</span>}
         <h1 className="mt-4 max-w-4xl font-display text-4xl font-extrabold leading-tight sm:text-6xl">{lesson.title}</h1>
         {lesson.intro&&<p className="mt-5 max-w-2xl text-lg leading-8 text-white/70">{lesson.intro}</p>}
+        {(lesson.ageRange||lesson.abilityLevel)&&<p className="mt-4 text-sm font-semibold text-violet-200">{[lesson.ageRange,lesson.abilityLevel].filter(Boolean).join(" · ")}</p>}
         <Link href="/lessons" className="mt-8 inline-flex items-center gap-2 text-sm font-bold text-violet-200"><ArrowLeft size={16}/> Back to all lessons</Link>
       </div>
     </section>
