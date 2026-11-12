@@ -1,9 +1,10 @@
 import { apiPlugin, getStoryblokApi, ISbStoriesParams, storyblokInit } from "@storyblok/react";
 
-const token = process.env.STORYBLOK_PREVIEW_TOKEN || process.env.STORYBLOK_TOKEN;
+const token = process.env.STORYBLOK_DELIVERY_API_TOKEN;
 const region = process.env.STORYBLOK_REGION || "eu";
 
 export const storyblokEnabled = Boolean(token);
+export const storyblokVersion = "draft";
 
 if (token) {
   storyblokInit({
@@ -17,31 +18,29 @@ export function initStoryblok() {
   return token ? getStoryblokApi() : null;
 }
 
-export async function getStory(slug: string) {
+export async function getStory(slug: string, params: Record<string, unknown> = {}) {
   if (!token) return null;
-  const api = getStoryblokApi();
-  const version = process.env.STORYBLOK_PREVIEW_TOKEN ? "draft" : "published";
+
   try {
-    const response = await api.get(`cdn/stories/${slug}`, {
-      version,
+    const response = await getStoryblokApi().get(`cdn/stories/${slug}`, {
+      version: storyblokVersion,
       resolve_relations: ["page.featuredEvents", "page.lessonTypes", "page.galleryAlbums"],
+      ...params,
     });
-    return response.data.story;
+    return response.data.story || null;
   } catch (error) {
-    console.error("Storyblok story request failed:", error);
+    console.error(`Storyblok story request failed (${slug}):`, error);
     return null;
   }
 }
 
 export async function getStories(contentType: string, params: Record<string, unknown> = {}) {
   if (!token) return [];
-  const api = getStoryblokApi();
-  const version = process.env.STORYBLOK_PREVIEW_TOKEN ? "draft" : "published";
+
   try {
-    const response = await api.get("cdn/stories", {
-      version,
+    const response = await getStoryblokApi().get("cdn/stories", {
+      version: storyblokVersion,
       content_type: contentType,
-      sort_by: "content.startDate:asc",
       per_page: 100,
       ...params,
     } as ISbStoriesParams);
@@ -50,4 +49,16 @@ export async function getStories(contentType: string, params: Record<string, unk
     console.error(`Storyblok ${contentType} request failed:`, error);
     return [];
   }
+}
+
+export function storyblokLink(link: any, fallback = "/") {
+  if (!link) return fallback;
+  if (link.linktype === "url") return link.url || fallback;
+  const path = link.cached_url || link.url;
+  if (!path) return fallback;
+  return path.startsWith("/") ? path : `/${path}`;
+}
+
+export function assetUrl(asset: any) {
+  return typeof asset === "string" ? asset : asset?.filename || "";
 }
