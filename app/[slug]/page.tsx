@@ -16,16 +16,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 export default async function ContentPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  if (!known.includes(slug) && !(await getStory(slug))) notFound();
-
-  const fallback = pageContent[slug];
   const story = await getStory(slug);
+  const fallback = pageContent[slug];
+  if (!story && !fallback) notFound();
   const content = story?.content || {};
   const blocks = Array.isArray(content.body) ? content.body : Array.isArray(content.blocks) ? content.blocks : [];
   const hasHeroBlock = blocks.some((block: any) => block.component === "heroBanner");
-  const title = content.title || fallback.title;
-  const eyebrow = content.eyebrow || fallback.eyebrow;
-  const intro = content.intro || fallback.intro;
+  const title = content.title || fallback?.title || slug.replaceAll("-", " ");
+  const eyebrow = content.eyebrow || fallback?.eyebrow || "";
+  const intro = content.intro || fallback?.intro || "";
 
   return (
     <div className="min-h-[50vh]">
