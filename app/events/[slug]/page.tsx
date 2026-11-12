@@ -42,8 +42,13 @@ export default async function EventDetailPage({ params }: Props) {
             <ArrowLeft size={16} /> All events
           </Link>
           {event.category && <p className="text-xs font-extrabold uppercase tracking-[.22em] text-violet-200">{event.category}</p>}
-          <h1 className="mt-4 max-w-4xl font-display text-4xl font-extrabold leading-tight sm:text-6xl">{title}</h1>
-          {event.description && <p className="mt-6 max-w-2xl text-lg leading-8 text-white/75">{event.description}</p>}
+          <div className={`grid items-center gap-10 ${event.image?.filename ? "lg:grid-cols-[1fr_.85fr]" : ""}`}>
+            <div>
+              <h1 className="mt-4 max-w-4xl font-display text-4xl font-extrabold leading-tight sm:text-6xl">{title}</h1>
+              {event.description && <p className="mt-6 max-w-2xl text-lg leading-8 text-white/75">{event.description}</p>}
+            </div>
+            {event.image?.filename && <img src={event.image.filename} alt={event.image.alt || title} className="max-h-[28rem] w-full rounded-[2rem] object-cover shadow-2xl" />}
+          </div>
         </div>
       </section>
 
