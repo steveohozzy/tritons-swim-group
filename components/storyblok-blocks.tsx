@@ -10,7 +10,7 @@ function RichText({document}:{document:any}) {
   if(Array.isArray(node))return node.map((child,index)=><span key={index}>{render(child,`${key}-${index}`)}</span>);
   const children=node.content?render(node.content,key):null;
   if(node.type==="paragraph")return <p key={key} className="mb-5 leading-8 text-[#777487]">{children}</p>;
-  if(node.type==="heading"){const Tag=(`h${node.attrs?.level||2}`) as keyof JSX.IntrinsicElements;return <Tag key={key} className="mb-4 mt-8 font-display text-2xl font-extrabold text-[#251047]">{children}</Tag>;}
+  if(node.type==="heading"){const level=node.attrs?.level||2;const className="mb-4 mt-8 font-display text-2xl font-extrabold text-[#251047]";if(level===1)return <h1 key={key} className={className}>{children}</h1>;if(level===3)return <h3 key={key} className={className}>{children}</h3>;if(level===4)return <h4 key={key} className={className}>{children}</h4>;return <h2 key={key} className={className}>{children}</h2>;}
   if(node.type==="bullet_list"||node.type==="ordered_list"){const Tag=node.type==="bullet_list"?"ul":"ol";return <Tag key={key} className="mb-5 list-inside list-disc space-y-2 text-[#777487]">{children}</Tag>;}
   if(node.type==="list_item")return <li key={key}>{children}</li>;
   if(node.type==="hard_break")return <br key={key}/>;
