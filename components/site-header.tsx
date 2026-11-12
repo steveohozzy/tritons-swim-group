@@ -14,7 +14,7 @@ export function SiteHeader({ settings }: { settings?: any }) {
     <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4 lg:px-8">
       <Link href="/" className="flex shrink-0 items-center gap-3" aria-label={settings?.siteName || "Tritons Swim Group home"}>
         <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-full bg-violet-500 ring-2 ring-white/20">
-          {logo ? <img src={logo} alt={settings?.siteName || "Tritons Swim Group logo"} className="h-full w-full rounded-full object-cover"/> : <span className="font-display text-xl font-extrabold">T</span>}
+          {logo ? <img src={logo} alt={settings?.siteName || "Tritons Swim Group logo"} className="h-full w-full rounded-full object-cover"/> : <img src="/tritons-logo.jpg" alt="Tritons Swim Group logo" className="h-full w-full rounded-full object-cover"/>}
         </span>
         <span className="flex flex-col leading-none"><strong className="font-display text-lg font-extrabold tracking-[.12em]">{settings?.siteName || "TRITONS"}</strong><small className="mt-1 text-[9px] font-bold tracking-[.28em] text-violet-200">{settings?.siteTagline || "SWIM GROUP"}</small></span>
       </Link>
