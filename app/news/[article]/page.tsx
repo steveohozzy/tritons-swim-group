@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { getStories,getStory } from "@/lib/storyblok";
 import { StoryblokBlocks } from "@/components/storyblok-blocks";
 export async function generateStaticParams(){const articles=await getStories("newsArticle");return articles.map((article:any)=>({article:article.slug}));}
-export async function generateMetadata({params}:{params:Promise<{article:string}>}):Promise<Metadata>{const {article}=await params;const story=await getStory(article);return{title:story?.content?.title||"News | Tritons Swim Group"};}
+export async function generateMetadata({params}:{params:Promise<{article:string}>}):Promise<Metadata>{const {article}=await params;const story=await getStory(`news/${article}`);return{title:story?.content?.title||"News | Tritons Swim Group"};}
 export default async function NewsArticlePage({params}:{params:Promise<{article:string}>}) {
  const {article}=await params;const story=await getStory(article);if(!story||story.content?.component!=="newsArticle")notFound();
  const content=story.content,image=content.coverImage?.filename;
