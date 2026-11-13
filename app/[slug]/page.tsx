@@ -18,6 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function ContentPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const story = await getStory(slug);
+  const siteSettings = slug === "contact" ? (await getStory("site-settings"))?.content || {} : {};
   const fallback = pageContent[slug];
   if (!story && !fallback) notFound();
   const content = story?.content || {};
@@ -50,9 +51,9 @@ export default async function ContentPage({ params }: { params: Promise<{ slug: 
             <h2 className="mt-3 font-display text-3xl font-extrabold text-[#251047]">Get in touch with Tritons</h2>
             <p className="mt-4 text-sm leading-7 text-[#777487]">Whether you’re interested in lessons, joining the group or finding out more about our sessions, send us a message and our team will be happy to help.</p>
             <div className="mt-7 space-y-5 border-t border-violet-200 pt-6">
-              {content.contactEmail && <div><p className="text-xs font-bold uppercase tracking-wider text-violet-700">Email</p><a href={`mailto:${content.contactEmail}`} className="mt-1 block break-all font-semibold text-[#251047] hover:text-violet-700">{content.contactEmail}</a></div>}
-              {content.contactPhone && <div><p className="text-xs font-bold uppercase tracking-wider text-violet-700">Phone</p><a href={`tel:${String(content.contactPhone).replace(/\s/g, "")}`} className="mt-1 block font-semibold text-[#251047] hover:text-violet-700">{content.contactPhone}</a></div>}
-              {content.poolAddress && <div><p className="text-xs font-bold uppercase tracking-wider text-violet-700">Pool address</p><p className="mt-1 whitespace-pre-line font-semibold text-[#251047]">{content.poolAddress}</p></div>}
+              {siteSettings.contactEmail && <div><p className="text-xs font-bold uppercase tracking-wider text-violet-700">Email</p><a href={`mailto:${content.contactEmail}`} className="mt-1 block break-all font-semibold text-[#251047] hover:text-violet-700">{content.contactEmail}</a></div>}
+              {siteSettings.contactPhone && <div><p className="text-xs font-bold uppercase tracking-wider text-violet-700">Phone</p><a href={`tel:${String(content.contactPhone).replace(/\s/g, "")}`} className="mt-1 block font-semibold text-[#251047] hover:text-violet-700">{content.contactPhone}</a></div>}
+              {siteSettings.poolAddress && <div><p className="text-xs font-bold uppercase tracking-wider text-violet-700">Pool address</p><p className="mt-1 whitespace-pre-line font-semibold text-[#251047]">{content.poolAddress}</p></div>}
             </div>
           </aside>
         </section>
