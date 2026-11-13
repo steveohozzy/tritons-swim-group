@@ -4,6 +4,24 @@ import { NextRequest, NextResponse } from "next/server";
 
 const STORYBLOK_SPACE_ID = "296464284958100";
 
+const SUPPORTED_ACTIONS = new Set([
+  "published",
+  "unpublished",
+  "deleted",
+  "moved",
+  "story.published",
+  "story.unpublished",
+  "story.deleted",
+  "story.moved",
+  "created",
+  "replaced",
+  "restored",
+  "asset.created",
+  "asset.replaced",
+  "asset.deleted",
+  "asset.restored",
+]);
+
 export async function POST(request: NextRequest) {
   const secret = process.env.STORYBLOK_REVALIDATE_SECRET;
   if (!secret) {
@@ -29,8 +47,8 @@ export async function POST(request: NextRequest) {
   }
 
   const action = String(payload.action || "");
-  if (!action.startsWith("story.") && !action.startsWith("asset.")) {
-    return NextResponse.json({ revalidated: false, message: "Unsupported webhook action." }, { status: 400 });
+  if (!SUPPORTED_ACTIONS.has(action)) {
+    return NextResponse.json({ revalidated: false, ignored: true, action, message: "Webhook action is not a content publish or asset event." });
   }
 
   revalidatePath("/", "layout");
@@ -39,6 +57,6 @@ export async function POST(request: NextRequest) {
     revalidated: true,
     action,
     path: "/",
-    message: "Tritons pages will refresh with the latest published Storyblok content on their next visit.",
+    message: "Tritons pages have been invalidated and will fetch the latest published Storyblok content on the next request.",
   });
 }
