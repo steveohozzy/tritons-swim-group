@@ -10,7 +10,7 @@ export async function generateStaticParams() {
   return stories.length ? stories.map((story:any)=>({lesson:story.slug})) : fallbackLessons.map(lesson=>({lesson:lesson.slug}));
 }
 function normaliseLessonSlug(value:string) {
-  return decodeURIComponent(value)
+  return value
     .trim()
     .toLowerCase()
     .replace(/[^a-z0-9]+/g,"-")
