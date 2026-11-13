@@ -9,6 +9,8 @@ Add to `.env.local`:
 ```env
 STORYBLOK_DELIVERY_API_TOKEN=your_preview_token
 STORYBLOK_REGION=eu
+STORYBLOK_REVALIDATE_SECRET=your_long_random_secret
+# Optional: set STORYBLOK_VERSION=draft on Vercel Preview if you want preview deployments to show drafts
 ```
 
 Add the same variable names in Vercel. Keep the Preview token private and never commit it.
@@ -127,6 +129,19 @@ Create these as nestable components, and allow them in `page.body`.
 - `text` — Textarea
 - `buttonText` — Text
 - `link` — Link
+
+
+## Automatic publishing updates
+
+The production site uses the published Storyblok version. Local development defaults to drafts. Set `STORYBLOK_REVALIDATE_SECRET` in Vercel Production to a long random value.
+
+In Storyblok, open **Settings → Webhooks → + New Webhook** and configure:
+
+- Name: `Tritons website cache refresh`
+- Endpoint: `https://tritons-swim-group.vercel.app/api/storyblok/revalidate?secret=YOUR_SAME_SECRET`
+- Events: Story published, Story unpublished, Story deleted, Story moved, Asset created, Asset replaced, Asset deleted
+
+The endpoint checks the secret and the Tritons Storyblok space ID, then invalidates the root layout so all site pages refresh from published Storyblok content on their next visit. No Vercel build or deployment is triggered by a content publish.
 
 ## Connected website features
 
