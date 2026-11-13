@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,7 +11,9 @@ export async function POST(request: NextRequest) {
   }
 
   const suppliedSecret = request.nextUrl.searchParams.get("secret") || "";
-  if (suppliedSecret.length !== secret.length || !Buffer.from(suppliedSecret).equals(Buffer.from(secret))) {
+  const suppliedBuffer = Buffer.from(suppliedSecret);
+  const secretBuffer = Buffer.from(secret);
+  if (suppliedBuffer.length !== secretBuffer.length || !timingSafeEqual(suppliedBuffer, secretBuffer)) {
     return NextResponse.json({ revalidated: false, message: "Invalid webhook secret." }, { status: 401 });
   }
 
