@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, CheckCircle2, Clock3, Users } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, CheckCircle2, Users } from "lucide-react";
 import { lessonTypes as fallbackLessons } from "@/lib/lesson-content";
 import { getStories, getStory, storyblokLink } from "@/lib/storyblok";
 
