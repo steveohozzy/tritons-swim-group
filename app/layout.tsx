@@ -12,7 +12,6 @@ export async function generateMetadata(): Promise<Metadata> {
     description: settings.siteDescription || "Swimming lessons, session information and updates from Tritons Swim Group."
   };
 }
-
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const settings = (await getStory("site-settings"))?.content || {};
   return <html lang="en-GB"><body><SiteHeader settings={settings}/><main>{children}</main><SiteFooter settings={settings}/></body></html>;
