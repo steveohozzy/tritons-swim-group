@@ -9,8 +9,28 @@ export async function generateStaticParams() {
   const stories = await getStories("lessonType");
   return stories.length ? stories.map((story:any)=>({lesson:story.slug})) : fallbackLessons.map(lesson=>({lesson:lesson.slug}));
 }
+function normaliseLessonSlug(value:string) {
+  return decodeURIComponent(value)
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-|-$/g,"");
+}
+
 async function getLesson(slug:string) {
-  const story=await getStory(slug);
+  const lessonSlug=normaliseLessonSlug(slug);
+  let story=await getStory(lessonSlug);
+
+  // Accept a lesson title in the URL as well as its Storyblok slug.
+  // The canonical lesson URLs should always use the Storyblok slug.
+  if(!story) {
+    const stories=await getStories("lessonType");
+    story=stories.find((item:any)=>
+      item.slug===lessonSlug ||
+      normaliseLessonSlug(item.name||"")===lessonSlug ||
+      normaliseLessonSlug(item.content?.title||"")===lessonSlug
+    )||null;
+  }
   if(story?.content?.component==="lessonType") {
     const c=story.content;
     return {
@@ -32,7 +52,7 @@ async function getLesson(slug:string) {
       enquiryLink:storyblokLink(c.enquiryLink,"/contact")
     };
   }
-  const fallback=fallbackLessons.find(item=>item.slug===slug);
+  const fallback=fallbackLessons.find(item=>item.slug===lessonSlug);
   return fallback?{...fallback,ageRange:"",abilityLevel:"",focusHeading:"What we work on",focusTitle:"Skills grow one step at a time.",focusIntro:"Lessons are about building confidence as well as developing swimming skills.",suitableFor:"",nextStepsHeading:"",nextSteps:"",enquiryButtonText:"Ask us about this lesson",image:undefined,imageAlt:"",enquiryLink:"/contact"}:null;
 }
 export async function generateMetadata({params}:{params:Promise<{lesson:string}>}):Promise<Metadata>{
