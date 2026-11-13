@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { getStories, getStory } from "@/lib/storyblok";
+import { getStories } from "@/lib/storyblok";
 import { StoryblokBlocks } from "@/components/storyblok-blocks";
 
 type Props = { params: Promise<{ article: string }> };
@@ -11,20 +11,32 @@ function articleSlug(value: string) {
   return value.replace(/^news\//, "").replace(/^\/+|\/+$/g, "");
 }
 
+async function findArticle(article: string) {
+  const requestedSlug = articleSlug(article);
+  const stories = await getStories("newsArticle");
+  return stories.find((story: any) => {
+    const slug = String(story.slug || "").replace(/^\/+|\/+$/g, "");
+    const fullSlug = String(story.full_slug || "").replace(/^\/+|\/+$/g, "");
+    return slug === requestedSlug || fullSlug === `news/${requestedSlug}` || fullSlug.endsWith(`/${requestedSlug}`);
+  }) || null;
+}
+
 export async function generateStaticParams() {
   const articles = await getStories("newsArticle");
-  return articles.map((article: any) => ({ article: articleSlug(article.slug) }));
+  return articles.map((article: any) => ({
+    article: articleSlug(article.slug || article.full_slug || ""),
+  }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { article } = await params;
-  const story = await getStory(`news/${articleSlug(article)}`);
+  const story = await findArticle(article);
   return { title: story?.content?.title || "News | Tritons Swim Group" };
 }
 
 export default async function NewsArticlePage({ params }: Props) {
   const { article } = await params;
-  const story = await getStory(`news/${articleSlug(article)}`);
+  const story = await findArticle(article);
   if (!story || story.content?.component !== "newsArticle") notFound();
 
   const content = story.content;
