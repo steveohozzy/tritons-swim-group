@@ -4,7 +4,7 @@ const token = process.env.STORYBLOK_DELIVERY_API_TOKEN;
 const region = process.env.STORYBLOK_REGION || "eu";
 
 export const storyblokEnabled = Boolean(token);
-export const storyblokVersion = process.env.STORYBLOK_VERSION || (process.env.NODE_ENV === "production" ? "published" : "draft");
+export const storyblokVersion: ISbStoriesParams["version"] = process.env.STORYBLOK_VERSION === "draft" ? "draft" : process.env.NODE_ENV === "production" ? "published" : "draft";
 
 if (token) {
   storyblokInit({
