@@ -45,7 +45,7 @@ export default async function ContentPage({ params }: { params: Promise<{ slug: 
       )}
       {slug === "contact" ? (
         <section className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-[1.1fr_.9fr] lg:px-8">
-          <ContactForm />
+          <ContactForm recipient={siteSettings.contactEmail} />
           <aside className="self-start rounded-[2rem] bg-violet-50 p-7 sm:p-9">
             <span className="text-xs font-extrabold uppercase tracking-[.2em] text-violet-700">We’re here to help</span>
             <h2 className="mt-3 font-display text-3xl font-extrabold text-[#251047]">Get in touch with Tritons</h2>
