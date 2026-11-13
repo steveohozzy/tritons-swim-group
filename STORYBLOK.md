@@ -90,6 +90,7 @@ Create one story per album. Upload photos into `photos`; the homepage uses album
 - `publishedDate` — Date
 - `excerpt` — Textarea
 - `coverImage` — Asset
+- `imageCaption` — Text (optional caption displayed over the article cover image)
 - `body` — Richtext
 
 Create one story per article inside a `news` folder. Use a unique story slug for each article.
