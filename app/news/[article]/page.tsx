@@ -79,9 +79,11 @@ export default async function NewsArticlePage({ params }: Props) {
                 <div className="relative aspect-[5/4] overflow-hidden rounded-[1.8rem] bg-violet-900 shadow-2xl">
                   <img src={image} alt={content.coverImage?.alt || content.title || story.name} className="h-full w-full object-cover" />
                 </div>
-                <span className="absolute -bottom-5 -left-4 rounded-2xl bg-violet-300 px-5 py-3 text-xs font-extrabold uppercase tracking-[.16em] text-[#251047] shadow-xl sm:-left-7">
-                  Every swimmer. Every story.
-                </span>
+                {content.imageCaption?.trim() && (
+                  <span className="absolute -bottom-5 -left-4 rounded-2xl bg-violet-300 px-5 py-3 text-xs font-extrabold uppercase tracking-[.16em] text-[#251047] shadow-xl sm:-left-7">
+                    {content.imageCaption}
+                  </span>
+                )}
               </div>
             )}
           </div>
