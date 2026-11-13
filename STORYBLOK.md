@@ -10,6 +10,9 @@ Add to `.env.local`:
 STORYBLOK_DELIVERY_API_TOKEN=your_preview_token
 STORYBLOK_REGION=eu
 STORYBLOK_REVALIDATE_SECRET=your_long_random_secret
+RESEND_API_KEY=re_your_api_key
+RESEND_FROM_EMAIL=Tritons Swim Group <contact@your-verified-domain.co.uk>
+NEXT_PUBLIC_SITE_URL=https://tritons-swim-group.vercel.app
 # Optional: set STORYBLOK_VERSION=draft on Vercel Preview if you want preview deployments to show drafts
 ```
 
