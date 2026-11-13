@@ -133,7 +133,7 @@ Create these as nestable components, and allow them in `page.body`.
 
 ## Automatic publishing updates
 
-The production site uses the published Storyblok version. Local development defaults to drafts. Set `STORYBLOK_REVALIDATE_SECRET` in Vercel Production to a long random value.
+The production site uses the published Storyblok version. Local development defaults to drafts. Set `STORYBLOK_REVALIDATE_SECRET` in Vercel Production to the secret provided for the webhook setup. If you explicitly need draft content in a Vercel Preview deployment, set `STORYBLOK_VERSION=draft` for Preview only.
 
 In Storyblok, open **Settings → Webhooks → + New Webhook** and configure:
 
