@@ -47,6 +47,7 @@ Create one story per event. Events can be organised in an `events` folder.
 
 **timetableSession** (content type)
 - `sessionName` — Text
+- `description` — Textarea
 - `day` — Text
 - `startTime` — Text
 - `endTime` — Text
