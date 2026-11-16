@@ -745,3 +745,28 @@ header button:focus-visible {
   .site-hero-bubbles span:nth-child(n+5) { display: none; }
   .site-cta-bubbles { opacity: .12; }
 }
+
+
+/* Fine-tune bubble transparency without removing the underwater details. */
+.aqua-bubble-layer {
+  display: block;
+  opacity: .34;
+}
+.aqua-bubble-layer span {
+  border-color: rgba(83,105,157,.28);
+  box-shadow: inset -3px -4px 8px rgba(91,117,171,.08),0 0 12px rgba(92,119,174,.07);
+}
+.aqua-bubble-layer span:nth-child(n+15) { display: initial; }
+.site-hero-bubbles { opacity: .58; }
+.site-hero-bubbles span {
+  border-color: rgba(221,249,255,.38);
+  box-shadow: inset -4px -5px 10px rgba(101,188,233,.08),0 0 13px rgba(156,232,240,.09);
+}
+.site-cta-bubbles { opacity: .3; }
+@media (max-width: 767px) {
+  .aqua-bubble-layer { display: block; opacity: .3; }
+  .site-hero-bubbles { opacity: .58; }
+  .site-hero-bubbles span { border-color: rgba(230,252,255,.4); box-shadow: inset -4px -5px 9px rgba(101,188,233,.07),0 0 12px rgba(156,232,240,.08); }
+  .site-hero-bubbles span:nth-child(n+5) { display: initial; }
+  .site-cta-bubbles { opacity: .3; }
+}
