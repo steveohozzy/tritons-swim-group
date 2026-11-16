@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, CheckCircle2, Users } from "lucide-react";
 import { lessonTypes as fallbackLessons } from "@/lib/lesson-content";
+import { SiteHero } from "@/components/site-hero";
+import { SiteCTA } from "@/components/site-cta";
 import { getStories, getStory, storyblokLink } from "@/lib/storyblok";
 
 export async function generateStaticParams() {
@@ -98,69 +100,17 @@ export default async function LessonDetailPage({
 
   return (
     <main>
-      <section className="relative overflow-hidden bg-[#251047] text-white">
-        <div className="absolute -right-24 -top-36 h-96 w-96 rounded-full bg-violet-600/30 blur-3xl" />
-        <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-8 lg:px-8 lg:pb-24">
-          <nav aria-label="Breadcrumb" className="mb-12 flex flex-wrap gap-3 text-xs font-semibold text-white/55">
-            <Link href="/" className="transition hover:text-white">Home</Link>
-            <span>/</span>
-            <Link href="/lessons" className="transition hover:text-white">Lessons</Link>
-            <span>/</span>
-            <span aria-current="page" className="text-white/85">{lesson.title}</span>
-          </nav>
-
-          <div className={lesson.image ? "grid items-center gap-12 lg:grid-cols-[1.05fr_.95fr] lg:gap-16" : "max-w-3xl"}>
-            <div>
-              {lesson.eyebrow && (
-                <p className="text-xs font-extrabold uppercase tracking-[.2em] text-violet-200">
-                  {lesson.eyebrow}
-                </p>
-              )}
-              <h1 className="mt-4 font-display text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
-                {lesson.title}
-              </h1>
-              {lesson.intro && (
-                <p className="mt-6 max-w-2xl text-lg leading-8 text-white/75">
-                  {lesson.intro}
-                </p>
-              )}
-
-              {(lesson.ageRange || lesson.abilityLevel) && (
-                <div className="mt-7 flex flex-wrap gap-3">
-                  {lesson.ageRange && (
-                    <span className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90">
-                      {lesson.ageRange}
-                    </span>
-                  )}
-                  {lesson.abilityLevel && (
-                    <span className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90">
-                      {lesson.abilityLevel}
-                    </span>
-                  )}
-                </div>
-              )}
-
-              <Link
-                href="/lessons"
-                className="mt-9 inline-flex items-center gap-2 text-sm font-bold text-violet-200 transition hover:text-white"
-              >
-                <ArrowLeft size={16} /> Back to all lessons
-              </Link>
-            </div>
-
-            {lesson.image && (
-              <div className="relative">
-                <div className="absolute -inset-3 rounded-[2rem] bg-violet-400/15 blur-xl" />
-                <img
-                  src={lesson.image}
-                  alt={lesson.imageAlt || ""}
-                  className="relative aspect-[4/3] max-h-[470px] w-full rounded-[1.75rem] object-cover shadow-2xl"
-                />
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
+      <SiteHero
+        eyebrow={lesson.eyebrow}
+        title={lesson.title}
+        intro={lesson.intro}
+        image={lesson.image}
+        imageAlt={lesson.imageAlt}
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "Lessons", href: "/lessons" }, { label: lesson.title }]}
+      >
+        {(lesson.ageRange || lesson.abilityLevel) && <span className="site-hero-pill">{[lesson.ageRange, lesson.abilityLevel].filter(Boolean).join(" · ")}</span>}
+        <Link href="/lessons" className="site-hero-secondary-button"><ArrowLeft size={16}/> Back to all lessons</Link>
+      </SiteHero>
 
       <section className="mx-auto grid max-w-7xl items-start gap-12 px-5 py-16 lg:grid-cols-[1.1fr_.9fr] lg:gap-20 lg:px-8 lg:py-20">
         <div>
@@ -228,24 +178,7 @@ export default async function LessonDetailPage({
             </section>
           )}
 
-          <section className="rounded-3xl bg-[#251047] p-7 text-white shadow-lg sm:p-9">
-            <p className="text-xs font-extrabold uppercase tracking-[.2em] text-violet-200">
-              TAKE THE NEXT STEP
-            </p>
-            <h2 className="mt-3 font-display text-2xl font-extrabold">
-              Interested in {lesson.title}?
-            </h2>
-            <p className="mt-4 leading-7 text-white/70">
-              Have a question or want to find out whether this lesson is right for you? Get in touch with the Tritons team.
-            </p>
-            <Link
-              href={lesson.enquiryLink || "/contact"}
-              className="mt-7 inline-flex items-center gap-2 rounded-full bg-violet-300 px-6 py-3.5 font-bold text-[#251047] transition hover:bg-white"
-            >
-              {lesson.enquiryButtonText}
-              <ArrowUpRight size={16} />
-            </Link>
-          </section>
+          <SiteCTA compact eyebrow="TAKE THE NEXT STEP" title={`Interested in ${lesson.title}?`} text="Have a question or want to find out whether this lesson is right for you? Get in touch with the Tritons team." buttonText={lesson.enquiryButtonText} href={lesson.enquiryLink || "/contact"}/>
         </aside>
       </section>
     </main>
