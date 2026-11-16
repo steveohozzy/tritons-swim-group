@@ -65,12 +65,12 @@ export default async function NewsArticlePage({ params }: Props) {
         <Link href="/news" className="site-hero-secondary-button"><ArrowLeft size={16}/> All news</Link>
       </SiteHero>
 
-      <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-[minmax(0,1fr)_17rem] lg:gap-16 lg:px-8 lg:py-20">
-        <article className="min-w-0 overflow-hidden rounded-[2rem] border border-violet-100/80 bg-white shadow-[0_18px_60px_rgba(37,16,71,0.06)]">
+      <div className="mx-auto grid max-w-7xl gap-8 px-5 py-12 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-12 lg:px-8 lg:py-16">
+        <article className="min-w-0 overflow-hidden article-story-card min-w-0 overflow-hidden rounded-[2rem] border border-violet-100/80 bg-white shadow-[0_18px_60px_rgba(37,16,71,0.06)]">
           <div className="border-b border-violet-100 px-7 py-5 sm:px-10">
             <p className="text-xs font-extrabold uppercase tracking-[.2em] text-violet-700">The story</p>
           </div>
-          <div className="[&>section]:!py-8 [&>section]:!px-0 [&>section>div]:!max-w-none [&>section>div]:!px-7 sm:[&>section>div]:!px-10 [&_p]:text-[1.05rem] [&_p]:leading-9 [&_h2]:mt-10 [&_h2]:text-2xl [&_h3]:mt-8">
+          <div className="article-rich-content">
             {content.body
               ? <StoryblokBlocks blok={{ _uid: story.uuid, component: "richTextSection", title: "", body: content.body }} />
               : <p className="px-7 py-10 leading-8 text-[#777487] sm:px-10">More details about this update will be added soon.</p>}
@@ -86,7 +86,7 @@ export default async function NewsArticlePage({ params }: Props) {
           </div>
         </article>
 
-        <aside className="h-fit lg:sticky lg:top-8">
+        <aside className="article-sidebar min-w-0 h-fit lg:sticky lg:top-8">
           <SiteCTA compact eyebrow="STAY CONNECTED" title="Be part of the Tritons story." text="From first lengths to new milestones, there's a place for you in our swimming community." buttonText="Get in touch" href="/contact"/>
           <Link href="/news" className="mt-5 flex items-center justify-between rounded-2xl border border-violet-100 bg-white px-5 py-4 text-sm font-bold text-[#54227f] transition hover:border-violet-300 hover:bg-violet-50">
             <span className="flex items-center gap-2"><ArrowLeft size={16}/> More news and updates</span>
