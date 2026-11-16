@@ -16,8 +16,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const story = await getStory(slug);
   return { title: story?.content?.title || pageContent[slug]?.title || slug.replaceAll("-", " ") };
 }
-export default async function ContentPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function ContentPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ subject?: string; message?: string }> }) {
+  const [{ slug }, query] = await Promise.all([params, searchParams]);
   const story = await getStory(slug);
   const siteSettings = slug === "contact" ? (await getStory("site-settings"))?.content || {} : {};
   const fallback = pageContent[slug];
@@ -42,7 +42,7 @@ export default async function ContentPage({ params }: { params: Promise<{ slug: 
       )}
       {slug === "contact" ? (
         <section className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-[1.1fr_.9fr] lg:px-8">
-          <ContactForm recipient={siteSettings.contactEmail} />
+          <ContactForm recipient={siteSettings.contactEmail} initialSubject={query.subject} initialMessage={query.message} />
           <aside className="self-start rounded-[2rem] bg-violet-50 p-7 sm:p-9">
             <span className="text-xs font-extrabold uppercase tracking-[.2em] text-violet-700">We’re here to help</span>
             <h2 className="mt-3 font-display text-3xl font-extrabold text-[#251047]">Get in touch with Tritons</h2>
