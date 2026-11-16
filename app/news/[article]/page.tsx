@@ -6,6 +6,7 @@ import { getStories } from "@/lib/storyblok";
 import { StoryblokBlocks } from "@/components/storyblok-blocks";
 import { SiteHero } from "@/components/site-hero";
 import { SiteCTA } from "@/components/site-cta";
+import { demoNewsArticles } from "@/lib/demo-content";
 
 type Props = { params: Promise<{ article: string }> };
 
@@ -16,16 +17,18 @@ function articleSlug(value: string) {
 async function findArticle(article: string) {
   const requestedSlug = articleSlug(article);
   const stories = await getStories("newsArticle");
-  return stories.find((story: any) => {
+  const found = stories.find((story: any) => {
     const slug = String(story.slug || "").replace(/^\/+|\/+$/g, "");
     const fullSlug = String(story.full_slug || "").replace(/^\/+|\/+$/g, "");
     return slug === requestedSlug || fullSlug === `news/${requestedSlug}` || fullSlug.endsWith(`/${requestedSlug}`);
-  }) || null;
+  });
+  return found || demoNewsArticles.find((item: any) => item.slug === requestedSlug || item.full_slug === `news/${requestedSlug}`) || null;
 }
 
 export async function generateStaticParams() {
   const articles = await getStories("newsArticle");
-  return articles.map((article: any) => ({
+  const all = [...articles, ...demoNewsArticles.filter((demo: any) => !articles.some((item: any) => item.slug === demo.slug || item.full_slug === demo.full_slug))];
+  return all.map((article: any) => ({
     article: articleSlug(article.slug || article.full_slug || ""),
   }));
 }
@@ -72,7 +75,7 @@ export default async function NewsArticlePage({ params }: Props) {
           </div>
           <div className="article-rich-content">
             {content.body
-              ? <StoryblokBlocks blok={{ _uid: story.uuid, component: "richTextSection", title: "", body: content.body }} />
+              ? <StoryblokBlocks blok={{ _uid: story.uuid || story.id, component: "richTextSection", title: "", body: content.body }} />
               : <p className="px-7 py-10 leading-8 text-[#777487] sm:px-10">More details about this update will be added soon.</p>}
           </div>
           <div className="mx-7 mb-7 rounded-2xl bg-[#f5f0fc] p-6 sm:mx-10 sm:mb-10 sm:p-8">
