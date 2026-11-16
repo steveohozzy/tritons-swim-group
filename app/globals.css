@@ -429,3 +429,142 @@ header button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   main::before { animation: none; }
 }
+
+
+/* Shared Tritons hero: the same underwater atmosphere on every route. */
+.site-hero {
+  isolation:isolate;
+  background:radial-gradient(ellipse at 12% 18%,rgba(151,103,207,.66),transparent 48%),radial-gradient(ellipse at 88% 78%,rgba(40,153,181,.64),transparent 50%),linear-gradient(118deg,#30204f 0%,#49306d 43%,#286b83 100%);
+  background-size:130% 130%,130% 130%,100% 100%;
+  animation:aqua-current 24s ease-in-out infinite;
+}
+.site-hero::after {
+  content:"";position:absolute;z-index:1;pointer-events:none;left:-10%;right:-10%;bottom:-100px;height:170px;border-radius:50% 50% 0 0;
+  background:linear-gradient(180deg,rgba(156,232,240,.24),transparent);filter:blur(12px);animation:aqua-swell 14s ease-in-out infinite;
+}
+.site-hero-bubbles {position:absolute;z-index:2;inset:0;overflow:hidden;pointer-events:none;opacity:.92}
+.site-hero-bubbles span {
+  position:absolute;bottom:-150px;left:var(--hero-bubble-x);width:var(--hero-bubble-size);height:var(--hero-bubble-size);
+  border:1.5px solid rgba(221,249,255,.56);border-radius:50%;
+  background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.62),rgba(156,232,240,.17) 34%,rgba(101,188,233,.035) 72%,transparent);
+  box-shadow:inset -7px -8px 16px rgba(101,188,233,.12),0 0 24px rgba(156,232,240,.18);
+  animation:hero-bubble-float var(--hero-bubble-speed) ease-in-out infinite;animation-delay:var(--hero-bubble-delay);
+}
+.site-hero-bubbles span:nth-child(1) {--hero-bubble-x:4%;--hero-bubble-size:74px;--hero-bubble-speed:17s;--hero-bubble-delay:-4s}
+.site-hero-bubbles span:nth-child(2) {--hero-bubble-x:16%;--hero-bubble-size:30px;--hero-bubble-speed:13s;--hero-bubble-delay:-8s}
+.site-hero-bubbles span:nth-child(3) {--hero-bubble-x:27%;--hero-bubble-size:112px;--hero-bubble-speed:22s;--hero-bubble-delay:-12s}
+.site-hero-bubbles span:nth-child(4) {--hero-bubble-x:39%;--hero-bubble-size:42px;--hero-bubble-speed:15s;--hero-bubble-delay:-2s}
+.site-hero-bubbles span:nth-child(5) {--hero-bubble-x:51%;--hero-bubble-size:88px;--hero-bubble-speed:19s;--hero-bubble-delay:-10s}
+.site-hero-bubbles span:nth-child(6) {--hero-bubble-x:63%;--hero-bubble-size:24px;--hero-bubble-speed:12s;--hero-bubble-delay:-6s}
+.site-hero-bubbles span:nth-child(7) {--hero-bubble-x:73%;--hero-bubble-size:126px;--hero-bubble-speed:23s;--hero-bubble-delay:-15s}
+.site-hero-bubbles span:nth-child(8) {--hero-bubble-x:85%;--hero-bubble-size:54px;--hero-bubble-speed:16s;--hero-bubble-delay:-9s}
+.site-hero-bubbles span:nth-child(9) {--hero-bubble-x:94%;--hero-bubble-size:34px;--hero-bubble-speed:14s;--hero-bubble-delay:-3s}
+.site-hero-bubbles span:nth-child(10) {--hero-bubble-x:9%;--hero-bubble-size:48px;--hero-bubble-speed:18s;--hero-bubble-delay:-13s}
+.site-hero-bubbles span:nth-child(11) {--hero-bubble-x:58%;--hero-bubble-size:64px;--hero-bubble-speed:20s;--hero-bubble-delay:-7s}
+.site-hero-bubbles span:nth-child(12) {--hero-bubble-x:80%;--hero-bubble-size:22px;--hero-bubble-speed:11s;--hero-bubble-delay:-5s}
+@keyframes hero-bubble-float {
+  0% {transform:translate3d(0,0,0) scale(.72);opacity:0}
+  15% {opacity:.8}
+  50% {transform:translate3d(28px,-230px,0) scale(1.08);opacity:.75}
+  100% {transform:translate3d(-20px,-620px,0) scale(1.18);opacity:0}
+}
+.site-hero-glow {position:absolute;z-index:1;width:clamp(15rem,38vw,34rem);aspect-ratio:1;border-radius:50%;pointer-events:none;filter:blur(45px);opacity:.34;animation:aqua-drift 11s ease-in-out infinite}
+.site-hero-glow-one {right:-12%;top:-38%;background:#a78bfa}
+.site-hero-glow-two {left:-16%;bottom:-55%;background:#67d7e9;animation-delay:-5s}
+.site-hero-inner {position:relative;z-index:3}
+.site-hero h1 {color:#fff;text-wrap:balance;text-shadow:0 3px 24px rgba(18,12,38,.24)}
+.site-hero-copy p {color:rgba(255,255,255,.88)}
+.site-hero-image-wrap {z-index:3}
+.site-hero-image-halo {position:absolute;inset:-7%;border:1px solid rgba(255,255,255,.22);border-radius:2.8rem;background:linear-gradient(135deg,rgba(196,181,253,.18),rgba(103,211,231,.12));transform:rotate(3deg);animation:aqua-drift 9s ease-in-out infinite}
+.site-hero-art {width:100%}
+.site-hero-orbit {position:absolute;width:clamp(13rem,28vw,25rem);aspect-ratio:1;border:1px solid rgba(224,250,255,.34);border-radius:50%;box-shadow:0 0 40px rgba(156,232,240,.08),inset 0 0 35px rgba(156,232,240,.05);animation:aqua-orbit 22s linear infinite}
+.site-hero-orbit-two {width:clamp(10rem,22vw,19rem);animation-duration:17s;animation-direction:reverse}
+.site-hero-orbit-three {width:clamp(7rem,16vw,14rem);border-style:dashed;animation-duration:13s}
+@keyframes aqua-orbit {to{transform:rotate(360deg)}}
+.site-hero-primary-button,.site-cta-button {display:inline-flex;align-items:center;justify-content:center;gap:.65rem;min-height:3.15rem;border-radius:9999px;background:linear-gradient(110deg,#d8c7ff,#9ce8f0);padding:.85rem 1.5rem;color:#251047;font-size:.9rem;font-weight:800;box-shadow:0 10px 28px rgba(10,8,35,.2);transition:transform .25s ease,box-shadow .25s ease,filter .25s ease}
+.site-hero-primary-button:hover,.site-cta-button:hover {transform:translateY(-3px);filter:brightness(1.06);box-shadow:0 15px 34px rgba(10,8,35,.27)}
+.site-hero-secondary-button {display:inline-flex;align-items:center;justify-content:center;gap:.6rem;min-height:3.15rem;border:1px solid rgba(255,255,255,.42);border-radius:9999px;background:rgba(255,255,255,.08);padding:.8rem 1.35rem;color:#fff;font-size:.9rem;font-weight:750;backdrop-filter:blur(8px);transition:background .25s ease,border-color .25s ease,transform .25s ease}
+.site-hero-secondary-button:hover {transform:translateY(-2px);background:rgba(255,255,255,.17);border-color:rgba(255,255,255,.72)}
+.site-hero-pill {display:inline-flex;align-items:center;gap:.55rem;border:1px solid rgba(255,255,255,.24);border-radius:9999px;background:rgba(255,255,255,.1);padding:.65rem 1rem;color:rgba(255,255,255,.94);font-size:.85rem;font-weight:700;backdrop-filter:blur(8px)}
+
+/* One consistent closing CTA, reused by Storyblok and detail pages. */
+.site-cta {position:relative;isolation:isolate;overflow:hidden;border-radius:2rem;background:linear-gradient(115deg,#30204f,#542b7b 55%,#286b83);padding:2.25rem;box-shadow:0 24px 65px rgba(50,22,83,.2)}
+.site-cta-compact {margin:0;max-width:none;padding:1.8rem}
+.site-cta-content {position:relative;z-index:2;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:1.8rem}
+.site-cta-bubbles {position:absolute;inset:0;overflow:hidden;pointer-events:none;opacity:.65}
+.site-cta-bubbles span {position:absolute;bottom:-70px;width:var(--cta-size,70px);height:var(--cta-size,70px);left:var(--cta-x,20%);border:1px solid rgba(255,255,255,.24);border-radius:50%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.24),rgba(156,232,240,.04) 60%,transparent);animation:hero-bubble-float 13s ease-in-out infinite;animation-delay:var(--cta-delay,0s)}
+.site-cta-bubbles span:nth-child(1){--cta-x:12%;--cta-size:70px;--cta-delay:-4s}
+.site-cta-bubbles span:nth-child(2){--cta-x:43%;--cta-size:115px;--cta-delay:-9s}
+.site-cta-bubbles span:nth-child(3){--cta-x:72%;--cta-size:54px;--cta-delay:-6s}
+.site-cta-bubbles span:nth-child(4){--cta-x:91%;--cta-size:88px;--cta-delay:-12s}
+.site-cta-button {flex-shrink:0;background:#d8c7ff}
+.site-cta a:focus-visible,.site-hero a:focus-visible {outline:3px solid #9ce8f0;outline-offset:4px}
+@media (min-width:768px) {.site-cta{padding:3.25rem 3.5rem}.site-cta-content{flex-direction:row;align-items:center}.site-cta-compact{padding:2rem}}
+@media (max-width:767px) {
+  .site-hero {background-size:170% 150%,170% 150%,100% 100%}
+  .site-hero-bubbles {opacity:1}
+  .site-hero-bubbles span {border-color:rgba(230,252,255,.72);box-shadow:inset -5px -6px 12px rgba(101,188,233,.16),0 0 20px rgba(156,232,240,.24)}
+  .site-hero-art {display:none}
+  .site-hero-image-wrap {margin-top:1.5rem}
+  .site-cta {margin-inline:1.25rem;padding:2rem 1.5rem}
+  .site-cta-compact {margin:0;padding:1.6rem}
+  .site-cta-button {width:100%}
+}
+@media (prefers-reduced-motion:reduce) {
+  .site-hero,.site-hero-bubbles span,.site-hero-glow,.site-hero-image-halo,.site-hero-orbit,.site-cta-bubbles span {animation:none!important}
+  .site-hero-bubbles span {opacity:.5}
+  .site-hero-primary-button,.site-hero-secondary-button,.site-cta-button {transition:none}
+}
+
+/* Larger floating bubbles form a continuous decorative parallax layer over every route. */
+.aqua-bubble-layer {z-index:2;opacity:.62;mix-blend-mode:screen;background:radial-gradient(ellipse at 12% 30%,rgba(101,188,233,.11),transparent 34%),radial-gradient(ellipse at 88% 72%,rgba(156,232,240,.14),transparent 38%)}
+.aqua-bubble-layer span {border-color:rgba(122,195,224,.42);box-shadow:inset -4px -5px 10px rgba(101,188,233,.12),0 0 20px rgba(101,188,233,.12)}
+.aqua-bubble-layer span:nth-child(1) {--bubble-x:2%;--bubble-size:34px;--bubble-speed:27s}
+.aqua-bubble-layer span:nth-child(2) {--bubble-x:8%;--bubble-size:72px;--bubble-speed:38s}
+.aqua-bubble-layer span:nth-child(3) {--bubble-x:15%;--bubble-size:22px}
+.aqua-bubble-layer span:nth-child(4) {--bubble-x:22%;--bubble-size:48px}
+.aqua-bubble-layer span:nth-child(5) {--bubble-x:29%;--bubble-size:86px;--bubble-speed:40s}
+.aqua-bubble-layer span:nth-child(6) {--bubble-x:36%;--bubble-size:28px}
+.aqua-bubble-layer span:nth-child(7) {--bubble-x:43%;--bubble-size:60px}
+.aqua-bubble-layer span:nth-child(8) {--bubble-x:50%;--bubble-size:18px}
+.aqua-bubble-layer span:nth-child(9) {--bubble-x:57%;--bubble-size:94px;--bubble-speed:42s}
+.aqua-bubble-layer span:nth-child(10) {--bubble-x:64%;--bubble-size:36px}
+.aqua-bubble-layer span:nth-child(11) {--bubble-x:71%;--bubble-size:68px}
+.aqua-bubble-layer span:nth-child(12) {--bubble-x:78%;--bubble-size:24px}
+.aqua-bubble-layer span:nth-child(13) {--bubble-x:85%;--bubble-size:82px;--bubble-speed:39s}
+.aqua-bubble-layer span:nth-child(14) {--bubble-x:92%;--bubble-size:44px}
+.aqua-bubble-layer span:nth-child(15) {--bubble-x:5%;--bubble-size:58px;--bubble-speed:35s;--bubble-delay:-17s}
+.aqua-bubble-layer span:nth-child(16) {--bubble-x:19%;--bubble-size:30px;--bubble-delay:-21s}
+.aqua-bubble-layer span:nth-child(17) {--bubble-x:33%;--bubble-size:76px;--bubble-delay:-11s}
+.aqua-bubble-layer span:nth-child(18) {--bubble-x:47%;--bubble-size:42px;--bubble-delay:-26s}
+.aqua-bubble-layer span:nth-child(19) {--bubble-x:61%;--bubble-size:56px;--bubble-delay:-14s}
+.aqua-bubble-layer span:nth-child(20) {--bubble-x:75%;--bubble-size:32px;--bubble-delay:-23s}
+.aqua-bubble-layer span:nth-child(21) {--bubble-x:89%;--bubble-size:70px;--bubble-delay:-19s}
+.aqua-bubble-layer span:nth-child(22) {--bubble-x:97%;--bubble-size:20px;--bubble-delay:-7s}
+.aqua-bubble-layer span:nth-child(23) {--bubble-x:26%;--bubble-size:40px;--bubble-delay:-31s}
+.aqua-bubble-layer span:nth-child(24) {--bubble-x:68%;--bubble-size:26px;--bubble-delay:-29s}
+.aqua-bubble-layer span:nth-child(25) {--bubble-x:39%;--bubble-size:64px;--bubble-delay:-34s}
+.aqua-bubble-layer span:nth-child(26) {--bubble-x:82%;--bubble-size:52px;--bubble-delay:-24s}
+.aqua-bubble-layer span:nth-child(27) {--bubble-x:11%;--bubble-size:18px;--bubble-delay:-13s}
+.aqua-bubble-layer span:nth-child(28) {--bubble-x:54%;--bubble-size:46px;--bubble-delay:-18s}
+.aqua-bubble-layer span {animation-duration:var(--bubble-speed,32s);animation-delay:var(--bubble-delay,-8s)}
+@keyframes aqua-bubble-rise {
+  0% {transform:translate3d(0,0,0) scale(.72);opacity:0}
+  12% {opacity:.85}
+  55% {transform:translate3d(42px,-60vh,0) scale(1.08)}
+  88% {opacity:.6}
+  100% {transform:translate3d(-28px,-120vh,0) scale(1.2);opacity:0}
+}
+
+/* Stagger every card and media item in a section, not just the first six. */
+.aqua-reveal.is-visible .aqua-item:nth-child(1) {transition-delay:0s}
+.aqua-reveal.is-visible .aqua-item:nth-child(2) {transition-delay:.1s}
+.aqua-reveal.is-visible .aqua-item:nth-child(3) {transition-delay:.2s}
+.aqua-reveal.is-visible .aqua-item:nth-child(4) {transition-delay:.3s}
+.aqua-reveal.is-visible .aqua-item:nth-child(5) {transition-delay:.4s}
+.aqua-reveal.is-visible .aqua-item:nth-child(6) {transition-delay:.5s}
+.aqua-reveal.is-visible .aqua-item:nth-child(7) {transition-delay:.6s}
+.aqua-reveal.is-visible .aqua-item:nth-child(8) {transition-delay:.7s}
+.aqua-reveal.is-visible .aqua-item:nth-child(9) {transition-delay:.8s}
+.aqua-reveal.is-visible .aqua-item:nth-child(10) {transition-delay:.9s}
+@media (max-width:767px) {.aqua-bubble-layer{opacity:.48}.aqua-bubble-layer span{border-color:rgba(122,195,224,.52)}}
