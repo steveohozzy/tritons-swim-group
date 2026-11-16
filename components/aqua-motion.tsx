@@ -33,17 +33,21 @@ export function AquaMotion({ children }: { children: React.ReactNode }) {
 
         if (section.children.length > 1) {
           Array.from(section.children).forEach((child) => {
-            if (child instanceof HTMLElement && child.tagName === "DIV") {
+            if (child instanceof HTMLElement && child.tagName === "DIV" && !child.hasAttribute("data-aqua-decorative")) {
               child.classList.add("aqua-item");
             }
           });
         }
 
+        section.querySelectorAll<HTMLElement>(".site-hero-copy, .site-hero-image-wrap, .site-hero-art, .site-hero-actions, .site-cta-content > *").forEach((item) => {
+          item.classList.add("aqua-item");
+        });
+
         section.querySelectorAll<HTMLElement>("article").forEach((item) => {
           item.classList.add("aqua-item");
         });
 
-        if (!isHero) {
+        if (!section.classList.contains("site-hero")) {
           section.querySelectorAll<HTMLElement>("img").forEach((image) => {
             image.classList.add("aqua-media");
           });
@@ -70,7 +74,7 @@ export function AquaMotion({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="aqua-bubble-layer" aria-hidden="true">
-        {Array.from({ length: 14 }, (_, index) => <span key={index} />)}
+        {Array.from({ length: 28 }, (_, index) => <span key={index} />)}
       </div>
       {children}
     </>
