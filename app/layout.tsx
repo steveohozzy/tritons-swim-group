@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { AquaMotion } from "@/components/aqua-motion";
 import { getStory } from "@/lib/storyblok";
 import "./globals.css";
 
@@ -14,5 +15,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const settings = (await getStory("site-settings"))?.content || {};
-  return <html lang="en-GB"><body><SiteHeader settings={settings}/><main>{children}</main><SiteFooter settings={settings}/></body></html>;
+  return <html lang="en-GB"><body><SiteHeader settings={settings}/><main><AquaMotion>{children}</AquaMotion></main><SiteFooter settings={settings}/></body></html>;
 }
