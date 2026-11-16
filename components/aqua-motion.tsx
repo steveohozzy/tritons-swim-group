@@ -27,7 +27,8 @@ export function AquaMotion({ children }: { children: React.ReactNode }) {
         section.dataset.aquaReady = "true";
         section.classList.add("aqua-reveal");
 
-        const heading = section.querySelector<HTMLElement>("h1, h2");
+        const isHero = section === root.querySelector("#top > section:first-child");
+        const heading = isHero ? null : section.querySelector<HTMLElement>("h1, h2");
         heading?.classList.add("aqua-heading");
 
         if (section.children.length > 1) {
@@ -42,7 +43,7 @@ export function AquaMotion({ children }: { children: React.ReactNode }) {
           item.classList.add("aqua-item");
         });
 
-        if (section !== root.querySelector("#top > section:first-child")) {
+        if (!isHero) {
           section.querySelectorAll<HTMLElement>("img").forEach((image) => {
             image.classList.add("aqua-media");
           });
