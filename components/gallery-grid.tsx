@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -10,6 +10,8 @@ export function GalleryGrid({groups}:{groups:Album[]}) {
  const [activeAlbum,setActiveAlbum]=useState("all");
  const [activeIndex,setActiveIndex]=useState<number|null>(null);
  const [portalRoot,setPortalRoot]=useState<HTMLElement|null>(null);
+ const touchStartX=useRef<number|null>(null);
+ const touchStartY=useRef<number|null>(null);
  useEffect(()=>{setPortalRoot(document.documentElement);},[]);
  const visibleGroups=useMemo(()=>activeAlbum==="all"?groups:groups.filter(group=>group.id===activeAlbum),[activeAlbum,groups]);
  const visiblePhotos=useMemo(()=>visibleGroups.flatMap(group=>group.photos),[visibleGroups]);
@@ -25,6 +27,8 @@ export function GalleryGrid({groups}:{groups:Album[]}) {
   return ()=>{document.body.style.overflow=previousBodyOverflow;document.documentElement.style.overflow=previousRootOverflow;document.removeEventListener("keydown",closeOnEscape);};
  },[activeIndex]);
  function move(direction:number){if(activeIndex===null||!visiblePhotos.length)return;setActiveIndex((activeIndex+direction+visiblePhotos.length)%visiblePhotos.length);}
+ function handleTouchStart(event:React.TouchEvent<HTMLElement>){const touch=event.changedTouches[0];touchStartX.current=touch?.clientX??null;touchStartY.current=touch?.clientY??null;}
+ function handleTouchEnd(event:React.TouchEvent<HTMLElement>){const touch=event.changedTouches[0];const startX=touchStartX.current;const startY=touchStartY.current;touchStartX.current=null;touchStartY.current=null;if(startX===null||startY===null||!touch)return;const deltaX=touch.clientX-startX;const deltaY=touch.clientY-startY;if(Math.abs(deltaX)>50&&Math.abs(deltaX)>Math.abs(deltaY)*1.2)move(deltaX<0?1:-1);}
  return <>
   <div className="mb-10 flex flex-wrap gap-2" aria-label="Filter gallery by album">
    <button type="button" onClick={()=>{setActiveAlbum("all");setActiveIndex(null);}} aria-pressed={activeAlbum==="all"} className={`rounded-full px-5 py-2.5 text-sm font-bold transition ${activeAlbum==="all"?"bg-[#251047] text-white":"border border-violet-200 bg-white text-[#51466a] hover:border-violet-400 hover:text-violet-800"}`}>All photos</button>
@@ -36,6 +40,6 @@ export function GalleryGrid({groups}:{groups:Album[]}) {
     <div className="grid auto-rows-[190px] grid-cols-2 gap-3 sm:auto-rows-[240px] sm:gap-5 md:grid-cols-3">{group.photos.map(photo=>{const index=visiblePhotos.findIndex(item=>item.id===photo.id);return <button type="button" key={photo.id} onClick={()=>setActiveIndex(index)} aria-label={`Open photo from ${group.title}`} className="group relative overflow-hidden rounded-2xl bg-violet-100 text-left"><img src={photo.src} alt={photo.alt} className="h-full w-full object-cover transition duration-500 group-hover:scale-105"/><span className="absolute inset-0 bg-[#251047]/0 transition group-hover:bg-[#251047]/10"/></button>;})}</div>
    </section>)}
   </div>
-  {active&&portalRoot&&createPortal(<div className="fixed left-0 top-0 z-[2147483000] flex h-[100dvh] w-screen items-center justify-center overflow-hidden bg-[#160b27]/[.97] p-4" style={{position:"fixed",inset:0,width:"100vw",height:"100dvh",zIndex:2147483000}} role="dialog" aria-modal="true" aria-label="Gallery image" onClick={()=>setActiveIndex(null)}><button type="button" onClick={(event)=>{event.stopPropagation();setActiveIndex(null);}} aria-label="Close image" className="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white/15 text-white"><X size={22}/></button>{visiblePhotos.length>1&&<button type="button" onClick={(event)=>{event.stopPropagation();move(-1);}} aria-label="Previous image" className="absolute left-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white sm:left-6"><ChevronLeft size={25}/></button>}<figure className="flex max-h-full max-w-6xl flex-col items-center" onClick={(event)=>event.stopPropagation()}><img src={active.src} alt={active.alt} className="max-h-[82dvh] max-w-[calc(100vw-2rem)] rounded-xl object-contain sm:max-w-[calc(100vw-8rem)]"/><figcaption className="mt-4 text-center text-sm font-semibold text-white">{active.album}</figcaption></figure>{visiblePhotos.length>1&&<button type="button" onClick={(event)=>{event.stopPropagation();move(1);}} aria-label="Next image" className="absolute right-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white sm:right-6"><ChevronRight size={25}/></button>}</div>,document.body)}
+  {active&&portalRoot&&createPortal(<div className="fixed left-0 top-0 z-[2147483000] flex h-[100dvh] w-screen items-center justify-center overflow-hidden bg-[#160b27]/[.97] p-4" style={{position:"fixed",inset:0,width:"100vw",height:"100dvh",zIndex:2147483000}} role="dialog" aria-modal="true" aria-label="Gallery image" onClick={()=>setActiveIndex(null)}><button type="button" onClick={(event)=>{event.stopPropagation();setActiveIndex(null);}} aria-label="Close image" className="absolute right-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white/15 text-white"><X size={22}/></button>{visiblePhotos.length>1&&<button type="button" onClick={(event)=>{event.stopPropagation();move(-1);}} aria-label="Previous image" className="absolute left-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white sm:left-6"><ChevronLeft size={25}/></button>}<figure className="flex max-h-full max-w-6xl touch-pan-y select-none flex-col items-center" onClick={(event)=>event.stopPropagation()} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd} onTouchCancel={()=>{touchStartX.current=null;touchStartY.current=null;}}><img src={active.src} alt={active.alt} className="max-h-[82dvh] max-w-[calc(100vw-2rem)] rounded-xl object-contain sm:max-w-[calc(100vw-8rem)]"/><figcaption className="mt-4 text-center text-sm font-semibold text-white">{active.album}</figcaption></figure>{visiblePhotos.length>1&&<button type="button" onClick={(event)=>{event.stopPropagation();move(1);}} aria-label="Next image" className="absolute right-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-white sm:right-6"><ChevronRight size={25}/></button>}</div>,document.body)}
  </>;
 }
