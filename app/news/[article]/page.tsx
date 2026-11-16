@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, CalendarDays, Sparkles } from "lucide-react";
 import { getStories } from "@/lib/storyblok";
 import { StoryblokBlocks } from "@/components/storyblok-blocks";
+import { SiteHero } from "@/components/site-hero";
 
 type Props = { params: Promise<{ article: string }> };
 
@@ -50,45 +51,18 @@ export default async function NewsArticlePage({ params }: Props) {
 
   return (
     <main className="bg-[#faf9fd]">
-      <section className="relative isolate overflow-hidden bg-[#251047] text-white">
-        <div className="pointer-events-none absolute -right-32 -top-40 h-[34rem] w-[34rem] rounded-full bg-violet-600/30 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-48 -left-32 h-[28rem] w-[28rem] rounded-full border-[50px] border-violet-300/10" />
-        <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-8 lg:px-8 lg:pb-24 lg:pt-10">
-          <Link href="/news" className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2.5 text-sm font-semibold text-violet-100 transition hover:bg-white/10 hover:text-white">
-            <ArrowLeft size={16} /> All news
-          </Link>
-          <div className={`mt-10 grid items-center gap-10 lg:mt-14 ${image ? "lg:grid-cols-[1fr_.9fr]" : "max-w-4xl"}`}>
-            <div className="relative z-10">
-              <span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[.24em] text-violet-200">
-                <Sparkles size={14} /> The Tritons journal
-              </span>
-              {dateLabel && (
-                <p className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white/65">
-                  <CalendarDays size={16} /> {dateLabel}
-                </p>
-              )}
-              <h1 className="mt-5 max-w-3xl font-display text-4xl font-extrabold leading-[1.08] tracking-tight sm:text-5xl lg:text-6xl">
-                {content.title || story.name}
-              </h1>
-              {content.excerpt && <p className="mt-6 max-w-2xl text-lg leading-8 text-white/75">{content.excerpt}</p>}
-              <div className="mt-8 h-1 w-20 rounded-full bg-violet-300" />
-            </div>
-            {image && (
-              <div className="relative">
-                <div className="absolute -inset-3 rounded-[2.2rem] border border-white/15" />
-                <div className="relative aspect-[5/4] overflow-hidden rounded-[1.8rem] bg-violet-900 shadow-2xl">
-                  <img src={image} alt={content.coverImage?.alt || content.title || story.name} className="h-full w-full object-cover" />
-                </div>
-                {content.imageCaption?.trim() && (
-                  <span className="absolute -bottom-5 -left-4 rounded-2xl bg-violet-300 px-5 py-3 text-xs font-extrabold uppercase tracking-[.16em] text-[#251047] shadow-xl sm:-left-7">
-                    {content.imageCaption}
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
+      <SiteHero
+        eyebrow="The Tritons journal"
+        title={content.title || story.name}
+        intro={content.excerpt}
+        image={image}
+        imageAlt={content.coverImage?.alt || content.title || story.name}
+        imageCaption={content.imageCaption}
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "News", href: "/news" }, { label: content.title || story.name }]}
+      >
+        {dateLabel && <span className="site-hero-pill"><CalendarDays size={15}/>{dateLabel}</span>}
+        <Link href="/news" className="site-hero-secondary-button"><ArrowLeft size={16}/> All news</Link>
+      </SiteHero>
 
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-[minmax(0,1fr)_17rem] lg:gap-16 lg:px-8 lg:py-20">
         <article className="min-w-0 overflow-hidden rounded-[2rem] border border-violet-100/80 bg-white shadow-[0_18px_60px_rgba(37,16,71,0.06)]">
