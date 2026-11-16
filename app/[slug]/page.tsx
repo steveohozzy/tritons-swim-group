@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { pageContent } from "@/lib/demo-content";
+import { pageContent, fallbackPageBlocks } from "@/lib/demo-content";
 import { getStory } from "@/lib/storyblok";
 import { StoryblokBlocks } from "@/components/storyblok-blocks";
 import { ContactForm } from "@/components/contact-form";
@@ -23,7 +23,8 @@ export default async function ContentPage({ params }: { params: Promise<{ slug: 
   const fallback = pageContent[slug];
   if (!story && !fallback) notFound();
   const content = story?.content || {};
-  const blocks = Array.isArray(content.body) ? content.body : Array.isArray(content.blocks) ? content.blocks : [];
+  const cmsBlocks = Array.isArray(content.body) ? content.body : Array.isArray(content.blocks) ? content.blocks : [];
+  const blocks = cmsBlocks.length ? cmsBlocks : fallbackPageBlocks[slug] || [];
   const hasHeroBlock = blocks.some((block: any) => block.component === "heroBanner");
   const title = content.title || fallback?.title || slug.replaceAll("-", " ");
   const eyebrow = content.eyebrow || fallback?.eyebrow || "";
@@ -54,11 +55,6 @@ export default async function ContentPage({ params }: { params: Promise<{ slug: 
           </aside>
         </section>
       ) : blocks.map((block: any) => <StoryblokBlocks key={block._uid} blok={block} />)}
-      {slug !== "contact" && blocks.length === 0 && (
-        <div className="mx-auto max-w-7xl px-5 py-16 text-center text-[#777487] lg:px-8">
-          Add content sections to this page in Storyblok.
-        </div>
-      )}
     </div>
   );
 }
