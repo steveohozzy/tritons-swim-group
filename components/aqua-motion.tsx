@@ -26,8 +26,11 @@ export function AquaMotion({ children }: { children: React.ReactNode }) {
         if (section.dataset.aquaReady) return;
         section.dataset.aquaReady = "true";
         section.classList.add("aqua-reveal");
-        section.querySelectorAll<HTMLElement>("h1, h2, h3").forEach((heading) => {
-          heading.classList.add("aqua-heading");
+        section.querySelectorAll<HTMLElement>(":scope > div, article").forEach((item) => {
+          item.classList.add("aqua-item");
+        });
+        section.querySelectorAll<HTMLElement>("article").forEach((item) => {
+          item.classList.add("aqua-item");
         });
         observer.observe(section);
       });
