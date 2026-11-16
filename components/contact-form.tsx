@@ -1,19 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
+
+const CONTACT_SUBJECTS = ["Swimming lessons", "Joining Tritons", "Timetable and sessions", "Events and activities", "Something else"];
 
 export function ContactForm({ recipient, initialSubject = "", initialMessage = "" }: { recipient?: string; initialSubject?: string; initialMessage?: string }) {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
-  const validSubjects = ["Swimming lessons", "Joining Tritons", "Timetable and sessions", "Events and activities", "Something else"];
-  const [subject, setSubject] = useState(validSubjects.includes(initialSubject) ? initialSubject : "");
+  const [subject, setSubject] = useState(CONTACT_SUBJECTS.includes(initialSubject) ? initialSubject : "");
   const [messageText, setMessageText] = useState(initialMessage);
-
-  useEffect(() => {
-    setSubject(validSubjects.includes(initialSubject) ? initialSubject : "");
-    setMessageText(initialMessage);
-  }, [initialSubject, initialMessage]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
