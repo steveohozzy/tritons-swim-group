@@ -17,26 +17,48 @@ a { color: inherit; text-decoration: none; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { font: inherit; }
 
-@keyframes aqua-drift { 0%,100% { transform: translate3d(0,0,0) rotate(0); } 50% { transform: translate3d(0,-16px,0) rotate(3deg); } }
-@keyframes aqua-shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
-@keyframes aqua-ripple { 0% { transform: scale(.78); opacity: .55; } 100% { transform: scale(1.35); opacity: 0; } }
-@keyframes aqua-heading-in { from { opacity: .2; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes aqua-bubble { 0% { transform: translate3d(0,28px,0) scale(.7); opacity: 0; } 18% { opacity: .55; } 82% { opacity: .4; } 100% { transform: translate3d(20px,-150px,0) scale(1.12); opacity: 0; } }
-@keyframes aqua-wave { 0%,100% { transform: translateX(-2%) translateY(0) rotate(0); } 50% { transform: translateX(2%) translateY(-8px) rotate(1deg); } }
+@keyframes aqua-drift {
+  0%,100% { transform: translate3d(0,0,0) rotate(0); }
+  50% { transform: translate3d(0,-10px,0) rotate(1.5deg); }
+}
+@keyframes aqua-shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+@keyframes aqua-ripple {
+  0% { transform: scale(.78); opacity: .45; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+@keyframes aqua-current {
+  0%,100% { background-position: 0% 0%, 100% 100%, 50% 50%; }
+  50% { background-position: 8% 12%, 92% 88%, 55% 45%; }
+}
+@keyframes aqua-swell {
+  0%,100% { transform: translate3d(-2%,0,0) rotate(-1deg) scaleY(1); }
+  50% { transform: translate3d(2%,-9px,0) rotate(1deg) scaleY(1.12); }
+}
 
-/* Global scroll reveals: content remains visible when motion is disabled. */
-.aqua-reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s ease,transform .8s cubic-bezier(.2,.75,.25,1); }
+/* Scroll reveals are deliberately soft; headings themselves stay still and readable. */
+.aqua-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .75s ease, transform .75s cubic-bezier(.2,.75,.25,1);
+}
 .aqua-reveal.is-visible { opacity: 1; transform: translateY(0); }
 .aqua-heading { text-wrap: balance; }
-.aqua-reveal.is-visible .aqua-heading { animation: aqua-heading-in .75s both; }
 
-/* Homepage hero: deep-water gradient, shimmering typography and floating bubbles. */
+/* A continuous, blended underwater palette — no hard colour split or animated divider. */
 main > #top > section:first-child {
   position: relative;
   isolation: isolate;
-  background-image: linear-gradient(125deg,#211039 0%,#472071 42%,#276d91 100%);
-  background-size: 180% 180%;
-  animation: aqua-shimmer 18s ease-in-out infinite alternate;
+  overflow: hidden;
+  background-color: #30204f;
+  background-image:
+    radial-gradient(ellipse at 13% 18%, rgba(151,103,207,.52), transparent 46%),
+    radial-gradient(ellipse at 88% 76%, rgba(40,153,181,.52), transparent 48%),
+    linear-gradient(118deg, #30204f 0%, #49306d 43%, #286b83 100%);
+  background-size: 120% 120%, 120% 120%, 100% 100%;
+  animation: aqua-current 24s ease-in-out infinite;
 }
 main > #top > section:first-child::before {
   content: "";
@@ -44,73 +66,114 @@ main > #top > section:first-child::before {
   z-index: 0;
   inset: 0;
   pointer-events: none;
-  opacity: .55;
+  opacity: .6;
   background-image:
-    radial-gradient(circle at 8% 78%,rgba(255,255,255,.65) 0 3px,transparent 4px),
-    radial-gradient(circle at 18% 88%,rgba(156,232,240,.7) 0 5px,transparent 6px),
-    radial-gradient(circle at 76% 17%,rgba(255,255,255,.55) 0 4px,transparent 5px),
-    radial-gradient(circle at 91% 68%,rgba(196,181,253,.7) 0 6px,transparent 7px),
-    radial-gradient(circle at 58% 92%,rgba(255,255,255,.45) 0 3px,transparent 4px);
-  animation: aqua-wave 11s ease-in-out infinite;
+    radial-gradient(circle at 8% 78%,rgba(255,255,255,.72) 0 3px,transparent 4px),
+    radial-gradient(circle at 18% 88%,rgba(156,232,240,.78) 0 5px,transparent 6px),
+    radial-gradient(circle at 76% 17%,rgba(255,255,255,.65) 0 4px,transparent 5px),
+    radial-gradient(circle at 91% 68%,rgba(196,181,253,.78) 0 6px,transparent 7px),
+    radial-gradient(circle at 58% 92%,rgba(255,255,255,.55) 0 3px,transparent 4px),
+    radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.08),transparent 65%);
+  animation: aqua-swell 13s ease-in-out infinite;
 }
 main > #top > section:first-child::after {
   content: "";
   position: absolute;
   z-index: 0;
-  inset: auto -5% -65px;
-  height: 130px;
   pointer-events: none;
-  opacity: .22;
-  filter: blur(18px);
-  background: radial-gradient(ellipse at 20% 100%,#9ce8f0 0 12%,transparent 13%),radial-gradient(ellipse at 70% 100%,#c4b5fd 0 15%,transparent 16%);
+  left: -12%;
+  bottom: -76px;
+  width: 124%;
+  height: 130px;
+  border-radius: 48% 52% 0 0 / 42% 38% 0 0;
+  background: linear-gradient(180deg,rgba(156,232,240,.3),rgba(156,232,240,.04));
+  box-shadow: 0 -16px 34px rgba(156,232,240,.12);
+  filter: blur(9px);
+  animation: aqua-swell 15s ease-in-out infinite;
 }
 main > #top > section:first-child h1 {
+  color: #fff;
   text-wrap: balance;
-  background: linear-gradient(100deg,#fff 0%,#d9f8ff 38%,#d8c5ff 68%,#fff 100%);
-  background-size: 220% auto;
-  color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
-  animation: aqua-shimmer 9s linear infinite;
+  text-shadow: 0 3px 24px rgba(18,12,38,.22);
+  animation: none;
 }
-main > #top > section:first-child > div > div:last-child { transition: transform .7s cubic-bezier(.2,.8,.2,1); }
-main > #top > section:first-child > div > div:last-child:hover { transform: translateY(-7px) rotate(.5deg); }
-main > #top > section:first-child > div > div:last-child > div { animation: aqua-drift 7s ease-in-out infinite; }
-main > #top > section:first-child img { transition: transform 1s cubic-bezier(.2,.8,.2,1); }
-main > #top > section:first-child img:hover { transform: scale(1.045); }
+main > #top > section:first-child p {
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 1px 12px rgba(18,12,38,.18);
+}
+main > #top > section:first-child > div > div:last-child {
+  transition: transform .7s cubic-bezier(.2,.8,.2,1);
+}
+main > #top > section:first-child > div > div:last-child:hover {
+  transform: translateY(-6px);
+}
+main > #top > section:first-child > div > div:last-child > div {
+  animation: aqua-drift 8s ease-in-out infinite;
+}
+main > #top > section:first-child img {
+  transition: transform 1s cubic-bezier(.2,.8,.2,1);
+}
+main > #top > section:first-child img:hover { transform: scale(1.035); }
+
+/* Improve contrast on light sections without changing white text on dark panels. */
+main > #top > section:not(:first-child) p:not([class*="text-white"]) {
+  color: #514b61;
+}
+main > #top > section:not(:first-child) small,
+main > #top > section:not(:first-child) li {
+  color: #514b61;
+}
 
 /* Feature cards respond gently to pointer and keyboard interaction. */
-main > #top > section:nth-child(3) { position: relative; overflow: hidden; border-radius: 2.5rem; background: linear-gradient(145deg,#f7f2ff,#edfaff); }
+main > #top > section:nth-child(3) {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2.5rem;
+  background: linear-gradient(145deg,#f7f2ff,#edfaff);
+}
 main > #top > section:nth-child(3) article {
   position: relative;
   padding: 1.5rem;
   border: 1px solid rgba(113,53,168,.12);
   border-radius: 1.5rem;
-  background: rgba(255,255,255,.72);
+  background: rgba(255,255,255,.78);
   box-shadow: 0 12px 35px rgba(49,24,83,.05);
   transition: transform .35s ease,box-shadow .35s ease,border-color .35s ease;
 }
 main > #top > section:nth-child(3) article:hover,
 main > #top > section:nth-child(3) article:focus-within {
-  transform: translateY(-8px);
+  transform: translateY(-7px);
   border-color: rgba(101,188,233,.7);
   box-shadow: 0 20px 42px rgba(49,24,83,.12);
 }
 main > #top > section:nth-child(3) article:nth-child(2) { transition-delay: .08s; }
 main > #top > section:nth-child(3) article:nth-child(3) { transition-delay: .16s; }
-main > #top > section:nth-child(4) img { transition: transform .8s cubic-bezier(.2,.8,.2,1),filter .8s ease; }
-main > #top > section:nth-child(4) > div:last-child { overflow: hidden; border-radius: 2rem; box-shadow: 0 24px 60px rgba(45,22,75,.16); }
-main > #top > section:nth-child(4) > div:last-child:hover img { transform: scale(1.055); filter: saturate(1.12); }
-main > #top > section:nth-child(5) { position: relative; overflow: hidden; background: linear-gradient(135deg,#f1eaff 0%,#e7f8ff 100%); }
+main > #top > section:nth-child(4) img {
+  transition: transform .8s cubic-bezier(.2,.8,.2,1),filter .8s ease;
+}
+main > #top > section:nth-child(4) > div:last-child {
+  overflow: hidden;
+  border-radius: 2rem;
+  box-shadow: 0 24px 60px rgba(45,22,75,.16);
+}
+main > #top > section:nth-child(4) > div:last-child:hover img {
+  transform: scale(1.05);
+  filter: saturate(1.1);
+}
+main > #top > section:nth-child(5) {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg,#f1eaff 0%,#e7f8ff 100%);
+}
 main > #top > section:nth-child(5) article { transition: transform .3s ease,background .3s ease; }
-main > #top > section:nth-child(5) article:hover { transform: translateX(6px); }
+main > #top > section:nth-child(5) article:hover { transform: translateX(5px); }
 
-/* Closing CTA: animated underwater rings. */
+/* Closing CTA: soft underwater rings rather than another moving colour boundary. */
 main > #top > section:nth-child(6) {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: linear-gradient(115deg,#24103f,#54258a 55%,#226b88) !important;
+  background: linear-gradient(115deg,#30204f,#542b7b 55%,#286b83) !important;
   box-shadow: 0 24px 65px rgba(50,22,83,.2);
 }
 main > #top > section:nth-child(6)::before,
@@ -134,6 +197,11 @@ main article a:hover { color: #7135a8; }
 main section img { will-change: transform; }
 
 @media (prefers-reduced-motion: reduce) {
-  *,*::before,*::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  *,*::before,*::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
   .aqua-reveal { opacity: 1; transform: none; }
 }
