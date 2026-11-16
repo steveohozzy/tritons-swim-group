@@ -23,6 +23,9 @@ function RichText({document}:{document:any}) {
   if(node.type==="heading"){const level=node.attrs?.level||2;const className="mb-4 mt-8 font-display text-2xl font-extrabold text-[#251047]";if(level===1)return <h1 key={key} className={className}>{children}</h1>;if(level===3)return <h3 key={key} className={className}>{children}</h3>;if(level===4)return <h4 key={key} className={className}>{children}</h4>;return <h2 key={key} className={className}>{children}</h2>;}
   if(node.type==="bullet_list"||node.type==="ordered_list"){const Tag=node.type==="bullet_list"?"ul":"ol";return <Tag key={key} className="mb-5 list-inside list-disc space-y-2 text-[#777487]">{children}</Tag>;}
   if(node.type==="list_item")return <li key={key}>{children}</li>;
+  if(node.type==="blockquote")return <blockquote key={key} className="article-quote">{children}</blockquote>;
+  if(node.type==="image"&&node.attrs?.src)return <figure key={key} className="article-inline-image"><img src={node.attrs.src} alt={node.attrs.alt||""}/>{node.attrs.title&&<figcaption>{node.attrs.title}</figcaption>}</figure>;
+  if(node.type==="horizontal_rule")return <hr key={key} className="article-divider"/>;
   if(node.type==="hard_break")return <br key={key}/>;
   if(node.type==="text"){let value:any=node.text;(node.marks||[]).forEach((mark:any)=>{if(mark.type==="bold")value=<strong>{value}</strong>;if(mark.type==="italic")value=<em>{value}</em>;if(mark.type==="link")value=<a className="font-semibold text-violet-800 underline" href={mark.attrs?.href}>{value}</a>;});return <span key={key}>{value}</span>;}
   return children;
