@@ -363,3 +363,69 @@ main > :not(.aqua-bubble-layer) { position: relative; z-index: 1; }
   }
   .aqua-heading::after { width: 64px; transition: none; }
 }
+
+
+/* A soft, layered water surface gives every route the same sense of depth. */
+body {
+  background:
+    radial-gradient(ellipse at 8% 18%,rgba(113,53,168,.035),transparent 32%),
+    radial-gradient(ellipse at 92% 68%,rgba(101,188,233,.055),transparent 36%),
+    #fff;
+}
+main::before {
+  content: "";
+  position: fixed;
+  z-index: 0;
+  inset: -12vh -8vw;
+  pointer-events: none;
+  opacity: .55;
+  background:
+    radial-gradient(ellipse 34rem 16rem at 14% 22%,rgba(123,91,185,.075),transparent 72%),
+    radial-gradient(ellipse 30rem 20rem at 83% 64%,rgba(83,180,211,.085),transparent 72%),
+    radial-gradient(ellipse 24rem 12rem at 48% 92%,rgba(156,232,240,.07),transparent 74%);
+  background-attachment: fixed;
+  animation: aqua-parallax-current 32s ease-in-out infinite alternate;
+}
+@keyframes aqua-parallax-current {
+  0% { transform: translate3d(-1.5%, -1%, 0) scale(1); }
+  50% { transform: translate3d(1%, 1.5%, 0) scale(1.035); }
+  100% { transform: translate3d(2%, -1.5%, 0) scale(1.015); }
+}
+
+/* Consistent pool-water details and tactile card movement across every route. */
+main section:not(:first-child) {
+  position: relative;
+}
+main section:not(:first-child):not(:has(.aqua-bubble-layer)) {
+  background-clip: padding-box;
+}
+main section .grid > article,
+main section .grid > div > article {
+  transition: transform .45s cubic-bezier(.2,.8,.2,1),box-shadow .45s ease,border-color .35s ease;
+}
+main section .grid > article:hover,
+main section .grid > div > article:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 42px rgba(49,24,83,.11);
+}
+main section .grid > article img,
+main section .grid > div > article img {
+  transition: transform .8s cubic-bezier(.2,.8,.2,1),filter .8s ease;
+}
+main section .grid > article:hover img,
+main section .grid > div > article:hover img {
+  transform: scale(1.045);
+  filter: saturate(1.08);
+}
+main section a:not([class*="rounded-full"]) {
+  text-underline-offset: 4px;
+}
+main section a:focus-visible,
+header a:focus-visible,
+header button:focus-visible {
+  outline: 2px solid #65bce9;
+  outline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  main::before { animation: none; }
+}
