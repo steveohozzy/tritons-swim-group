@@ -5,6 +5,7 @@ import { pageContent } from "@/lib/demo-content";
 import { getStory } from "@/lib/storyblok";
 import { StoryblokBlocks } from "@/components/storyblok-blocks";
 import { ContactForm } from "@/components/contact-form";
+import { SiteHero } from "@/components/site-hero";
 
 const known = Object.keys(pageContent);
 export async function generateStaticParams() {
@@ -31,17 +32,12 @@ export default async function ContentPage({ params }: { params: Promise<{ slug: 
   return (
     <div className="min-h-[50vh]">
       {!hasHeroBlock && (
-        <section className="relative overflow-hidden bg-[#251047] text-white">
-          <div className="absolute -right-24 -top-36 h-96 w-96 rounded-full bg-violet-600/30 blur-3xl" />
-          <div className="relative mx-auto max-w-7xl px-5 py-16 md:py-24 lg:px-8">
-            <div className="mb-10 flex gap-3 text-xs font-semibold capitalize text-white/55">
-              <Link href="/">Home</Link><span>/</span><span>{slug.replaceAll("-", " ")}</span>
-            </div>
-            {eyebrow && <span className="text-xs font-extrabold uppercase tracking-[.2em] text-violet-200">{eyebrow}</span>}
-            {title && <h1 className="mt-4 max-w-4xl font-display text-4xl font-extrabold leading-tight sm:text-6xl">{title}</h1>}
-            {intro && <p className="mt-5 max-w-2xl text-lg leading-8 text-white/70">{intro}</p>}
-          </div>
-        </section>
+        <SiteHero
+          eyebrow={eyebrow}
+          title={title}
+          intro={intro}
+          breadcrumbs={[{ label: "Home", href: "/" }, { label: slug.replaceAll("-", " ") }]}
+        />
       )}
       {slug === "contact" ? (
         <section className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-[1.1fr_.9fr] lg:px-8">
