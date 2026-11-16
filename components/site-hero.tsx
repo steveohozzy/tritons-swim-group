@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 type Crumb = { label: string; href?: string };
 type SiteHeroProps = {
@@ -9,17 +10,17 @@ type SiteHeroProps = {
   imageAlt?: string;
   imageCaption?: string;
   breadcrumbs?: Crumb[];
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export function SiteHero({ eyebrow, title, intro, image, imageAlt = "", imageCaption, breadcrumbs = [], children }: SiteHeroProps) {
   return (
     <section className="site-hero relative isolate overflow-hidden text-white">
-      <div className="site-hero-bubbles" aria-hidden="true">
+      <div className="site-hero-bubbles" aria-hidden="true" data-aqua-decorative="true">
         {Array.from({ length: 12 }, (_, index) => <span key={index} />)}
       </div>
-      <div className="site-hero-glow site-hero-glow-one" aria-hidden="true" />
-      <div className="site-hero-glow site-hero-glow-two" aria-hidden="true" />
+      <div className="site-hero-glow site-hero-glow-one" aria-hidden="true" data-aqua-decorative="true" />
+      <div className="site-hero-glow site-hero-glow-two" aria-hidden="true" data-aqua-decorative="true" />
       <div className="site-hero-inner relative z-10 mx-auto max-w-7xl px-5 pb-16 pt-8 md:pb-24 md:pt-10 lg:px-8">
         {breadcrumbs.length > 0 && (
           <nav aria-label="Breadcrumb" className="mb-9 flex flex-wrap items-center gap-3 text-xs font-semibold text-white/65">
