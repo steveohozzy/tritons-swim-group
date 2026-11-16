@@ -90,7 +90,6 @@ export default async function NewsArticlePage({ params }: Props) {
           <SiteCTA compact eyebrow="STAY CONNECTED" title="Be part of the Tritons story." text="From first lengths to new milestones, there's a place for you in our swimming community." buttonText="Get in touch" href="/contact"/>
           <Link href="/news" className="mt-5 flex items-center justify-between rounded-2xl border border-violet-100 bg-white px-5 py-4 text-sm font-bold text-[#54227f] transition hover:border-violet-300 hover:bg-violet-50">
             <span className="flex items-center gap-2"><ArrowLeft size={16}/> More news and updates</span>
-            <ArrowUpRight size={16}/>
           </Link>
         </aside>
       </div>
