@@ -15,7 +15,7 @@ export function AquaMotion({ children }: { children: React.ReactNode }) {
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+    }, { threshold: 0.16, rootMargin: "0px 0px -55px 0px" });
 
     const reveal = (scope: ParentNode) => {
       const sections = scope instanceof HTMLElement && scope.matches("section")
@@ -26,12 +26,28 @@ export function AquaMotion({ children }: { children: React.ReactNode }) {
         if (section.dataset.aquaReady) return;
         section.dataset.aquaReady = "true";
         section.classList.add("aqua-reveal");
-        section.querySelectorAll<HTMLElement>(":scope > div, article").forEach((item) => {
-          item.classList.add("aqua-item");
-        });
+
+        const heading = section.querySelector<HTMLElement>("h1, h2");
+        heading?.classList.add("aqua-heading");
+
+        if (section.children.length > 1) {
+          Array.from(section.children).forEach((child) => {
+            if (child instanceof HTMLElement && child.tagName === "DIV") {
+              child.classList.add("aqua-item");
+            }
+          });
+        }
+
         section.querySelectorAll<HTMLElement>("article").forEach((item) => {
           item.classList.add("aqua-item");
         });
+
+        if (section !== root.querySelector("#top > section:first-child")) {
+          section.querySelectorAll<HTMLElement>("img").forEach((image) => {
+            image.classList.add("aqua-media");
+          });
+        }
+
         observer.observe(section);
       });
     };
@@ -50,5 +66,12 @@ export function AquaMotion({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  return <>{children}</>;
+  return (
+    <>
+      <div className="aqua-bubble-layer" aria-hidden="true">
+        {Array.from({ length: 14 }, (_, index) => <span key={index} />)}
+      </div>
+      {children}
+    </>
+  );
 }
