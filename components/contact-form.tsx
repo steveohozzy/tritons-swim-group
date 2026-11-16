@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 
-export function ContactForm({ recipient }: { recipient?: string }) {
+export function ContactForm({ recipient, initialSubject = "", initialMessage = "" }: { recipient?: string; initialSubject?: string; initialMessage?: string }) {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+  const [subject, setSubject] = useState(initialSubject);
+  const [messageText, setMessageText] = useState(initialMessage);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -18,7 +20,7 @@ export function ContactForm({ recipient }: { recipient?: string }) {
       return;
     }
 
-    const subject = String(data.get("subject") || "Website enquiry");
+    const emailSubject = String(data.get("subject") || "Website enquiry");
     const body = [
       `Name: ${data.get("name")}`,
       `Email: ${data.get("email")}`,
@@ -26,7 +28,7 @@ export function ContactForm({ recipient }: { recipient?: string }) {
       String(data.get("message") || ""),
     ].join("\n");
 
-    window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(body)}`;
     setStatus("success");
     setMessage("Your email app should open with your message ready to send. Please press Send in your email app to complete your enquiry.");
     form.reset();
@@ -48,7 +50,7 @@ export function ContactForm({ recipient }: { recipient?: string }) {
         </label>
       </div>
       <label className="mt-5 block text-sm font-semibold text-[#251047]">What would you like to ask us about?
-        <select name="subject" required defaultValue="" className="mt-2 w-full rounded-xl border border-violet-100 bg-[#fbfaff] px-4 py-3 font-normal outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100">
+        <select name="subject" required value={subject} onChange={(event) => setSubject(event.target.value)} className="mt-2 w-full rounded-xl border border-violet-100 bg-[#fbfaff] px-4 py-3 font-normal outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100">
           <option value="" disabled>Please choose an enquiry type</option>
           <option value="Swimming lessons">Swimming lessons</option>
           <option value="Joining Tritons">Joining Tritons</option>
@@ -58,7 +60,7 @@ export function ContactForm({ recipient }: { recipient?: string }) {
         </select>
       </label>
       <label className="mt-5 block text-sm font-semibold text-[#251047]">Your message
-        <textarea name="message" required minLength={10} maxLength={5000} rows={6} className="mt-2 w-full resize-y rounded-xl border border-violet-100 bg-[#fbfaff] px-4 py-3 font-normal leading-6 outline-none transition placeholder:text-[#aaa5b6] focus:border-violet-500 focus:ring-2 focus:ring-violet-100" placeholder="Tell us a little about how we can help..." />
+        <textarea name="message" required minLength={10} maxLength={5000} rows={6} value={messageText} onChange={(event) => setMessageText(event.target.value)} className="mt-2 w-full resize-y rounded-xl border border-violet-100 bg-[#fbfaff] px-4 py-3 font-normal leading-6 outline-none transition placeholder:text-[#aaa5b6] focus:border-violet-500 focus:ring-2 focus:ring-violet-100" placeholder="Tell us a little about how we can help..." />
       </label>
       <div className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
         <label>Leave this field empty<input name="website" tabIndex={-1} autoComplete="off" /></label>
