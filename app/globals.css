@@ -568,3 +568,26 @@ header button:focus-visible {
 .aqua-reveal.is-visible .aqua-item:nth-child(9) {transition-delay:.8s}
 .aqua-reveal.is-visible .aqua-item:nth-child(10) {transition-delay:.9s}
 @media (max-width:767px) {.aqua-bubble-layer{opacity:.48}.aqua-bubble-layer span{border-color:rgba(122,195,224,.52)}}
+
+
+/* Bubble balance: keep the water detail, but give the content more breathing room. */
+.site-hero-bubbles {opacity:.72}
+.site-hero-bubbles span {width:calc(var(--hero-bubble-size) * .82);height:calc(var(--hero-bubble-size) * .82);border-color:rgba(221,249,255,.48);box-shadow:inset -5px -6px 12px rgba(101,188,233,.09),0 0 16px rgba(156,232,240,.12)}
+.site-hero-bubbles span:nth-child(n+9) {display:none}
+.site-hero-bubbles span:nth-child(3),.site-hero-bubbles span:nth-child(7) {opacity:.72}
+.site-cta-bubbles {opacity:.42}
+.site-cta-bubbles span {transform:scale(.78);border-color:rgba(255,255,255,.2)}
+.site-cta-bubbles span:nth-child(n+3) {display:none}
+
+/* The page-wide bubbles should read clearly against white sections as well as dark ones. */
+.aqua-bubble-layer {opacity:.46;mix-blend-mode:normal}
+.aqua-bubble-layer span {
+  border-color:rgba(83,105,157,.34);
+  background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.62),rgba(164,190,226,.13) 48%,rgba(114,143,194,.045) 76%,transparent);
+  box-shadow:inset -4px -5px 10px rgba(91,117,171,.12),0 0 15px rgba(92,119,174,.1);
+}
+@media (max-width:767px) {
+  .site-hero-bubbles {opacity:.82}
+  .site-hero-bubbles span {border-color:rgba(230,252,255,.62)}
+  .aqua-bubble-layer {opacity:.4}
+}
