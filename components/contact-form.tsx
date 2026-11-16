@@ -1,13 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowUpRight, CheckCircle2 } from "lucide-react";
 
 export function ContactForm({ recipient, initialSubject = "", initialMessage = "" }: { recipient?: string; initialSubject?: string; initialMessage?: string }) {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
-  const [subject, setSubject] = useState(initialSubject);
+  const validSubjects = ["Swimming lessons", "Joining Tritons", "Timetable and sessions", "Events and activities", "Something else"];
+  const [subject, setSubject] = useState(validSubjects.includes(initialSubject) ? initialSubject : "");
   const [messageText, setMessageText] = useState(initialMessage);
+
+  useEffect(() => {
+    setSubject(validSubjects.includes(initialSubject) ? initialSubject : "");
+    setMessageText(initialMessage);
+  }, [initialSubject, initialMessage]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -32,6 +38,8 @@ export function ContactForm({ recipient, initialSubject = "", initialMessage = "
     setStatus("success");
     setMessage("Your email app should open with your message ready to send. Please press Send in your email app to complete your enquiry.");
     form.reset();
+    setSubject("");
+    setMessageText("");
   }
 
   return (
