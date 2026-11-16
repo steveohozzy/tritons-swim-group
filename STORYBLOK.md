@@ -158,3 +158,19 @@ The endpoint checks the secret and the Tritons Storyblok space ID, then invalida
 - Header/footer: logo, contact information and social links from `siteSettings`.
 
 If no content has been added yet, the site retains its demo/fallback content where available.
+
+
+## Suggested page content
+
+The website also includes locally maintained fallback content so the public pages remain useful before every Storyblok story has been populated. Published Storyblok page blocks take priority over these fallbacks.
+
+For the Parent Information page, use a mixture of:
+- `featureGrid` cards for first-session preparation, kit, poolside arrangements and progress.
+- `imageTextBlock` for health, wellbeing and additional needs.
+- `faqSection` with `faqItem` entries for attendance, fees, viewing, progression and questions.
+- `richTextSection` for policy notes and practical details.
+- `callToAction` linking to Contact.
+
+For News, create `newsArticle` stories in the `news` folder. Use a strong cover image, a short excerpt and a structured Richtext body with headings, paragraphs, lists, quotes and inline images. The site includes four editorial fallback examples covering the welcome, first-session preparation, swimming progress and water safety. Replace or supplement these with approved club news and photography.
+
+**Important:** confirm real session times, venue arrangements, prices, cancellation terms, supervision rules, safeguarding contacts and club policies with the club before publishing those specifics. The fallback copy deliberately directs families to the team where those operational details have not yet been supplied.
