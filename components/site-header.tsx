@@ -9,15 +9,22 @@ import { storyblokLink } from "@/lib/storyblok";
 
 export function SiteHeader({ settings }: { settings?: any }) {
   const [compact, setCompact] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
     let previousY = window.scrollY;
     const handleScroll = () => {
       const currentY = window.scrollY;
-      if (window.innerWidth >= 1024) setCompact(false);
-      else if (currentY < 48) setCompact(false);
-      else if (currentY > previousY + 4) setCompact(true);
-      else if (currentY < previousY - 4) setCompact(false);
+      if (currentY < 48) {
+        setCompact(false);
+        setHidden(false);
+      } else if (currentY > previousY + 4) {
+        setCompact(true);
+        if (currentY > 100) setHidden(true);
+      } else if (currentY < previousY - 4) {
+        setCompact(true);
+        setHidden(false);
+      }
       previousY = currentY;
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -29,7 +36,7 @@ export function SiteHeader({ settings }: { settings?: any }) {
   const showCta = Boolean(settings?.headerButtonText && (settings?.headerButtonLink?.url || settings?.headerButtonLink?.cached_url));
   const ctaText = settings?.headerButtonText || "Join the group";
   const ctaHref = showCta ? storyblokLink(settings.headerButtonLink) : "/join-us";
-  return <header style={{ backgroundColor: settings?.brandDark || "#251047" }} className="sticky top-0 z-50 border-b border-white/10 text-white shadow-[0_8px_24px_rgba(15,8,35,.12)] lg:relative">
+  return <header style={{ backgroundColor: settings?.brandDark || "#251047" }} className={`sticky top-0 z-50 border-b border-white/10 text-white shadow-[0_8px_24px_rgba(15,8,35,.12)] transition-transform duration-300 ease-out ${hidden ? "-translate-y-full" : "translate-y-0"}`}>
     <div className={`mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 transition-all duration-300 ease-out lg:gap-6 lg:px-8 ${compact ? "py-2 lg:py-4" : "py-3 lg:py-4"}`}>
       <Link href="/" className="flex shrink-0 items-center gap-3" aria-label={settings?.siteName || "Tritons Swim Group home"}>
         <span className={`flex items-center justify-center overflow-hidden rounded-full bg-violet-500 ring-2 ring-white/20 transition-all duration-300 ${compact ? "h-9 w-9" : "h-11 w-11"}`}>
