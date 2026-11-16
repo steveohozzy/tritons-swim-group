@@ -47,14 +47,7 @@ export function SiteHero({ eyebrow, title, intro, image, imageAlt = "", imageCap
                 {imageCaption && <div className="hero-image-caption absolute inset-x-0 bottom-0 px-6 pb-6 pt-16 sm:px-8 sm:pb-8"><span className="font-display text-lg font-extrabold sm:text-xl">{imageCaption}</span></div>}
               </div>
             </div>
-          ) : (
-            <div className="site-hero-art relative mt-8 hidden min-h-[250px] items-center justify-center md:flex" aria-hidden="true">
-              <div className="site-hero-orbit site-hero-orbit-one" />
-              <div className="site-hero-orbit site-hero-orbit-two" />
-              <div className="site-hero-orbit site-hero-orbit-three" />
-              <div className="relative z-10 flex h-36 w-36 items-center justify-center rounded-full border border-white/30 bg-white/10 text-6xl font-black shadow-[0_0_70px_rgba(156,232,240,.22)] backdrop-blur-sm">T</div>
-            </div>
-          )}
+          ) : null}
         </div>
       </div>
     </section>
