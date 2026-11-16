@@ -716,3 +716,32 @@ header button:focus-visible {
   .article-rich-content p:first-child { font-size: 1.08rem; }
   .article-story-card { border-radius: 1.5rem; }
 }
+
+
+/* Keep decorative bubbles behind the experience, not over the content. */
+.aqua-bubble-layer {
+  z-index: 0;
+  opacity: .2;
+}
+.aqua-bubble-layer span {
+  border-color: rgba(83,105,157,.2);
+  box-shadow: inset -3px -4px 8px rgba(91,117,171,.06),0 0 10px rgba(92,119,174,.05);
+}
+.aqua-bubble-layer span:nth-child(n+15) { display: none; }
+.site-hero-bubbles { opacity: .42; }
+.site-hero-bubbles span {
+  border-color: rgba(221,249,255,.3);
+  box-shadow: inset -4px -5px 9px rgba(101,188,233,.06),0 0 10px rgba(156,232,240,.07);
+}
+.site-cta-bubbles { opacity: .2; }
+@media (max-width: 767px) {
+  /* The page-wide bubbles compete with text and controls on small screens. */
+  .aqua-bubble-layer { display: none; }
+  .site-hero-bubbles { opacity: .24; }
+  .site-hero-bubbles span {
+    border-color: rgba(230,252,255,.28);
+    box-shadow: none;
+  }
+  .site-hero-bubbles span:nth-child(n+5) { display: none; }
+  .site-cta-bubbles { opacity: .12; }
+}
