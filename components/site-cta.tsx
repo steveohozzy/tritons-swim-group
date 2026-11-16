@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
 
 type SiteCTAProps = {
@@ -13,7 +14,7 @@ type SiteCTAProps = {
 export function SiteCTA({ eyebrow, title, text, buttonText, href, compact = false }: SiteCTAProps) {
   return (
     <section className={compact ? "site-cta site-cta-compact" : "site-cta mx-auto my-14 max-w-7xl"}>
-      <div className="site-cta-bubbles" aria-hidden="true"><span /><span /><span /><span /></div>
+      <div className="site-cta-bubbles" aria-hidden="true" data-aqua-decorative="true"><span /><span /><span /><span /></div>
       <div className="site-cta-content">
         <div className="max-w-3xl">
           {eyebrow && <p className="text-xs font-extrabold uppercase tracking-[.2em] text-violet-200">{eyebrow}</p>}
