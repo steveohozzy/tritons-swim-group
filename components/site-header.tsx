@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Menu, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import { navigation as fallbackNavigation } from "@/lib/demo-content";
 import { storyblokLink } from "@/lib/storyblok";
 
@@ -22,13 +23,7 @@ export function SiteHeader({ settings }: { settings?: any }) {
         {navigation.map((item:any)=><Link className="transition hover:text-violet-200" key={item.href+item.label} href={item.href} target={item.openInNewTab?"_blank":undefined} rel={item.openInNewTab?"noreferrer":undefined}>{item.label}</Link>)}
       </nav>
       {showCta && <Link href={ctaHref} style={{ backgroundColor: settings?.brandPurple || "#c4b5fd" }} className="hidden items-center gap-2 rounded-full px-5 py-3 text-sm font-bold text-[#fff] transition hover:brightness-110 lg:inline-flex">{ctaText}<ArrowUpRight size={15}/></Link>}
-      <details className="group relative lg:hidden">
-        <summary className="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-full border border-white/20"><Menu size={23}/></summary>
-        <nav className="absolute right-0 top-14 flex min-w-56 flex-col gap-1 rounded-2xl bg-white p-3 text-[#251047] shadow-2xl">
-          {navigation.map((item:any)=><Link className="rounded-xl px-4 py-3 font-semibold hover:bg-violet-50" key={item.href+item.label} href={item.href} target={item.openInNewTab?"_blank":undefined} rel={item.openInNewTab?"noreferrer":undefined}>{item.label}</Link>)}
-          {showCta&&<Link className="rounded-xl px-4 py-3 font-semibold hover:bg-violet-50" href={ctaHref}>{ctaText}</Link>}
-        </nav>
-      </details>
+      <MobileNavigation navigation={navigation} showCta={showCta} ctaHref={ctaHref} ctaText={ctaText}/>
     </div>
   </header>;
 }
