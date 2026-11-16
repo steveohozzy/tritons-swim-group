@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, CalendarDays, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, CalendarDays } from "lucide-react";
 import { getStories } from "@/lib/storyblok";
 import { StoryblokBlocks } from "@/components/storyblok-blocks";
 import { SiteHero } from "@/components/site-hero";
