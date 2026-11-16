@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type TouchEvent } from "react";
 import { createPortal } from "react-dom";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -27,7 +27,7 @@ export function GalleryGrid({groups}:{groups:Album[]}) {
   return ()=>{document.body.style.overflow=previousBodyOverflow;document.documentElement.style.overflow=previousRootOverflow;document.removeEventListener("keydown",closeOnEscape);};
  },[activeIndex]);
  function move(direction:number){if(activeIndex===null||!visiblePhotos.length)return;setActiveIndex((activeIndex+direction+visiblePhotos.length)%visiblePhotos.length);}
- function handleTouchStart(event:React.TouchEvent<HTMLElement>){const touch=event.changedTouches[0];touchStartX.current=touch?.clientX??null;touchStartY.current=touch?.clientY??null;}
+ function handleTouchStart(event:TouchEvent<HTMLElement>){const touch=event.changedTouches[0];touchStartX.current=touch?.clientX??null;touchStartY.current=touch?.clientY??null;}
  function handleTouchEnd(event:React.TouchEvent<HTMLElement>){const touch=event.changedTouches[0];const startX=touchStartX.current;const startY=touchStartY.current;touchStartX.current=null;touchStartY.current=null;if(startX===null||startY===null||!touch)return;const deltaX=touch.clientX-startX;const deltaY=touch.clientY-startY;if(Math.abs(deltaX)>50&&Math.abs(deltaX)>Math.abs(deltaY)*1.2)move(deltaX<0?1:-1);}
  return <>
   <div className="mb-10 flex flex-wrap gap-2" aria-label="Filter gallery by album">
