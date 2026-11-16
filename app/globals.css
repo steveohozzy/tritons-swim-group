@@ -475,7 +475,7 @@ header button:focus-visible {
 .site-hero h1 {color:#fff;text-wrap:balance;text-shadow:0 3px 24px rgba(18,12,38,.24)}
 .site-hero-copy p {color:rgba(255,255,255,.88)}
 .site-hero-image-wrap {z-index:3}
-.site-hero-image-halo {position:absolute;inset:-7%;border:1px solid rgba(255,255,255,.22);border-radius:2.8rem;background:linear-gradient(135deg,rgba(196,181,253,.18),rgba(103,211,231,.12));transform:rotate(3deg);animation:aqua-drift 9s ease-in-out infinite}
+.site-hero-image-halo {position:absolute;inset:-4%;border:1px solid rgba(255,255,255,.22);border-radius:2.8rem;background:linear-gradient(135deg,rgba(196,181,253,.18),rgba(103,211,231,.12));transform:rotate(3deg);animation:aqua-drift 9s ease-in-out infinite}
 .site-hero-art {width:100%}
 .site-hero-orbit {position:absolute;width:clamp(13rem,28vw,25rem);aspect-ratio:1;border:1px solid rgba(224,250,255,.34);border-radius:50%;box-shadow:0 0 40px rgba(156,232,240,.08),inset 0 0 35px rgba(156,232,240,.05);animation:aqua-orbit 22s linear infinite}
 .site-hero-orbit-two {width:clamp(10rem,22vw,19rem);animation-duration:17s;animation-direction:reverse}
