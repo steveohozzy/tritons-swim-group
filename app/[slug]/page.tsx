@@ -20,6 +20,8 @@ export default async function ContentPage({ params, searchParams }: { params: Pr
   const [{ slug }, query] = await Promise.all([params, searchParams]);
   const story = await getStory(slug);
   const siteSettings = slug === "contact" ? (await getStory("site-settings"))?.content || {} : {};
+  const contactEmail = String(siteSettings.contactEmail || "").trim() || "tritonsswimgroup@gmail.com";
+  const contactPhone = String(siteSettings.contactPhone || "").trim();
   const fallback = pageContent[slug];
   if (!story && !fallback) notFound();
   const content = story?.content || {};
@@ -42,14 +44,14 @@ export default async function ContentPage({ params, searchParams }: { params: Pr
       )}
       {slug === "contact" ? (
         <section className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-[1.1fr_.9fr] lg:px-8">
-          <ContactForm key={`${query.subject || ""}-${query.message || ""}`} recipient={siteSettings.contactEmail} initialSubject={query.subject} initialMessage={query.message} />
+          <ContactForm key={`${query.subject || ""}-${query.message || ""}`} recipient={contactEmail} initialSubject={query.subject} initialMessage={query.message} />
           <aside className="self-start rounded-[2rem] bg-violet-50 p-7 sm:p-9">
             <span className="text-xs font-extrabold uppercase tracking-[.2em] text-violet-700">We’re here to help</span>
             <h2 className="mt-3 font-display text-3xl font-extrabold text-[#251047]">Get in touch with Tritons</h2>
             <p className="mt-4 text-sm leading-7 text-[#777487]">Whether you’re interested in lessons, joining the group or finding out more about our sessions, send us a message and our team will be happy to help.</p>
             <div className="mt-7 space-y-5 border-t border-violet-200 pt-6">
-              {siteSettings.contactEmail && <div><p className="text-xs font-bold uppercase tracking-wider text-violet-700">Email</p><a href={`mailto:${siteSettings.contactEmail}`} className="mt-1 block break-all font-semibold text-[#251047] hover:text-violet-700">{siteSettings.contactEmail}</a></div>}
-              {siteSettings.contactPhone && <div><p className="text-xs font-bold uppercase tracking-wider text-violet-700">Phone</p><a href={`tel:${String(siteSettings.contactPhone).replace(/\s/g, "")}`} className="mt-1 block font-semibold text-[#251047] hover:text-violet-700">{siteSettings.contactPhone}</a></div>}
+              {contactEmail && <div><p className="text-xs font-bold uppercase tracking-wider text-violet-700">Email</p><a href={`mailto:${contactEmail}`} className="mt-1 block break-all font-semibold text-[#251047] hover:text-violet-700">{contactEmail}</a></div>}
+              {contactPhone && <div><p className="text-xs font-bold uppercase tracking-wider text-violet-700">Phone</p><a href={`tel:${contactPhone.replace(/\s/g, "")}`} className="mt-1 block font-semibold text-[#251047] hover:text-violet-700">{contactPhone}</a></div>}
               {siteSettings.poolAddress && <div><p className="text-xs font-bold uppercase tracking-wider text-violet-700">Pool address</p><p className="mt-1 whitespace-pre-line font-semibold text-[#251047]">{siteSettings.poolAddress}</p></div>}
             </div>
           </aside>
