@@ -10,7 +10,7 @@ export function SiteFooter({ settings }: { settings?: any }) {
   const helpful=footerLinks(settings?.footerHelpfulLinks,fallbackHelpful);
   const facebook=settings?.facebookUrl?storyblokLink(settings.facebookUrl):"";
   const instagram=settings?.instagramUrl?storyblokLink(settings.instagramUrl):"";
-  const email=settings?.contactEmail,phone=settings?.contactPhone,address=settings?.poolAddress;
+  const email=String(settings?.contactEmail || "").trim() || "tritonsswimgroup@gmail.com",phone=settings?.contactPhone,address=settings?.poolAddress;
   return <footer style={{ backgroundColor: settings?.brandDark || "#1d1035" }} className="text-white">
     <div className="mx-auto grid max-w-7xl gap-12 px-5 py-16 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
       <div>
