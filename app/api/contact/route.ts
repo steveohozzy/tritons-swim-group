@@ -42,11 +42,7 @@ export async function POST(request: NextRequest) {
   }
 
   const settings = (await getStory("site-settings"))?.content || {};
-  const recipient = String(settings.contactEmail || "").trim();
-  if (!recipient) {
-    return NextResponse.json({ error: "The contact email has not been added to Site Settings yet." }, { status: 503 });
-  }
-
+  const recipient = String(settings.contactEmail || "").trim() || "tritonsswimgroup@gmail.com";
   const safeName = escapeHtml(name);
   const safeEmail = escapeHtml(email);
   const safeSubject = escapeHtml(subject);
