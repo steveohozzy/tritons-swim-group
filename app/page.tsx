@@ -16,7 +16,7 @@ const homepageDemoBlocks = [
     component: "heroBanner",
     eyebrow: "TRITONS SWIM GROUP · EVERY SWIMMER, EVERY STEP",
     title: "Swimming lessons in Chesham for every stage.",
-    intro: "Discover swimming lessons and supportive swim sessions with Tritons Swim Group in Chesham. From building water confidence to developing stronger strokes, find the right next step in the water.",
+    intro: "Looking for swimming lessons in Chesham? Tritons Swim Group offers pathways for swimmers to build water confidence, learn essential swimming skills and develop stronger strokes. Explore our lesson options and contact the team to discuss a suitable session.",
     imageAlt: "Tritons Swim Group",
     showPrimaryButton: true,
     primaryButtonText: "Explore our lessons",
@@ -34,8 +34,8 @@ const homepageDemoBlocks = [
     body: {
       type: "doc",
       content: [
-        { type: "paragraph", content: [{ type: "text", text: "Whether someone is finding their feet in the water, building confidence or developing their technique, Tritons is about progress that feels positive, personal and worth celebrating." }] },
-        { type: "paragraph", content: [{ type: "text", text: "Great swimming starts with feeling comfortable, supported and part of something. We make space for every swimmer to take their next step." }] }
+        { type: "paragraph", content: [{ type: "text", text: "Whether you are looking for children's swimming lessons in Chesham, building confidence in the water or developing an existing stroke, Tritons Swim Group is focused on positive, steady progress." }] },
+        { type: "paragraph", content: [{ type: "text", text: "From water confidence and learn-to-swim foundations to stroke development and adult swimming, explore the pathways available and ask our team for guidance on the right next step." }] }
       ]
     }
   },
@@ -44,12 +44,12 @@ const homepageDemoBlocks = [
     component: "featureGrid",
     eyebrow: "THE TRITONS APPROACH",
     title: "Confidence comes in many strokes.",
-    intro: "A supportive swimming experience built around the things that matter most.",
+    intro: "Our approach to swimming lessons in Chesham puts confidence, skill development and enjoyment at the heart of every swimmer's progress.",
     columns: "3",
     items: [
-      { _uid: "home-feature-1", component: "featureCard", number: "01", title: "Find your confidence", text: "Build comfort in the water, develop trust in your abilities and enjoy every small breakthrough.", linkText: "Explore lessons", link: { linktype: "url", url: "/lessons", cached_url: "lessons" } },
-      { _uid: "home-feature-2", component: "featureCard", number: "02", title: "Progress at your pace", text: "Develop skills step by step, with sessions suited to different ages, experience and ability.", linkText: "View the timetable", link: { linktype: "url", url: "/timetable", cached_url: "timetable" } },
-      { _uid: "home-feature-3", component: "featureCard", number: "03", title: "Be part of the group", text: "Share the encouragement, milestones and memorable moments that make swimming special.", linkText: "Meet the group", link: { linktype: "url", url: "/about", cached_url: "about" } }
+      { _uid: "home-feature-1", component: "featureCard", number: "01", title: "Find your confidence", text: "Build comfort in the water, develop essential water skills and celebrate each step towards becoming a more confident swimmer.", linkText: "Explore lessons", link: { linktype: "url", url: "/lessons", cached_url: "lessons" } },
+      { _uid: "home-feature-2", component: "featureCard", number: "02", title: "Progress at your pace", text: "Develop swimming skills progressively, with lesson pathways designed around different stages of confidence and experience.", linkText: "View the timetable", link: { linktype: "url", url: "/timetable", cached_url: "timetable" } },
+      { _uid: "home-feature-3", component: "featureCard", number: "03", title: "Be part of the group", text: "Be part of the Tritons swimming community in Chesham, sharing encouragement and celebrating progress together.", linkText: "Meet the group", link: { linktype: "url", url: "/about", cached_url: "about" } }
     ]
   },
   {
@@ -57,7 +57,7 @@ const homepageDemoBlocks = [
     component: "imageTextBlock",
     eyebrow: "YOUR NEXT STEP STARTS HERE",
     title: "Every swimmer has a starting point.",
-    text: "From water confidence and learn-to-swim foundations to stroke development and adult swimming, explore the different ways to get involved and find the right next step.",
+    text: "Explore swimming lessons in Chesham at different stages, including water confidence, learn to swim, stroke development and adult swimming. If you are unsure which pathway is right, contact the Tritons team for guidance.",
     imagePosition: "right",
     showLink: true,
     linkText: "Discover our lessons",
@@ -68,7 +68,7 @@ const homepageDemoBlocks = [
     component: "eventListing",
     eyebrow: "SAVE THE DATE",
     title: "There is always something happening.",
-    intro: "Keep up with upcoming sessions, important dates and special moments in the Tritons calendar.",
+    intro: "Find the latest Tritons Swim Group events, club activities and important dates in Chesham.",
     displayLimit: 3,
     displayMode: "list",
     showViewAll: true,
@@ -80,7 +80,7 @@ const homepageDemoBlocks = [
     component: "callToAction",
     eyebrow: "READY TO TAKE THE NEXT STEP?",
     title: "Let's make a splash together.",
-    text: "Find out more about joining Tritons and discover the right session for you.",
+    text: "Interested in swimming lessons in Chesham? Contact Tritons Swim Group to ask about available pathways and the next step for you or your swimmer.",
     showButton: true,
     buttonText: "Get in touch",
     link: { linktype: "url", url: "/contact", cached_url: "contact" }
