@@ -2,7 +2,15 @@ import type { Metadata } from "next";
 import { getStory } from "@/lib/storyblok";
 import { StoryblokBlocks } from "@/components/storyblok-blocks";
 
-export async function generateMetadata(): Promise<Metadata> {\n  const story = await getStory("home");\n  const c = story?.content || {};\n  const title = c.seoTitle || "Swimming Lessons in Chesham | Tritons Swim Group";\n  const description = c.seoDescription || c.intro || "Explore swimming lessons in Chesham with Tritons Swim Group, from water confidence and learn-to-swim foundations to stroke development and adult swimming.";\n  return { title, description, alternates: { canonical: "/" }, openGraph: { title, description, url: "/" } };\n}\n\nconst homepageDemoBlocks = [
+export async function generateMetadata(): Promise<Metadata> {
+  const story = await getStory("home");
+  const c = story?.content || {};
+  const title = c.seoTitle || "Swimming Lessons in Chesham | Tritons Swim Group";
+  const description = c.seoDescription || c.intro || "Explore swimming lessons in Chesham with Tritons Swim Group, from water confidence and learn-to-swim foundations to stroke development and adult swimming.";
+  return { title, description, alternates: { canonical: "/" }, openGraph: { title, description, url: "/" } };
+}
+
+const homepageDemoBlocks = [
   {
     _uid: "home-hero",
     component: "heroBanner",
