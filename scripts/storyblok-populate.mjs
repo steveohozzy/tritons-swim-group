@@ -82,6 +82,18 @@ const pageContent = {
   home: { eyebrow: homepageBlocks[0]?.eyebrow || "", title: homepageBlocks[0]?.title || "Home", intro: homepageBlocks[0]?.intro || "" },
   ...demo.pageContent,
 };
+const seoPages = {
+  home: { title: "Swimming lessons in Chesham | Tritons Swim Group", description: "Discover swimming lessons in Chesham with Tritons Swim Group. Explore water confidence, learn-to-swim, stroke development and adult swimming pathways." },
+  about: { title: "About Tritons Swim Group | Swimming in Chesham", description: "Get to know Tritons Swim Group in Chesham, our approach to swimming, and how we help swimmers build confidence, develop skills and enjoy time in the water." },
+  lessons: { title: "Swimming Lessons in Chesham | Tritons Swim Group", description: "Explore swimming lessons in Chesham, including water confidence, learn to swim, stroke development and adult swimming. Find a suitable next step with Tritons." },
+  timetable: { title: "Swimming Timetable | Tritons Swim Group, Chesham", description: "Find Tritons Swim Group session times in Chesham. Check the latest swimming timetable, availability and term information with the team." },
+  events: { title: "Swimming Club Events | Tritons Swim Group Chesham", description: "Keep up with Tritons Swim Group events, swimming activities, club updates and important dates in Chesham." },
+  gallery: { title: "Swimming Club Gallery | Tritons Swim Group Chesham", description: "See photos and moments from Tritons Swim Group in Chesham, celebrating swimming, confidence, progress and club activities." },
+  news: { title: "Swimming News and Advice | Tritons Swim Group Chesham", description: "Read swimming news, helpful advice, club announcements and updates from Tritons Swim Group in Chesham." },
+  "join-us": { title: "Join Tritons Swim Group | Swimming in Chesham", description: "Find out how to join Tritons Swim Group in Chesham. Tell us about your swimming experience and we can help you explore suitable sessions." },
+  contact: { title: "Contact Tritons Swim Group | Swimming Lessons Chesham", description: "Contact Tritons Swim Group in Chesham with questions about swimming lessons, session availability, the timetable or getting started." },
+  "parent-information": { title: "Parent Information | Tritons Swim Group Chesham", description: "Helpful information for parents and carers about swimming lessons with Tritons Swim Group in Chesham, from preparing for a first session to supporting progress." },
+};
 const pageSlugs = Object.keys(pageContent);
 const fallbackPages = demo.fallbackPageBlocks || {};
 const lessonTypes = lessons.lessonTypes || [];
@@ -161,6 +173,7 @@ function queueCreate(name, slug, content, reason) {
 for (const slug of pageSlugs) {
   const page = bySlug.get(slug);
   const pageInfo = pageContent[slug];
+  const seo = seoPages[slug] || { title: `${pageInfo.title} | Tritons Swim Group`, description: pageInfo.intro };
   if (!page) {
     const body = slug === "home" ? homepageBlocks : (fallbackPages[slug] || []);
     const content = {
@@ -169,8 +182,8 @@ for (const slug of pageSlugs) {
       title: pageInfo.title,
       eyebrow: pageInfo.eyebrow,
       intro: pageInfo.intro,
-      seoTitle: slug === "home" ? "Swimming lessons in Chesham | Tritons Swim Group" : `${pageInfo.title} | Tritons Swim Group`,
-      seoDescription: pageInfo.intro,
+      seoTitle: seo.title,
+      seoDescription: seo.description,
       ...(body.length ? { body } : {}),
     };
     queueCreate(pageInfo.title, slug, content, "Create missing page from existing fallback page content");
@@ -179,29 +192,32 @@ for (const slug of pageSlugs) {
 
   if (page.content?.component !== "page") continue;
   const content = structuredClone(page.content || { component: "page" });
-  let changed = fillMissing(content, {
-    title: pageInfo.title,
-    eyebrow: pageInfo.eyebrow,
-    intro: pageInfo.intro,
-    seoTitle: slug === "home" ? "Swimming lessons in Chesham | Tritons Swim Group" : `${pageInfo.title} | Tritons Swim Group`,
-    seoDescription: pageInfo.intro,
-  });
+  let changed = false;
+  for (const [key, value] of Object.entries({ title: pageInfo.title, eyebrow: pageInfo.eyebrow, intro: pageInfo.intro, seoTitle: seo.title, seoDescription: seo.description })) {
+    if (content[key] !== value) { content[key] = value; changed = true; }
+  }
   const fallbackBody = slug === "home" ? homepageBlocks : (fallbackPages[slug] || []);
   if (fallbackBody.length) {
     if (!Array.isArray(content.body)) content.body = [];
     const existingBlocks = content.body;
-    const missingBlocks = fallbackBody.filter((fallbackBlock) => {
-      return !existingBlocks.some((existingBlock) => {
-        if (existingBlock._uid === fallbackBlock._uid) return true;
-        return existingBlock.component === fallbackBlock.component &&
-          fallbackBlock.title &&
-          existingBlock.title === fallbackBlock.title;
-      });
+    const refreshedBlocks = fallbackBody.map((fallbackBlock) => {
+      const index = existingBlocks.findIndex((existingBlock) =>
+        existingBlock._uid === fallbackBlock._uid ||
+        (existingBlock.component === fallbackBlock.component && fallbackBlock.title && existingBlock.title === fallbackBlock.title)
+      );
+      if (index === -1) return fallbackBlock;
+      const existingBlock = existingBlocks[index];
+      // Refresh authored copy and SEO headings from the maintained source while
+      // retaining existing media, identifiers and editor-only fields.
+      const refreshed = { ...existingBlock, ...fallbackBlock, _uid: existingBlock._uid || fallbackBlock._uid };
+      if (JSON.stringify(refreshed) !== JSON.stringify(existingBlock)) changed = true;
+      existingBlocks[index] = refreshed;
+      return refreshed;
     });
-    if (missingBlocks.length) {
-      content.body = [...existingBlocks, ...missingBlocks];
-      changed = true;
-    }
+    const missingBlocks = refreshedBlocks.filter((block) => !existingBlocks.some((existing) => existing._uid === block._uid));
+    if (missingBlocks.length) changed = true;
+    const body = [...existingBlocks, ...missingBlocks];
+    if (JSON.stringify(body) !== JSON.stringify(content.body)) { content.body = body; changed = true; }
   }
   if (changed) queueUpdate(page, content, "Fill missing page fields and append fallback components not already represented in Storyblok");
 }
@@ -225,8 +241,8 @@ for (let index = 0; index < lessonTypes.length; index += 1) {
   if (!existing) {
     queueCreate(lesson.title, lesson.slug, { ...content, _uid: randomUUID() }, "Create missing lesson pathway from existing lesson fallback copy");
   } else if (existing.content?.component === "lessonType") {
-    const merged = structuredClone(existing.content);
-    if (fillMissing(merged, content)) queueUpdate(existing, merged, "Fill blank lesson fields only");
+    const merged = { ...structuredClone(existing.content), ...content, _uid: existing.content._uid };
+    if (JSON.stringify(merged) !== JSON.stringify(existing.content)) queueUpdate(existing, merged, "Refresh lesson copy and SEO-relevant descriptions while preserving editor media and extra fields");
   }
 }
 
@@ -249,8 +265,8 @@ for (const article of newsArticles) {
   if (!existing) {
     queueCreate(content.title, article.slug, { ...content, _uid: randomUUID() }, "Create missing news article from existing fallback article copy");
   } else if (existing.content?.component === "newsArticle") {
-    const merged = structuredClone(existing.content);
-    if (fillMissing(merged, content)) queueUpdate(existing, merged, "Fill blank news fields only");
+    const merged = { ...structuredClone(existing.content), ...content, _uid: existing.content._uid };
+    if (JSON.stringify(merged) !== JSON.stringify(existing.content)) queueUpdate(existing, merged, "Refresh news titles, excerpts, SEO metadata and article copy while preserving editor-only fields");
   }
 }
 
@@ -266,7 +282,7 @@ if (settings?.content?.component === "siteSettings") {
     brandDark: "#251047",
     contactEmail: "tritonsswimgroup@gmail.com",
     contactPhone: "0 7976572836",
-    siteDescription: "Looking for swimming lessons in Chesham? Discover swimming sessions, lesson information and ways to get involved with Tritons Swim Group.",
+    siteDescription: "Discover swimming lessons in Chesham with Tritons Swim Group. Explore water confidence, learn-to-swim, stroke development and adult swimming, and contact the team about suitable sessions.",
     footerIntro: "Building confidence, skills and happy memories in the water.",
     footerExploreTitle: "Explore",
     footerHelpfulTitle: "Helpful links",
