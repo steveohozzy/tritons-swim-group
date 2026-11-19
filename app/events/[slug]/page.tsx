@@ -21,7 +21,9 @@ function formatEventDate(value: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const story = await getStory(slug);
-  return { title: story?.content?.title || story?.name || "Event" };
+  const title = story?.content?.title || story?.name || "Tritons event";
+  const description = story?.content?.description || `Find details about ${title}, an event from Tritons Swim Group in Chesham.`;
+  return { title: `${title} | Tritons Swim Group`, description, alternates: { canonical: `/events/${slug}` }, openGraph: { title, description, url: `/events/${slug}` } };
 }
 
 export default async function EventDetailPage({ params }: Props) {
