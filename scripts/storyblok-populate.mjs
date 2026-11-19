@@ -230,6 +230,8 @@ for (let index = 0; index < lessonTypes.length; index += 1) {
   const content = {
     component: "lessonType",
     title: lesson.title,
+    seoTitle: `${lesson.title} in Chesham | Tritons Swim Group`,
+    seoDescription: `${lesson.intro} Explore ${lesson.title.toLowerCase()} with Tritons Swim Group in Chesham.`,
     eyebrow: lesson.eyebrow,
     summary: lesson.intro,
     focus: Array.isArray(lesson.focus) ? lesson.focus.join("\n") : lesson.focus,
@@ -331,6 +333,7 @@ function addSchemaFields(componentName, fields) {
 
 addSchemaFields("page", { seoTitle: "text", seoDescription: "textarea" });
 addSchemaFields("newsArticle", { seoTitle: "text", seoDescription: "textarea" });
+addSchemaFields("lessonType", { seoTitle: "text", seoDescription: "textarea" });
 addSchemaFields("siteSettings", {
   siteDescription: "textarea",
   footerExploreTitle: "text",
