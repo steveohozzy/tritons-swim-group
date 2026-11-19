@@ -168,8 +168,8 @@ function queueCreate(name, slug, content, reason) {
   operations.push({ action: "create", name, slug, parent_id: 0, content, reason });
 }
 
-// Pages: keep existing editor content. Fill missing page fields and only add the
-// page's original component blocks when its body is currently empty.
+// Pages: refresh SEO titles, descriptions and maintained component copy while
+// retaining existing media, identifiers and additional editor-only fields.
 for (const slug of pageSlugs) {
   const page = bySlug.get(slug);
   const pageInfo = pageContent[slug];
@@ -219,7 +219,7 @@ for (const slug of pageSlugs) {
     const body = [...existingBlocks, ...missingBlocks];
     if (JSON.stringify(body) !== JSON.stringify(content.body)) { content.body = body; changed = true; }
   }
-  if (changed) queueUpdate(page, content, "Fill missing page fields and append fallback components not already represented in Storyblok");
+  if (changed) queueUpdate(page, content, "Refresh page SEO metadata and maintained component copy while preserving media and additional blocks");
 }
 
 // Lesson detail stories: add the missing pathways and fill only blank fields
@@ -294,6 +294,11 @@ if (settings?.content?.component === "siteSettings") {
     headerButtonText: "Join the group",
     headerButtonLink: { linktype: "url", url: "/join-us", cached_url: "join-us" },
   });
+  const refreshedSiteDescription = "Discover swimming lessons in Chesham with Tritons Swim Group. Explore water confidence, learn-to-swim, stroke development and adult swimming, and contact the team about suitable sessions.";
+  if (content.siteDescription !== refreshedSiteDescription) {
+    content.siteDescription = refreshedSiteDescription;
+    changed = true;
+  }
   if (!Array.isArray(content.navigationItems) || content.navigationItems.length === 0) {
     content.navigationItems = navigationBlocks(navigation, "nav");
     changed = true;
