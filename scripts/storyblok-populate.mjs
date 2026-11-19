@@ -228,6 +228,8 @@ for (const article of newsArticles) {
     component: "newsArticle",
     title: source.title || article.name,
     excerpt: source.excerpt || "",
+    seoTitle: `${source.title || article.name} | Tritons Swim Group`,
+    seoDescription: source.excerpt || "",
     body: source.body || { type: "doc", content: [] },
     ...(source.publishedDate ? { publishedDate: source.publishedDate } : {}),
     ...(source.coverImage ? { coverImage: source.coverImage } : {}),
@@ -302,6 +304,7 @@ function addSchemaFields(componentName, fields) {
 }
 
 addSchemaFields("page", { seoTitle: "text", seoDescription: "textarea" });
+addSchemaFields("newsArticle", { seoTitle: "text", seoDescription: "textarea" });
 addSchemaFields("siteSettings", {
   siteDescription: "textarea",
   footerExploreTitle: "text",
