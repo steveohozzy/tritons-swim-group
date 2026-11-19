@@ -23,15 +23,15 @@ export const demoEvents = [
 ];
 
 export const pageContent: Record<string, { eyebrow: string; title: string; intro: string }> = {
-  about: { eyebrow: "Meet the group", title: "A little more confidence with every length.", intro: "Tritons Swim Group is all about helping swimmers feel confident, capable and happy in the water. Get to know our approach, our people and what makes our sessions special." },
-  lessons: { eyebrow: "Find your level", title: "Swimming lessons for every next step.", intro: "From first splashes to stronger strokes, find a session that helps you build skills at your own pace. Ask us about the right group for your swimmer." },
-  timetable: { eyebrow: "Plan your week", title: "Find a time to dive in.", intro: "Explore the weekly session timetable. Session details, availability and term dates can be updated by the Tritons team in Storyblok." },
-  events: { eyebrow: "What's happening", title: "Make a date with the water.", intro: "Keep up with term dates, special sessions, club activities and important updates from Tritons." },
-  gallery: { eyebrow: "Life at Tritons", title: "Little moments. Big achievements.", intro: "A glimpse of the people, progress and fun that make being part of a swim group special." },
-  news: { eyebrow: "From the poolside", title: "The latest from Tritons.", intro: "Club announcements, term updates and stories from our swimming community." },
+  about: { eyebrow: "Meet the group", title: "A little more confidence with every length.", intro: "Discover Tritons Swim Group in Chesham and learn about our approach to swimming, building water confidence and developing skills. Find out what to expect from our swimming community and how to get started." },
+  lessons: { eyebrow: "Find your level", title: "Swimming lessons for every next step.", intro: "Explore swimming lessons in Chesham, from water confidence and learn-to-swim foundations to stroke development and adult swimming. Contact Tritons Swim Group for help identifying a suitable lesson pathway." },
+  timetable: { eyebrow: "Plan your week", title: "Find a time to dive in.", intro: "Check the Tritons Swim Group swimming timetable for current session days, times and term information in Chesham. Availability can change, so contact the team to confirm the latest details before travelling." },
+  events: { eyebrow: "What's happening", title: "Make a date with the water.", intro: "Discover upcoming Tritons Swim Group events in Chesham, including club activities, special sessions and important swimming updates." },
+  gallery: { eyebrow: "Life at Tritons", title: "Little moments. Big achievements.", intro: "Explore the Tritons Swim Group gallery for photos of swimming activities, club events and moments that celebrate confidence, learning and progress in Chesham." },
+  news: { eyebrow: "From the poolside", title: "The latest from Tritons.", intro: "Read the latest Tritons Swim Group news, swimming advice, club announcements and updates for our community in Chesham." },
   "join-us": { eyebrow: "Your next step", title: "Ready to make a splash?", intro: "Tell us a little about the swimmer and what they would like to achieve. The Tritons team can help you find the right session." },
-  contact: { eyebrow: "Say hello", title: "We'd love to hear from you.", intro: "Have a question about lessons, availability or getting started? Get in touch with the Tritons team." },
-  "parent-information": { eyebrow: "Helpful to know", title: "Everything you need poolside.", intro: "A few helpful pointers to make swimming lessons feel easy, enjoyable and stress-free." },
+  contact: { eyebrow: "Say hello", title: "We'd love to hear from you.", intro: "Contact Tritons Swim Group in Chesham with questions about swimming lessons, session availability, the timetable or how to get started." },
+  "parent-information": { eyebrow: "Helpful to know", title: "Everything you need poolside.", intro: "Find practical swimming lesson information for parents and carers in Chesham, including preparing for a first session, what to bring and how to support your swimmer's progress." },
 };
 
 
