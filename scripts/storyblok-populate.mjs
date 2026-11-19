@@ -78,7 +78,10 @@ const [demo, lessons, homepageBlocks, footerExplore, footerHelpful] = await Prom
   extractArray("../components/site-footer.tsx", "fallbackHelpful"),
 ]);
 
-const pageContent = {\n  home: { eyebrow: homepageBlocks[0]?.eyebrow || "", title: homepageBlocks[0]?.title || "Home", intro: homepageBlocks[0]?.intro || "" },\n  ...demo.pageContent,\n};\nconst pageSlugs = Object.keys(pageContent);
+const pageContent = {
+  home: { eyebrow: homepageBlocks[0]?.eyebrow || "", title: homepageBlocks[0]?.title || "Home", intro: homepageBlocks[0]?.intro || "" },
+  ...demo.pageContent,
+};\nconst pageSlugs = Object.keys(pageContent);
 const fallbackPages = demo.fallbackPageBlocks || {};
 const lessonTypes = lessons.lessonTypes || [];
 const newsArticles = demo.demoNewsArticles || [];
@@ -246,7 +249,10 @@ if (settings?.content?.component === "siteSettings") {
     brandDark: "#251047",
     contactEmail: "tritonsswimgroup@gmail.com",
     contactPhone: "0 7976572836",
-    siteDescription: "Looking for swimming lessons in Chesham? Discover swimming sessions, lesson information and ways to get involved with Tritons Swim Group.",\n    footerIntro: "Building confidence, skills and happy memories in the water.",\n    footerExploreTitle: "Explore",\n    footerHelpfulTitle: "Helpful links",
+    siteDescription: "Looking for swimming lessons in Chesham? Discover swimming sessions, lesson information and ways to get involved with Tritons Swim Group.",
+    footerIntro: "Building confidence, skills and happy memories in the water.",
+    footerExploreTitle: "Explore",
+    footerHelpfulTitle: "Helpful links",
     footerContactTitle: "Get in touch",
     footerContactText: "Questions about lessons or availability? We'd love to help.",
     copyrightText: "© {year} Tritons Swim Group",
