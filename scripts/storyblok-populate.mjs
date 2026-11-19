@@ -186,14 +186,24 @@ for (const slug of pageSlugs) {
     seoTitle: slug === "home" ? "Swimming lessons in Chesham | Tritons Swim Group" : `${pageInfo.title} | Tritons Swim Group`,
     seoDescription: pageInfo.intro,
   });
-  if (!Array.isArray(content.body) || content.body.length === 0) {
-    const body = slug === "home" ? homepageBlocks : (fallbackPages[slug] || []);
-    if (body.length) {
-      content.body = body;
+  const fallbackBody = slug === "home" ? homepageBlocks : (fallbackPages[slug] || []);
+  if (fallbackBody.length) {
+    if (!Array.isArray(content.body)) content.body = [];
+    const existingBlocks = content.body;
+    const missingBlocks = fallbackBody.filter((fallbackBlock) => {
+      return !existingBlocks.some((existingBlock) => {
+        if (existingBlock._uid === fallbackBlock._uid) return true;
+        return existingBlock.component === fallbackBlock.component &&
+          fallbackBlock.title &&
+          existingBlock.title === fallbackBlock.title;
+      });
+    });
+    if (missingBlocks.length) {
+      content.body = [...existingBlocks, ...missingBlocks];
       changed = true;
     }
   }
-  if (changed) queueUpdate(page, content, "Fill missing page fields/components without replacing existing editor content");
+  if (changed) queueUpdate(page, content, "Fill missing page fields and append fallback components not already represented in Storyblok");
 }
 
 // Lesson detail stories: add the missing pathways and fill only blank fields
