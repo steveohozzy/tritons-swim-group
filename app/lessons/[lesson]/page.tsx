@@ -80,10 +80,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lesson } = await params;
   const item = await getLesson(lesson);
-  return {
-    title: item ? item.title + " | Tritons Swim Group" : "Swimming lessons | Tritons Swim Group",
-    description: item?.intro || "Find out more about swimming lessons at Tritons Swim Group.",
-  };
+  const title = item ? `${item.title} in Chesham | Tritons Swim Group` : "Swimming lessons in Chesham | Tritons Swim Group";
+  const description = item?.intro || "Explore swimming lessons in Chesham with Tritons Swim Group.";
+  return { title, description, alternates: { canonical: `/lessons/${lesson}` }, openGraph: { title, description, url: `/lessons/${lesson}` } };
 }
 
 export default async function LessonDetailPage({
