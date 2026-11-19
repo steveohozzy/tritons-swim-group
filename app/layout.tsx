@@ -31,7 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     url: siteUrl,
     logo: settings.logo?.filename || `${siteUrl}/tritons-logo.jpg`,
     email: settings.contactEmail || "tritonsswimgroup@gmail.com",
-    telephone: settings.contactPhone || "0 7976572836",
+    telephone: settings.contactPhone || undefined,
     areaServed: { "@type": "City", name: "Chesham" },
     address: settings.poolAddress ? { "@type": "PostalAddress", streetAddress: settings.poolAddress, addressLocality: "Chesham", addressCountry: "GB" } : undefined
   };
