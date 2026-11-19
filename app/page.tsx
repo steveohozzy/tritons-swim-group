@@ -1,13 +1,14 @@
+import type { Metadata } from "next";
 import { getStory } from "@/lib/storyblok";
 import { StoryblokBlocks } from "@/components/storyblok-blocks";
 
-const homepageDemoBlocks = [
+export async function generateMetadata(): Promise<Metadata> {\n  const story = await getStory("home");\n  const c = story?.content || {};\n  const title = c.seoTitle || "Swimming Lessons in Chesham | Tritons Swim Group";\n  const description = c.seoDescription || c.intro || "Explore swimming lessons in Chesham with Tritons Swim Group, from water confidence and learn-to-swim foundations to stroke development and adult swimming.";\n  return { title, description, alternates: { canonical: "/" }, openGraph: { title, description, url: "/" } };\n}\n\nconst homepageDemoBlocks = [
   {
     _uid: "home-hero",
     component: "heroBanner",
     eyebrow: "TRITONS SWIM GROUP · EVERY SWIMMER, EVERY STEP",
-    title: "Find your confidence. Discover your strength.",
-    intro: "A friendly place to learn, improve and enjoy being in the water. From first splashes to stronger strokes, there is a next step for everyone.",
+    title: "Swimming lessons in Chesham for every stage.",
+    intro: "Discover swimming lessons and supportive swim sessions with Tritons Swim Group in Chesham. From building water confidence to developing stronger strokes, find the right next step in the water.",
     imageAlt: "Tritons Swim Group",
     showPrimaryButton: true,
     primaryButtonText: "Explore our lessons",
