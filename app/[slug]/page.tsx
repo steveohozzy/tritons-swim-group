@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     contact: "Contact Tritons Swim Group in Chesham to ask about swimming lessons, sessions, availability and joining."
   };
   const description = content.seoDescription || content.intro || descriptions[slug] || "Find out more about Tritons Swim Group in Chesham.";
-  return { title, description, alternates: { canonical: `/${slug}` }, openGraph: { title, description, url: `/${slug}` } };
+  return { title: { absolute: title }, description, alternates: { canonical: `/${slug}` }, openGraph: { title, description, url: `/${slug}` } };
 }
 export default async function ContentPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ subject?: string; message?: string }> }) {
   const [{ slug }, query] = await Promise.all([params, searchParams]);
