@@ -38,6 +38,8 @@ async function getLesson(slug: string) {
     return {
       slug: story.slug,
       title: c.title || story.name,
+      seoTitle: c.seoTitle || `${c.title || story.name} in Chesham | Tritons Swim Group`,
+      seoDescription: c.seoDescription || c.summary || "",
       eyebrow: c.eyebrow || "",
       intro: c.summary || "",
       ageRange: c.ageRange || "",
@@ -80,8 +82,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lesson } = await params;
   const item = await getLesson(lesson);
-  const title = item ? `${item.title} in Chesham` : "Swimming lessons in Chesham";
-  const description = item?.intro || "Explore swimming lessons in Chesham with Tritons Swim Group.";
+  const title = item?.seoTitle || (item ? `${item.title} in Chesham | Tritons Swim Group` : "Swimming lessons in Chesham | Tritons Swim Group");
+  const description = item?.seoDescription || item?.intro || "Explore swimming lessons in Chesham with Tritons Swim Group.";
   return { title, description, alternates: { canonical: `/lessons/${lesson}` }, openGraph: { title, description, url: `/lessons/${lesson}` } };
 }
 
