@@ -26,6 +26,8 @@ Create these components in Storyblok's Block Library. Component names and field 
 
 **page** (content type)
 - `title` — Text
+- `seoTitle` — Text (optional; custom search/browser title)
+- `seoDescription` — Textarea (optional; custom search description)
 - `eyebrow` — Text
 - `intro` — Textarea
 - `heroImage` — Asset
@@ -92,6 +94,8 @@ Create one story per album. Upload photos into `photos`; the homepage uses album
 
 **newsArticle** (content type)
 - `title` — Text
+- `seoTitle` — Text (optional)
+- `seoDescription` — Textarea (optional)
 - `publishedDate` — Date
 - `excerpt` — Textarea
 - `coverImage` — Asset
@@ -174,3 +178,17 @@ For the Parent Information page, use a mixture of:
 For News, create `newsArticle` stories in the `news` folder. Use a strong cover image, a short excerpt and a structured Richtext body with headings, paragraphs, lists, quotes and inline images. The site includes four editorial fallback examples covering the welcome, first-session preparation, swimming progress and water safety. Replace or supplement these with approved club news and photography.
 
 **Important:** confirm real session times, venue arrangements, prices, cancellation terms, supervision rules, safeguarding contacts and club policies with the club before publishing those specifics. The fallback copy deliberately directs families to the team where those operational details have not yet been supplied.
+
+
+## SEO content guidance
+
+The canonical public domain is https://www.tritonsswimgroup.co.uk.
+
+- Use a unique, descriptive title and an accurate description for every important page.
+- The homepage should naturally explain that Tritons offers swimming lessons and sessions in Chesham.
+- The Lessons page should explain the actual lesson types, who each is suitable for, confirmed age/ability ranges, how to enquire and where sessions take place.
+- Give each lesson story a useful title, a specific summary, clear ability information and descriptive image alt text.
+- Use the optional `seoTitle` and `seoDescription` fields on page and news stories to override automatic metadata. Leave them blank to use the page title and content summary.
+- Only publish accurate venue, prices, session times, instructor qualifications, safeguarding details and availability. Do not invent claims or guarantees.
+- Use genuine club photographs with meaningful alt text. Avoid keyword-stuffed alt text.
+- Keep the Google Business Profile, website name, phone, email and venue details consistent wherever they are published.
