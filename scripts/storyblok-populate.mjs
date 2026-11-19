@@ -196,26 +196,49 @@ for (const slug of pageSlugs) {
   for (const [key, value] of Object.entries({ title: pageInfo.title, eyebrow: pageInfo.eyebrow, intro: pageInfo.intro, seoTitle: seo.title, seoDescription: seo.description })) {
     if (content[key] !== value) { content[key] = value; changed = true; }
   }
-  const fallbackBody = slug === "home" ? homepageBlocks : (fallbackPages[slug] || []);
+  // The page's visible H1 lives in its Hero Banner block. Build a maintained
+  // hero for every page, then refresh the existing block by component/position
+  // even when its old title differs from the new SEO copy.
+  const fallbackBody = slug === "home" ? homepageBlocks : [
+    {
+      _uid: `${slug}-hero`,
+      component: "heroBanner",
+      eyebrow: pageInfo.eyebrow,
+      title: pageInfo.title,
+      intro: pageInfo.intro,
+    },
+    ...(fallbackPages[slug] || []),
+  ];
   if (fallbackBody.length) {
     if (!Array.isArray(content.body)) content.body = [];
-    const existingBlocks = content.body;
+    const existingBlocks = [...content.body];
+    const used = new Set();
+    const componentCounts = new Map();
     const refreshedBlocks = fallbackBody.map((fallbackBlock) => {
-      const index = existingBlocks.findIndex((existingBlock) =>
-        existingBlock._uid === fallbackBlock._uid ||
-        (existingBlock.component === fallbackBlock.component && fallbackBlock.title && existingBlock.title === fallbackBlock.title)
+      let index = existingBlocks.findIndex((existingBlock, i) =>
+        !used.has(i) && existingBlock._uid && existingBlock._uid === fallbackBlock._uid
       );
+      if (index === -1) {
+        const occurrence = componentCounts.get(fallbackBlock.component) || 0;
+        componentCounts.set(fallbackBlock.component, occurrence + 1);
+        const candidates = existingBlocks
+          .map((block, i) => ({ block, i }))
+          .filter(({ block, i }) => !used.has(i) && block.component === fallbackBlock.component);
+        index = candidates[occurrence]?.i ?? candidates[0]?.i ?? -1;
+      }
       if (index === -1) return fallbackBlock;
+      used.add(index);
       const existingBlock = existingBlocks[index];
-      // Refresh authored copy and SEO headings from the maintained source while
-      // retaining existing media, identifiers and editor-only fields.
+      // Refresh maintained copy while preserving image assets, block UIDs,
+      // custom fields and any other editor-managed values.
       const refreshed = { ...existingBlock, ...fallbackBlock, _uid: existingBlock._uid || fallbackBlock._uid };
       if (JSON.stringify(refreshed) !== JSON.stringify(existingBlock)) changed = true;
       existingBlocks[index] = refreshed;
       return refreshed;
     });
-    const missingBlocks = refreshedBlocks.filter((block) => !existingBlocks.some((existing) => existing._uid === block._uid));
-    if (missingBlocks.length) changed = true;
+    const missingBlocks = refreshedBlocks.filter((block) =>
+      !existingBlocks.some((existing) => existing._uid === block._uid)
+    );
     const body = [...existingBlocks, ...missingBlocks];
     if (JSON.stringify(body) !== JSON.stringify(content.body)) { content.body = body; changed = true; }
   }
@@ -339,6 +362,7 @@ function addSchemaFields(componentName, fields) {
 addSchemaFields("page", { seoTitle: "text", seoDescription: "textarea" });
 addSchemaFields("newsArticle", { seoTitle: "text", seoDescription: "textarea" });
 addSchemaFields("lessonType", { seoTitle: "text", seoDescription: "textarea" });
+addSchemaFields("Event", { seoTitle: "text", seoDescription: "textarea" });
 addSchemaFields("siteSettings", {
   siteDescription: "textarea",
   footerExploreTitle: "text",
