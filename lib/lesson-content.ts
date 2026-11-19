@@ -3,7 +3,7 @@ export const lessonTypes = [
     slug: "water-confidence",
     title: "Water confidence",
     eyebrow: "A comfortable start",
-    intro: "A gentle introduction to the water, helping swimmers feel more at ease and build confidence at their own pace.",
+    intro: "A gentle introduction to swimming in Chesham, helping swimmers feel more at ease in the water and build confidence at their own pace.",
     focus: [
       "Becoming comfortable entering and moving around in the water",
       "Developing confidence with splashing, submerging and floating where appropriate",
@@ -16,7 +16,7 @@ export const lessonTypes = [
     slug: "learn-to-swim",
     title: "Learn to swim",
     eyebrow: "Build the foundations",
-    intro: "Develop the core skills that help swimmers move through the water with increasing confidence, control and independence.",
+    intro: "Develop the core swimming skills that help swimmers in Chesham move through the water with increasing confidence, control and independence.",
     focus: [
       "Building a comfortable, balanced position in the water",
       "Practising floating, kicking, breathing and coordinated movement",
@@ -29,7 +29,7 @@ export const lessonTypes = [
     slug: "stroke-development",
     title: "Stroke development",
     eyebrow: "Refine your technique",
-    intro: "Build on existing swimming skills by developing stronger, smoother and more efficient strokes.",
+    intro: "Build on existing swimming skills with stroke development in Chesham, improving technique, coordination and efficiency in the water.",
     focus: [
       "Improving body position, timing and coordination",
       "Developing technique across the recognised swimming strokes",
@@ -42,7 +42,7 @@ export const lessonTypes = [
     slug: "adult-swimming",
     title: "Adult swimming",
     eyebrow: "Your pace, your progress",
-    intro: "A supportive opportunity for adults to become more comfortable in the water or work on improving their swimming.",
+    intro: "Adult swimming in Chesham with a supportive opportunity to become more comfortable in the water, build confidence or work on improving swimming technique.",
     focus: [
       "Building water confidence in a supportive environment",
       "Developing fundamental swimming skills or refining existing technique",
