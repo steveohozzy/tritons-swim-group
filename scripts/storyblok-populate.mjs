@@ -296,14 +296,8 @@ function addSchemaFields(componentName, fields) {
     }
   }
   if (changed) {
-    schemaOperations.push({
-      id: component.id,
-      name: component.name,
-      display_name: component.display_name,
-      is_root: component.is_root,
-      is_nestable: component.is_nestable,
-      schema,
-    });
+    const { created_at, updated_at, ...componentFields } = component;
+    schemaOperations.push({ ...componentFields, schema });
   }
 }
 
