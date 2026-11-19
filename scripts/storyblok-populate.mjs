@@ -250,10 +250,7 @@ if (settings?.content?.component === "siteSettings") {
     brandDark: "#251047",
     contactEmail: "tritonsswimgroup@gmail.com",
     contactPhone: "0 7976572836",
-    siteDescription: "Looking for swimming lessons in Chesham? Discover swimming sessions, lesson information and ways to get involved with Tritons Swim Group.",
     footerIntro: "Building confidence, skills and happy memories in the water.",
-    footerExploreTitle: "Explore",
-    footerHelpfulTitle: "Helpful links",
     footerContactTitle: "Get in touch",
     footerContactText: "Questions about lessons or availability? We'd love to help.",
     copyrightText: "© {year} Tritons Swim Group",
@@ -313,6 +310,7 @@ for (const operation of operations) {
     await request(`stories/${operation.id}`, {
       method: "PUT",
       body: JSON.stringify({
+        publish,
         story: {
           name: operation.name,
           slug: operation.slug,
