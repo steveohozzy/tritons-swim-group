@@ -467,6 +467,7 @@ header button:focus-visible {
   15% {opacity:.8}
   50% {transform:translate3d(28px,-230px,0) scale(1.08);opacity:.75}
   100% {transform:translate3d(-20px,-620px,0) scale(1.18);opacity:0}
+  
 }
 .site-hero-glow {position:absolute;z-index:1;width:clamp(15rem,38vw,34rem);aspect-ratio:1;border-radius:50%;pointer-events:none;filter:blur(45px);opacity:.34;animation:aqua-drift 11s ease-in-out infinite}
 .site-hero-glow-one {right:-12%;top:-38%;background:#a78bfa}
