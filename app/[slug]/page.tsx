@@ -14,7 +14,21 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const story = await getStory(slug);
-  return { title: story?.content?.title || pageContent[slug]?.title || slug.replaceAll("-", " ") };
+  const content = story?.content || {};
+  const title = content.seoTitle || content.title || pageContent[slug]?.title || slug.replaceAll("-", " ");
+  const descriptions: Record<string, string> = {
+    about: "Get to know Tritons Swim Group in Chesham, our swimming community and how to get involved.",
+    lessons: "Explore swimming lessons in Chesham with Tritons Swim Group, including water confidence, learn to swim, stroke development and adult swimming.",
+    timetable: "Find swimming session and timetable information for Tritons Swim Group in Chesham. Contact the team for current availability and term dates.",
+    events: "Keep up with Tritons Swim Group events, swimming activities and important club dates in Chesham.",
+    gallery: "See photos and moments from Tritons Swim Group and our swimming community in Chesham.",
+    news: "Read the latest news, updates and swimming advice from Tritons Swim Group in Chesham.",
+    "parent-information": "Useful information for parents and families interested in swimming lessons and sessions with Tritons Swim Group in Chesham.",
+    "join-us": "Find out how to get involved with Tritons Swim Group and explore swimming sessions in Chesham.",
+    contact: "Contact Tritons Swim Group in Chesham to ask about swimming lessons, sessions, availability and joining."
+  };
+  const description = content.seoDescription || content.intro || descriptions[slug] || "Find out more about Tritons Swim Group in Chesham.";
+  return { title, description, alternates: { canonical: `/${slug}` }, openGraph: { title, description, url: `/${slug}` } };
 }
 export default async function ContentPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ subject?: string; message?: string }> }) {
   const [{ slug }, query] = await Promise.all([params, searchParams]);
