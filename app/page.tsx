@@ -7,7 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const c = story?.content || {};
   const title = c.seoTitle || "Swimming lessons in Chesham";
   const description = c.seoDescription || c.intro || "Explore swimming lessons in Chesham with Tritons Swim Group, from water confidence and learn-to-swim foundations to stroke development and adult swimming.";
-  return { title, description, alternates: { canonical: "/" }, openGraph: { title, description, url: "/" } };
+  return { title: { absolute: title }, description, alternates: { canonical: "/" }, openGraph: { title, description, url: "/" } };
 }
 
 const homepageDemoBlocks = [

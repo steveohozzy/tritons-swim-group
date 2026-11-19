@@ -84,7 +84,7 @@ export async function generateMetadata({
   const item = await getLesson(lesson);
   const title = item?.seoTitle || (item ? `${item.title} in Chesham | Tritons Swim Group` : "Swimming lessons in Chesham | Tritons Swim Group");
   const description = item?.seoDescription || item?.intro || "Explore swimming lessons in Chesham with Tritons Swim Group.";
-  return { title, description, alternates: { canonical: `/lessons/${lesson}` }, openGraph: { title, description, url: `/lessons/${lesson}` } };
+  return { title: { absolute: title }, description, alternates: { canonical: `/lessons/${lesson}` }, openGraph: { title, description, url: `/lessons/${lesson}` } };
 }
 
 export default async function LessonDetailPage({

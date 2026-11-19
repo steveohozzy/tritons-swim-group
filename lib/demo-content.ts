@@ -23,15 +23,15 @@ export const demoEvents = [
 ];
 
 export const pageContent: Record<string, { eyebrow: string; title: string; intro: string }> = {
-  about: { eyebrow: "Meet the group", title: "A little more confidence with every length.", intro: "Discover Tritons Swim Group in Chesham and learn about our approach to swimming, building water confidence and developing skills. Find out what to expect from our swimming community and how to get started." },
-  lessons: { eyebrow: "Find your level", title: "Swimming lessons for every next step.", intro: "Explore swimming lessons in Chesham, from water confidence and learn-to-swim foundations to stroke development and adult swimming. Contact Tritons Swim Group for help identifying a suitable lesson pathway." },
-  timetable: { eyebrow: "Plan your week", title: "Find a time to dive in.", intro: "Check the Tritons Swim Group swimming timetable for current session days, times and term information in Chesham. Availability can change, so contact the team to confirm the latest details before travelling." },
-  events: { eyebrow: "What's happening", title: "Make a date with the water.", intro: "Discover upcoming Tritons Swim Group events in Chesham, including club activities, special sessions and important swimming updates." },
-  gallery: { eyebrow: "Life at Tritons", title: "Little moments. Big achievements.", intro: "Explore the Tritons Swim Group gallery for photos of swimming activities, club events and moments that celebrate confidence, learning and progress in Chesham." },
-  news: { eyebrow: "From the poolside", title: "The latest from Tritons.", intro: "Read the latest Tritons Swim Group news, swimming advice, club announcements and updates for our community in Chesham." },
-  "join-us": { eyebrow: "Your next step", title: "Ready to make a splash?", intro: "Tell us a little about the swimmer and what they would like to achieve. The Tritons team can help you find the right session." },
-  contact: { eyebrow: "Say hello", title: "We'd love to hear from you.", intro: "Contact Tritons Swim Group in Chesham with questions about swimming lessons, session availability, the timetable or how to get started." },
-  "parent-information": { eyebrow: "Helpful to know", title: "Everything you need poolside.", intro: "Find practical swimming lesson information for parents and carers in Chesham, including preparing for a first session, what to bring and how to support your swimmer's progress." },
+  about: { eyebrow: "Meet the group", title: "A welcoming swim group in Chesham.", intro: "Discover Tritons Swim Group in Chesham and learn about our approach to swimming, building water confidence and developing skills. Find out what to expect from our swimming community and how to get started." },
+  lessons: { eyebrow: "Find your level", title: "Swimming lessons in Chesham for every stage.", intro: "Explore swimming lessons in Chesham, from water confidence and learn-to-swim foundations to stroke development and adult swimming. Contact Tritons Swim Group for help identifying a suitable lesson pathway." },
+  timetable: { eyebrow: "Plan your week", title: "Swimming timetable and sessions in Chesham.", intro: "Check the Tritons Swim Group swimming timetable for current session days, times and term information in Chesham. Availability can change, so contact the team to confirm the latest details before travelling." },
+  events: { eyebrow: "What's happening", title: "Swimming club events and activities in Chesham.", intro: "Discover upcoming Tritons Swim Group events in Chesham, including club activities, special sessions and important swimming updates." },
+  gallery: { eyebrow: "Life at Tritons", title: "Life at Tritons Swim Group in pictures.", intro: "Explore the Tritons Swim Group gallery for photos of swimming activities, club events and moments that celebrate confidence, learning and progress in Chesham." },
+  news: { eyebrow: "From the poolside", title: "Swimming news, advice and updates from Tritons.", intro: "Read the latest Tritons Swim Group news, swimming advice, club announcements and updates for our community in Chesham." },
+  "join-us": { eyebrow: "Your next step", title: "Join Tritons Swim Group in Chesham.", intro: "Tell us a little about the swimmer and what they would like to achieve. The Tritons team can help you find the right session." },
+  contact: { eyebrow: "Say hello", title: "Contact Tritons Swim Group in Chesham.", intro: "Contact Tritons Swim Group in Chesham with questions about swimming lessons, session availability, the timetable or how to get started." },
+  "parent-information": { eyebrow: "Helpful to know", title: "Swimming lesson information for parents and carers.", intro: "Find practical swimming lesson information for parents and carers in Chesham, including preparing for a first session, what to bring and how to support your swimmer's progress." },
 };
 
 
