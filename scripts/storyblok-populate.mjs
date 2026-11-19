@@ -81,7 +81,8 @@ const [demo, lessons, homepageBlocks, footerExplore, footerHelpful] = await Prom
 const pageContent = {
   home: { eyebrow: homepageBlocks[0]?.eyebrow || "", title: homepageBlocks[0]?.title || "Home", intro: homepageBlocks[0]?.intro || "" },
   ...demo.pageContent,
-};\nconst pageSlugs = Object.keys(pageContent);
+};
+const pageSlugs = Object.keys(pageContent);
 const fallbackPages = demo.fallbackPageBlocks || {};
 const lessonTypes = lessons.lessonTypes || [];
 const newsArticles = demo.demoNewsArticles || [];
@@ -274,47 +275,12 @@ if (settings?.content?.component === "siteSettings") {
   if (changed) queueUpdate(settings, content, "Populate missing Site Settings defaults while preserving configured values");
 }
 
-const componentData = await request("components");
-const componentByName = new Map((componentData.components || []).map((component) => [component.name, component]));
-const schemaOperations = [];
-
-function addSchemaFields(componentName, fields) {
-  const component = componentByName.get(componentName);
-  if (!component) throw new Error(`Required Storyblok component not found: ${componentName}`);
-  const schema = structuredClone(component.schema || {});
-  let pos = Math.max(-1, ...Object.values(schema).map((field) => Number(field.pos ?? -1)));
-  let changed = false;
-  for (const [name, type] of Object.entries(fields)) {
-    if (!schema[name]) {
-      schema[name] = { type, pos: ++pos };
-      changed = true;
-    }
-  }
-  if (changed) {
-    schemaOperations.push({
-      id: component.id,
-      name: component.name,
-      display_name: component.display_name,
-      is_root: component.is_root,
-      is_nestable: component.is_nestable,
-      schema,
-    });
-  }
-}
-
-addSchemaFields("page", { seoTitle: "text", seoDescription: "textarea" });
-addSchemaFields("siteSettings", {
-  siteDescription: "textarea",
-  footerExploreTitle: "text",
-  footerHelpfulTitle: "text",
-});
-
 const creates = operations.filter((item) => item.action === "create");
 const updates = operations.filter((item) => item.action === "update");
 
 console.log(`Storyblok population plan for space ${spaceId} (${region})`);
 console.log(`Stories checked: ${stories.length}`);
-console.log(`Schema updates: ${schemaOperations.length} · Create: ${creates.length} · Update: ${updates.length} · Publish: ${publish ? "yes" : "no"}`);
+console.log(`Create: ${creates.length} · Update: ${updates.length} · Publish: ${publish ? "yes" : "no"}`);
 for (const operation of operations) {
   console.log(`- ${operation.action.toUpperCase()} ${operation.slug}: ${operation.reason}`);
 }
@@ -331,6 +297,7 @@ for (const operation of operations) {
     const data = await request("stories", {
       method: "POST",
       body: JSON.stringify({
+        publish,
         story: {
           name: operation.name,
           slug: operation.slug,
@@ -356,10 +323,7 @@ for (const operation of operations) {
     console.log(`Updated ${operation.slug} (ID ${storyId})`);
   }
 
-  if (publish && storyId) {
-    await request(`stories/${storyId}/publish`, { method: "POST", body: JSON.stringify({}) });
-    console.log(`Published ${operation.slug}`);
-  }
+  if (publish) console.log(`Published ${operation.slug}`);
   await sleep(400);
 }
 
