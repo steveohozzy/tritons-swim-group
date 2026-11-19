@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "storyblok:audit": "node --env-file=.env.local scripts/storyblok-audit.mjs"
   },
   "dependencies": {
     "@storyblok/react": "^5.2.0",
