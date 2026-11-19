@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const story = await getStory(slug);
   const title = story?.content?.title || story?.name || "Tritons event";
   const description = story?.content?.description || `Find details about ${title}, an event from Tritons Swim Group in Chesham.`;
-  return { title: `${title} | Tritons Swim Group`, description, alternates: { canonical: `/events/${slug}` }, openGraph: { title, description, url: `/events/${slug}` } };
+  return { title, description, alternates: { canonical: `/events/${slug}` }, openGraph: { title, description, url: `/events/${slug}` } };
 }
 
 export default async function EventDetailPage({ params }: Props) {
