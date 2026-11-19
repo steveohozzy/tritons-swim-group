@@ -36,7 +36,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { article } = await params;
   const story = await findArticle(article);
-  return { title: story?.content?.title || "News | Tritons Swim Group" };
+  const title = story?.content?.seoTitle || story?.content?.title || "Tritons Swim Group news";
+  const description = story?.content?.seoDescription || story?.content?.excerpt || `News, updates and swimming stories from Tritons Swim Group in Chesham.`;
+  const image = story?.content?.coverImage?.filename;
+  return { title: `${title} | Tritons Swim Group`, description, alternates: { canonical: `/news/${article}` }, openGraph: { type: "article", title, description, url: `/news/${article}`, ...(image ? { images: [image] } : {}) } };
 }
 
 export default async function NewsArticlePage({ params }: Props) {
