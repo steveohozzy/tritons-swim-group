@@ -105,6 +105,8 @@ Create one story per album. Upload photos into `photos`; the homepage uses album
 Create one story per article inside a `news` folder. Use a unique story slug for each article.
 
 **siteSettings** (content type)
+- `siteName` — Text
+- `siteDescription` — Textarea
 - `logo` — Asset
 - `brandPurple` — Text
 - `brandDark` — Text
