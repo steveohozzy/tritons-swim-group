@@ -141,7 +141,7 @@ const summaries = await getAllStorySummaries();
 const stories = [];
 for (let i = 0; i < summaries.length; i += 1) {
   stories.push(await getStory(summaries[i].id));
-  if (i < summaries.length - 1) await sleep(250);
+  if (i < summaries.length - 1) await sleep(400);
 }
 
 const bySlug = new Map(stories.filter((story) => !story.is_folder).map((story) => [story.slug, story]));
