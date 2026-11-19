@@ -78,7 +78,7 @@ const [demo, lessons, homepageBlocks, footerExplore, footerHelpful] = await Prom
   extractArray("../components/site-footer.tsx", "fallbackHelpful"),
 ]);
 
-const pageSlugs = Object.keys(demo.pageContent);
+const pageContent = {\n  home: { eyebrow: homepageBlocks[0]?.eyebrow || "", title: homepageBlocks[0]?.title || "Home", intro: homepageBlocks[0]?.intro || "" },\n  ...demo.pageContent,\n};\nconst pageSlugs = Object.keys(pageContent);
 const fallbackPages = demo.fallbackPageBlocks || {};
 const lessonTypes = lessons.lessonTypes || [];
 const newsArticles = demo.demoNewsArticles || [];
@@ -156,7 +156,7 @@ function queueCreate(name, slug, content, reason) {
 // page's original component blocks when its body is currently empty.
 for (const slug of pageSlugs) {
   const page = bySlug.get(slug);
-  const pageInfo = demo.pageContent[slug];
+  const pageInfo = pageContent[slug];
   if (!page) {
     const body = slug === "home" ? homepageBlocks : (fallbackPages[slug] || []);
     const content = {
@@ -246,7 +246,7 @@ if (settings?.content?.component === "siteSettings") {
     brandDark: "#251047",
     contactEmail: "tritonsswimgroup@gmail.com",
     contactPhone: "0 7976572836",
-    footerIntro: "Building confidence, skills and happy memories in the water.",
+    siteDescription: "Looking for swimming lessons in Chesham? Discover swimming sessions, lesson information and ways to get involved with Tritons Swim Group.",\n    footerIntro: "Building confidence, skills and happy memories in the water.",\n    footerExploreTitle: "Explore",\n    footerHelpfulTitle: "Helpful links",
     footerContactTitle: "Get in touch",
     footerContactText: "Questions about lessons or availability? We'd love to help.",
     copyrightText: "© {year} Tritons Swim Group",
@@ -268,12 +268,47 @@ if (settings?.content?.component === "siteSettings") {
   if (changed) queueUpdate(settings, content, "Populate missing Site Settings defaults while preserving configured values");
 }
 
+const componentData = await request("components");
+const componentByName = new Map((componentData.components || []).map((component) => [component.name, component]));
+const schemaOperations = [];
+
+function addSchemaFields(componentName, fields) {
+  const component = componentByName.get(componentName);
+  if (!component) throw new Error(`Required Storyblok component not found: ${componentName}`);
+  const schema = structuredClone(component.schema || {});
+  let pos = Math.max(-1, ...Object.values(schema).map((field) => Number(field.pos ?? -1)));
+  let changed = false;
+  for (const [name, type] of Object.entries(fields)) {
+    if (!schema[name]) {
+      schema[name] = { type, pos: ++pos };
+      changed = true;
+    }
+  }
+  if (changed) {
+    schemaOperations.push({
+      id: component.id,
+      name: component.name,
+      display_name: component.display_name,
+      is_root: component.is_root,
+      is_nestable: component.is_nestable,
+      schema,
+    });
+  }
+}
+
+addSchemaFields("page", { seoTitle: "text", seoDescription: "textarea" });
+addSchemaFields("siteSettings", {
+  siteDescription: "textarea",
+  footerExploreTitle: "text",
+  footerHelpfulTitle: "text",
+});
+
 const creates = operations.filter((item) => item.action === "create");
 const updates = operations.filter((item) => item.action === "update");
 
 console.log(`Storyblok population plan for space ${spaceId} (${region})`);
 console.log(`Stories checked: ${stories.length}`);
-console.log(`Create: ${creates.length} · Update: ${updates.length} · Publish: ${publish ? "yes" : "no"}`);
+console.log(`Schema updates: ${schemaOperations.length} · Create: ${creates.length} · Update: ${updates.length} · Publish: ${publish ? "yes" : "no"}`);
 for (const operation of operations) {
   console.log(`- ${operation.action.toUpperCase()} ${operation.slug}: ${operation.reason}`);
 }
