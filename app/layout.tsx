@@ -5,7 +5,7 @@ import { AquaMotion } from "@/components/aqua-motion";
 import { getStory } from "@/lib/storyblok";
 import "./globals.css";
 
-const siteUrl = "https://www.tritonsswimgroup.co.uk";
+const siteUrl = "https://tritonswimgroup.co.uk";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = (await getStory("site-settings"))?.content || {};
@@ -22,6 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
     robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } }
   };
 }
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const settings = (await getStory("site-settings"))?.content || {};
   const structuredData = {
