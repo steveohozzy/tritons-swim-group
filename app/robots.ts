@@ -1,9 +1,14 @@
 import type { MetadataRoute } from "next";
 
+const siteUrl = "https://tritonswimgroup.co.uk";
+
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/" },
-    sitemap: "https://www.tritonsswimgroup.co.uk/sitemap.xml",
-    host: "https://www.tritonsswimgroup.co.uk"
+    rules: {
+      userAgent: "*",
+      allow: "/"
+    },
+    sitemap: `${siteUrl}/sitemap.xml`,
+    host: siteUrl
   };
 }
