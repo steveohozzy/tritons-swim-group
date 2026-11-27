@@ -6,7 +6,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const story = await getStory("home");
   const c = story?.content || {};
   const title = c.seoTitle || "Swimming Lessons in Chesham | Tritons Swim Group";
-  const description = c.seoDescription || c.intro || "Explore swimming lessons in Chesham with Tritons Swim Group, from water confidence and learn-to-swim foundations to stroke development and adult swimming.";
+  const description = c.seoDescription || "Looking for swimming lessons in Chesham? Explore Tritons Swim Group’s swimming pathways, from water confidence and learn-to-swim foundations to stroke development and adult swimming.";
   return { title: { absolute: title }, description, alternates: { canonical: "/" }, openGraph: { title, description, url: "/" } };
 }
 
