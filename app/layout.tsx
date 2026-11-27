@@ -43,9 +43,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       "Stroke development",
       "Adult swimming"
     ],
-    sameAs: [settings.facebookUrl, settings.instagramUrl]
+    sameAs: [settings.facebookUrl?.url || settings.facebookUrl?.cached_url || settings.facebookUrl, settings.instagramUrl?.url || settings.instagramUrl?.cached_url || settings.instagramUrl]
       .filter((url: unknown): url is string => typeof url === "string" && /^https?:\/\//.test(url)),
     address: settings.poolAddress ? { "@type": "PostalAddress", streetAddress: settings.poolAddress, addressLocality: "Chesham", addressCountry: "GB" } : undefined
   };
-  return <html lang="en-GB"><body><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><SiteHeader settings={settings}/><main>{children}</main><SiteFooter settings={settings}/></body></html>;
+  return <html lang="en-GB"><body><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><SiteHeader settings={settings}/><main><AquaMotion>{children}</AquaMotion></main><SiteFooter settings={settings}/></body></html>;
 }
