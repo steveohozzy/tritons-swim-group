@@ -5,7 +5,7 @@ import { StoryblokBlocks } from "@/components/storyblok-blocks";
 export async function generateMetadata(): Promise<Metadata> {
   const story = await getStory("home");
   const c = story?.content || {};
-  const title = c.seoTitle || "Swimming lessons in Chesham";
+  const title = c.seoTitle || "Swimming Lessons in Chesham | Tritons Swim Group";
   const description = c.seoDescription || c.intro || "Explore swimming lessons in Chesham with Tritons Swim Group, from water confidence and learn-to-swim foundations to stroke development and adult swimming.";
   return { title: { absolute: title }, description, alternates: { canonical: "/" }, openGraph: { title, description, url: "/" } };
 }
