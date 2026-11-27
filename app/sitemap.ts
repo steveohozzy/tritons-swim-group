@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getStories } from "@/lib/storyblok";
 
-const siteUrl = "https://tritonsswimgroup.co.uk";
+const siteUrl = "https://www.tritonsswimgroup.co.uk";
 
 function lastModified(value?: string) {
   if (!value) return new Date();
