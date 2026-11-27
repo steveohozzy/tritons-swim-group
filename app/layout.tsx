@@ -28,13 +28,24 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "SportsActivityLocation",
+    "@id": `${siteUrl}/#organisation`,
     name: settings.siteName || "Tritons Swim Group",
     url: siteUrl,
+    description: settings.siteDescription || "Swimming lessons and swimming sessions in Chesham with Tritons Swim Group.",
     logo: settings.logo?.filename || `${siteUrl}/tritons-logo.jpg`,
     email: settings.contactEmail || "tritonsswimgroup@gmail.com",
     telephone: settings.contactPhone || undefined,
     areaServed: { "@type": "City", name: "Chesham" },
+    knowsAbout: [
+      "Swimming lessons",
+      "Learn to swim",
+      "Water confidence",
+      "Stroke development",
+      "Adult swimming"
+    ],
+    sameAs: [settings.facebookUrl, settings.instagramUrl]
+      .filter((url: unknown): url is string => typeof url === "string" && /^https?:\/\//.test(url)),
     address: settings.poolAddress ? { "@type": "PostalAddress", streetAddress: settings.poolAddress, addressLocality: "Chesham", addressCountry: "GB" } : undefined
   };
-  return <html lang="en-GB"><body><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><SiteHeader settings={settings}/><main><AquaMotion>{children}</AquaMotion></main><SiteFooter settings={settings}/></body></html>;
+  return <html lang="en-GB"><body><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}/><SiteHeader settings={settings}/><main>{children}</main><SiteFooter settings={settings}/></body></html>;
 }
