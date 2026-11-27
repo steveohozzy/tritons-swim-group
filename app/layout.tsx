@@ -5,7 +5,7 @@ import { AquaMotion } from "@/components/aqua-motion";
 import { getStory } from "@/lib/storyblok";
 import "./globals.css";
 
-const siteUrl = "https://tritonsswimgroup.co.uk";
+const siteUrl = "https://www.tritonsswimgroup.co.uk";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = (await getStory("site-settings"))?.content || {};
