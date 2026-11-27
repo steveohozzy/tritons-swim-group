@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const story = await getStory(slug);
   const content = story?.content || {};
-  const title = content.seoTitle || content.title || pageContent[slug]?.title || slug.replaceAll("-", " ");
+  const title = content.seoTitle || (slug === "lessons" ? "Swimming Lessons in Chesham | Tritons Swim Group" : content.title || pageContent[slug]?.title || slug.replaceAll("-", " "));
   const descriptions: Record<string, string> = {
     about: "Get to know Tritons Swim Group in Chesham, our swimming community and how to get involved.",
     lessons: "Explore swimming lessons in Chesham with Tritons Swim Group, including water confidence, learn to swim, stroke development and adult swimming.",
